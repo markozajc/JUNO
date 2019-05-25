@@ -12,18 +12,9 @@ import com.github.markozajc.juno.piles.impl.UnoDrawPile;
 public abstract class UnoGame {
 
 	public enum UnoPlayer {
-		/**
-		 * The first player ({@link UnoHand})
-		 */
 		PLAYER1,
-		/**
-		 * The second player ({@link UnoHand})
-		 */
 		PLAYER2,
-		/**
-		 * No one ({@link UnoGame#playGame()} returns this as a tie)
-		 */
-		NOBODY
+		NOBODY;
 	}
 
 	@Nonnull
@@ -35,6 +26,35 @@ public abstract class UnoGame {
 	public final UnoDrawPile draw;
 	@Nonnull
 	public final UnoDiscardPile discard = new UnoDiscardPile();
+
+	/**
+	 * Returns the other {@link UnoPlayer}.
+	 *
+	 * @param player
+	 *            the {@link UnoPlayer} to reverse
+	 * @return the other {@link UnoPlayer}
+	 */
+	@Nonnull
+	private static UnoPlayer reversePlayer(UnoPlayer player) {
+		return player.equals(UnoPlayer.PLAYER1) ? UnoPlayer.PLAYER2 : UnoPlayer.PLAYER1;
+	}
+
+	/**
+	 * Returns hand belonging to the given {@link UnoPlayer}.
+	 *
+	 * @param player
+	 *            the {@link UnoPlayer}
+	 * @param playerOneHand
+	 *            player one's hand
+	 * @param playerTwoHand
+	 *            player two's hand
+	 * @return {@code player}'s hand
+	 */
+	@SuppressWarnings("null")
+	@Nonnull
+	private static UnoHand decideHand(UnoPlayer player, UnoHand playerOneHand, UnoHand playerTwoHand) {
+		return player.equals(UnoPlayer.PLAYER1) ? playerOneHand : playerTwoHand;
+	}
 
 	public UnoGame(@Nonnull UnoHand playerOneHand, @Nonnull UnoHand playerTwoHand) {
 		this(playerOneHand, playerTwoHand, new UnoStandardDeck());
@@ -116,27 +136,21 @@ public abstract class UnoGame {
 		// Initiates game
 
 		UnoPlayer winner = null;
-		while (winner == null) {
-			winner = playAndCheckHand(this.playerOneHand, UnoPlayer.PLAYER1, this.playerTwoHand, UnoPlayer.PLAYER2);
-			// Plays P1's hand
+		for (UnoPlayer player = UnoPlayer.PLAYER1; winner == null; player = reversePlayer(player)) {
+			UnoPlayer reversePlayer = reversePlayer(player);
+			// Gets the other player
 
-			if (winner != null)
-				continue;
-			// Checks if state has changed
-
-			winner = playAndCheckHand(this.playerTwoHand, UnoPlayer.PLAYER2, this.playerOneHand, UnoPlayer.PLAYER1);
-			// Plays P2's hand
-
-			if (winner != null)
-				continue;
-			// Checks if state has changed
+			winner = playAndCheckHand(decideHand(player, this.playerOneHand, this.playerTwoHand), player,
+				decideHand(reversePlayer, this.playerOneHand, this.playerTwoHand), reversePlayer);
+			// Plays the hand and checks both
 
 			if (this.discard.getSize() <= 1 && this.draw.getSize() == 0)
 				winner = fallbackVictory();
-			// Fallback method used in the case of both PILES getting empty. Do note that the
+			// Fallback method used in the case of both piles getting empty. Do note that the
 			// game can not continue at this point so a winner
 			// must be chosen.
 		}
+		// Iterates over all players until a winner is declared
 
 		return winner;
 	}
