@@ -11,7 +11,7 @@ JUNO is published to the Maven central and can be obtained by adding the followi
         <version>VERSION</version>
     </dependency>
     
-and replacing `VERSION` with the following version: TODO version shield from bintray.
+and replacing `VERSION` with the following version: **the project is still waiting approval by the JFrog Bintray team**.
 
 ## Usage
 JUNO consists of multiple modules; UnoGame, UnoDeck, UnoPile, UnoHand, and UnoCard. You must correctly use those to implement JUNO into your code.

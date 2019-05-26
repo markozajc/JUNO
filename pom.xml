@@ -2,25 +2,133 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<groupId>com.github.markozajc</groupId>
 	<artifactId>juno</artifactId>
 	<version>1.0</version>
+
 	<name>JUNO</name>
-	<description>A UNO engine written in Java</description>
+	<description>A UNO library for Java</description>
+	<url>https://github.com/markozajc/JUNO</url>
+
+	<inceptionYear>2019</inceptionYear>
+
+	<scm>
+		<url>https://github.com/markozajc/JUNO</url>
+		<connection>scm:git:git://github.com/markozajc/JUNO.git</connection>
+		<developerConnection>scm:git:ssh://github.com:markozajc/JUNO.git</developerConnection>
+	</scm>
+
+	<licenses>
+		<license>
+			<name>The GNU General Public License, Version 3.0</name>
+			<url>https://www.gnu.org/licenses/gpl.txt</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Marko Zajc</name>
+			<email>marko.zajc@protonmail.com</email>
+			<url>https://github.com/markozajc</url>
+		</developer>
+	</developers>
+
+	<issueManagement>
+		<url>https://github.com/markozajc/JUNO/issues</url>
+	</issueManagement>
+
+	<distributionManagement>
+
+		<repository>
+			<id>bintray</id>
+			<name>Bintray Repo</name>
+			<url>https://api.bintray.com/maven/iareas/Libraries/JUNO/;publish=1</url>
+		</repository>
+
+	</distributionManagement>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+
 	<build>
-		<sourceDirectory>src</sourceDirectory>
 		<plugins>
+
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.7.0</version>
+				<version>3.8.0</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.0.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.0.1</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<additionalparam>-Xdoclint:none</additionalparam>
+					<additionalOptions>-Xdoclint:none</additionalOptions>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.1</version>
+				<executions>
+					<execution>
+						<id>test</id>
+						<goals>
+							<goal>test</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>2.7</version>
+			</plugin>
+
 		</plugins>
 	</build>
 	<dependencies>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.2.0</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- Tests -->
 
 		<dependency>
 			<groupId>com.google.code.findbugs</groupId>
