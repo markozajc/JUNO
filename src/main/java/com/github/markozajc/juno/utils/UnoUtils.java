@@ -2,6 +2,7 @@ package com.github.markozajc.juno.utils;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
@@ -10,10 +11,10 @@ import java.util.stream.Collectors;
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.cards.impl.UnoActionCard;
+import com.github.markozajc.juno.cards.impl.UnoActionCard.UnoAction;
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.cards.impl.UnoNumericCard;
 import com.github.markozajc.juno.cards.impl.UnoWildCard;
-import com.github.markozajc.juno.cards.impl.UnoActionCard.UnoAction;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.piles.impl.UnoDiscardPile;
@@ -38,11 +39,11 @@ public class UnoUtils {
 	 * {@link UnoGame} implementations to prevent cheating - accidental or not.
 	 *
 	 * @param targetCard the target card (eg. the top {@link UnoCard} of the {@link UnoDiscardPile})
-	 * @param cards the {@link List} of cards to analyze (eg. {@link UnoHand}'s cards)
+	 * @param cards the {@link Collection} of cards to analyze (eg. {@link UnoHand}'s cards)
 	 * @return a {@link List} of all possible cards from {@code cards} can be placed on
 	 *         the {@code targetCard}.
 	 */
-	public static List<UnoCard> analyzePossibleCards(UnoCard targetCard, List<UnoCard> cards) {
+	public static List<UnoCard> analyzePossibleCards(UnoCard targetCard, Collection<UnoCard> cards) {
 		List<UnoCard> result = new ArrayList<>();
 
 		if (targetCard instanceof UnoDrawCard && !((UnoDrawCard) targetCard).isPlayed()) {
@@ -117,7 +118,7 @@ public class UnoUtils {
 	 *            cards to analyze
 	 * @return {@link Entry} of quantity and {@link UnoCardColor}
 	 */
-	public static List<Entry<Long, UnoCardColor>> analyzeColors(List<UnoCard> cards) {
+	public static List<Entry<Long, UnoCardColor>> analyzeColors(Collection<UnoCard> cards) {
 		List<Entry<Long, UnoCardColor>> result = new ArrayList<>();
 
 		for (UnoCardColor color : UnoCardColor.values())
@@ -134,12 +135,12 @@ public class UnoUtils {
 	 *            card type
 	 * @param color
 	 *            {@link UnoCardColor} to search for
-	 * @param list
-	 *            {@link List} of {@link UnoCard}s to search through
+	 * @param cards
+	 *            {@link Collection} of {@link UnoCard}s to search through
 	 * @return {@link List} containing only cards of a certain color
 	 */
-	public static <T extends UnoCard> List<T> getColorCards(UnoCardColor color, List<T> list) {
-		return list.stream().filter(c -> c.getColor().equals(color)).collect(Collectors.toList());
+	public static <T extends UnoCard> List<T> getColorCards(UnoCardColor color, Collection<T> cards) {
+		return cards.stream().filter(c -> c.getColor().equals(color)).collect(Collectors.toList());
 	}
 
 	/**
@@ -148,12 +149,12 @@ public class UnoUtils {
 	 *
 	 * @param action
 	 *            {@link UnoCardColor} to search for
-	 * @param list
-	 *            {@link List} of {@link UnoCard}s to search through
+	 * @param cards
+	 *            {@link Collection} of {@link UnoCard}s to search through
 	 * @return {@link List} containing only cards of a certain color
 	 */
-	public static List<UnoActionCard> getActionCards(UnoAction action, List<UnoCard> list) {
-		return filterKind(UnoActionCard.class, list).stream()
+	public static List<UnoActionCard> getActionCards(UnoAction action, Collection<UnoCard> cards) {
+		return filterKind(UnoActionCard.class, cards).stream()
 				.filter(c -> c.getAction().equals(action))
 				.collect(Collectors.toList());
 	}
@@ -164,12 +165,12 @@ public class UnoUtils {
 	 *
 	 * @param number
 	 *            number to search for
-	 * @param list
+	 * @param cards
 	 *            {@link List} of {@link UnoCard}s to search through
 	 * @return {@link List} containing only cards of a certain color
 	 */
-	public static List<UnoNumericCard> getNumberCards(int number, List<UnoCard> list) {
-		return filterKind(UnoNumericCard.class, list).stream()
+	public static List<UnoNumericCard> getNumberCards(int number, Collection<UnoCard> cards) {
+		return filterKind(UnoNumericCard.class, cards).stream()
 				.filter(c -> c.getNumber() == number)
 				.collect(Collectors.toList());
 	}
@@ -181,12 +182,12 @@ public class UnoUtils {
 	 *            the superclass of {@link UnoCard} to search for
 	 * @param targetKind
 	 *            the {@link Class} of {@link UnoCard} to search for
-	 * @param list
-	 *            {@link List} of {@link UnoCard}s to search through
+	 * @param cards
+	 *            {@link Collection} of {@link UnoCard}s to search through
 	 * @return {@link List} of cards of a certain kind
 	 */
-	public static <T extends UnoCard> List<T> filterKind(Class<T> targetKind, List<UnoCard> list) {
-		return list.stream().filter(targetKind::isInstance).map(targetKind::cast).collect(Collectors.toList());
+	public static <T extends UnoCard> List<T> filterKind(Class<T> targetKind, Collection<UnoCard> cards) {
+		return cards.stream().filter(targetKind::isInstance).map(targetKind::cast).collect(Collectors.toList());
 	}
 
 }

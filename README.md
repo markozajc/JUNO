@@ -97,8 +97,8 @@ BasicUnoGame requires you to only (optionally) extend a few status methods. It i
 * `onCardPlaced(UnoHand, UnoCard)` - Called when a card has been placed on the discard pile. The first argument is the hand that has placed the card and the second argument is the card that has been placed.
 * `onColorChanged(UnoHand, UnoCardColor)` - Called when a hand changes the color (using a wild or draw four card). The first argument is the hand that has changed the color and the second one is the new color.
 * `onPileShuffle()` - Called when the draw pile runs out of cards and the discard pile is merged (and shuffled) into it. This is not really important, but you may display it anyways.
-* `onDrawCards(UnoHand, int)` - Called when a hand draws an amount of cards. The first argument is the hand that has drawn the cards and the second on is the quantity of the drawn cards.
-* `onInvalidCard(UnoHand)` - Called when a hand attempts to place an invalid card. The argument is the offending hand. This is mostly meant for debugging purposes as hands should not return invalid cards (see "Implementing UnoHand above" for tips on how to prevent that from happening).
+* `onDrawCards(UnoHand, int)` - Called when a hand draws an amount of cards. The first argument is the hand that has drawn the cards and the second one is the quantity of the drawn cards.
+* `onInvalidCard(UnoHand, UnoCard)` - Called when a hand attempts to place an invalid card. The first argument is the offending hand and the second one is the invalid card. This is mostly meant for debugging purposes as hands should not return invalid cards (see "Implementing UnoHand above" for tips on how to prevent that from happening).
 * `onInvalidColor(UnoHand, UnoCardColor)` - Called when a hand attempts to set an invalid color. The first argument is the offending hand and the second one is the invalid color. Currently the only invalid color is "Wild" and returning it should be prevented by all UnoHand-s (similar to above).
 
 I will not provide an example implementation as it should be pretty much obvious at this point. You may also look at ConsoleUnoGame, which is a pretty basic and clear implementation of this.
@@ -111,3 +111,15 @@ Those are the two classes that you don't really need to implement under most cir
 * Custom cards can only be of the standard colors (red, green, blue, yellow and "wild"). Conventionally you'd assign the custom cards that aren't of those colors to the "wild" color.
 * When extending the UnoDeck, you __HAVE TO__ return a __MODIFIABLE__ clone of the deck in `getCards()`.
 * You should not open issues for errors that occur in/due to your custom implementations.
+
+## Specification
+As you might already know, JUNO is based on the official UNO rules plus the progressive UNO official house rule, both of which can be found [here](https://service.mattel.com/instruction_sheets/UNO%20Basic%20IS.pdf).
+
+All changes to the upstream must thus comply with the rules above with a few exception:
+1. The defined objective of the game (to reach "500 points") is not present in JUNO isn't intended for more-round plays. Of course, you may implement the actual scoring system as defined in the rules in your code, but keep it out of upstream
+2. There is no "dealer" so the first player to place a card is not the one "on the dealer's left" but "the first player given to the UnoGame"
+3. There is no yelling "UNO!" in JUNO. An event that would signal it may be added to BasicUnoGame, but it should be done automatically as making the hands yell it really doesn't make much sense
+4. The additional "hitch" to the wild draw four has not been implemented. It may be implemented, but it really just doesn't make sense to me
+5. Jump-in rule can't be implemented into JUNO because JUNO isn't asynchronous and implementing a human-like delay to the automated hands doesn't seem like a great idea
+6. Seven-O may be implemented, but the "seven" part of it wouldn't work because JUNO is currently a 2-player game (similar to how "reverse" and "skip" cards both do the same thing in JUNO)
+7. The initial card is always a numeric card so there are no special-case scenarios for action cards

@@ -31,7 +31,7 @@ public class UnoNumericCard implements UnoCard {
 		if (color.equals(UnoCardColor.WILD))
 			throw new IllegalArgumentException("The wild card color is not allowed!");
 
-		if(number > 9 || number < 0)
+		if (number > 9 || number < 0)
 			throw new IllegalArgumentException("Number " + number + " is not in the allowed range (0-9)!");
 
 		this.number = number;
@@ -43,6 +43,11 @@ public class UnoNumericCard implements UnoCard {
 		return this.color;
 	}
 
+	/**
+	 * The number of this card. {@link UnoNumericCard} supports numbers from 0 to 9.
+	 *
+	 * @return this card's
+	 */
 	public int getNumber() {
 		return this.number;
 	}

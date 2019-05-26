@@ -16,8 +16,19 @@ import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.utils.UnoUtils;
 
+/**
+ * An automated hand that uses actual strategic "thinking" to decide cards and colors to return.
+ * Is suitable for production so you may use it as a "CPU" opponent in your code.
+ *
+ * @author Marko Zajc
+ */
 public class StrategicUnoHand extends UnoHand {
 
+	/**
+	 * Creates a new {@link StrategicUnoHand}.
+	 *
+	 * @param name hand's name
+	 */
 	public StrategicUnoHand(@Nonnull String name) {
 		super(name);
 	}

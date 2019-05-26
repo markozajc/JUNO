@@ -45,7 +45,7 @@ public class UnoDrawCard implements UnoCard {
 		this(UnoCardColor.WILD, 4);
 	}
 
-	protected UnoDrawCard(UnoCardColor color, int draw) {
+	UnoDrawCard(UnoCardColor color, int draw) {
 		this.color = color;
 		this.draw = draw;
 	}
@@ -63,7 +63,17 @@ public class UnoDrawCard implements UnoCard {
 		this.played = true;
 	}
 
+	/**
+	 * Sets the card's color
+	 *
+	 * @param color the new color
+	 * @throws IllegalStateException
+	 *             if this card is a draw two card
+	 */
 	public void setColor(UnoCardColor color) {
+		if (this.draw == 2)
+			throw new IllegalStateException("Can't change the color of a draw two card.");
+
 		this.color = color;
 	}
 
@@ -72,12 +82,24 @@ public class UnoDrawCard implements UnoCard {
 		return this.color;
 	}
 
+	/**
+	 * Gets the original color of the card. This is useful for draw four cards where
+	 * {@link #getColor()} can represent the changed color.
+	 *
+	 * @return the original color
+	 */
 	public UnoCardColor getOriginalColor() {
 		if (this.draw == 4)
 			return UnoCardColor.WILD;
 		return getColor();
 	}
 
+	/**
+	 * The "draw amount" of this card. {@link UnoDrawCard} supports draw four and draw
+	 * two cards so this is either {@code 2} or {@code 4}.
+	 *
+	 * @return the draw amount of this cards
+	 */
 	public int getAmount() {
 		return this.draw;
 	}

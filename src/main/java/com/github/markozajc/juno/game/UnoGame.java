@@ -1,29 +1,65 @@
 package com.github.markozajc.juno.game;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.cards.UnoStandardDeck;
 import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.piles.impl.UnoDiscardPile;
 import com.github.markozajc.juno.piles.impl.UnoDrawPile;
 
+/**
+ * A class representing a UnoGame. UnoGame is the thing that controls flow and
+ * actions that take place in a round of UNO. An implementation of this that endorses
+ * official UNO rules is {@link BasicUnoGame} (see "Specification" in the README for the details)
+ *
+ * @author Marko Zajc
+ * @see BasicUnoGame
+ */
 public abstract class UnoGame {
 
+	/**
+	 * A list of players in an UNO game.
+	 *
+	 * @author Marko Zajc
+	 */
 	public enum UnoPlayer {
+		/**
+		 * The first player. This player gets to place a card first.
+		 */
 		PLAYER1,
+		/**
+		 * The second player.
+		 */
 		PLAYER2,
+		/**
+		 * Nobody. This is used to signal a tie by {@link UnoGame#playGame()}.
+		 */
 		NOBODY;
 	}
 
+	/**
+	 * First player's hand.
+	 */
 	@Nonnull
 	public final UnoHand playerOneHand;
+	/**
+	 * Second player's hand.
+	 */
 	@Nonnull
 	public final UnoHand playerTwoHand;
 
+	private final int cardAmount;
+	/**
+	 * The draw pile. This is where cards are drawn from by hands. The discard pile is
+	 * shuffled and merged into this when this gets empty.
+	 */
 	@Nonnull
 	public final UnoDrawPile draw;
+	/**
+	 * The discard pile. This is where hands place their cards.
+	 */
 	@Nonnull
 	public final UnoDiscardPile discard = new UnoDiscardPile();
 
@@ -56,34 +92,48 @@ public abstract class UnoGame {
 		return player.equals(UnoPlayer.PLAYER1) ? playerOneHand : playerTwoHand;
 	}
 
-	public UnoGame(@Nonnull UnoHand playerOneHand, @Nonnull UnoHand playerTwoHand) {
-		this(playerOneHand, playerTwoHand, new UnoStandardDeck());
-	}
-
-	public UnoGame(@Nonnull UnoHand playerOneHand, @Nonnull UnoHand playerTwoHand, @Nonnull UnoDeck unoDeck) {
+	/**
+	 * Creates a new UNO game.
+	 *
+	 * @param playerOneHand
+	 *            first player's hand
+	 * @param playerTwoHand
+	 *            second player's hand
+	 * @param unoDeck
+	 *            the {@link UnoDeck} to use
+	 * @param cardAmount
+	 *            the amount of card each player gets initially
+	 */
+	public UnoGame(@Nonnull UnoHand playerOneHand, @Nonnull UnoHand playerTwoHand, @Nonnull UnoDeck unoDeck,
+			@Nonnegative int cardAmount) {
 		this.playerOneHand = playerOneHand;
 		this.playerTwoHand = playerTwoHand;
-
 		this.draw = new UnoDrawPile(unoDeck);
+		this.cardAmount = cardAmount;
 	}
 
-	public void init() {
-		this.discard.addAll(this.playerOneHand.clear());
-		this.discard.addAll(this.playerTwoHand.clear());
+	private void init() {
+		this.discard.add(this.draw.drawInitalCard());
+		// Draws the initial card
 
-		discardIntoDraw();
-
-		if (this.discard.getTop() == null)
-			this.discard.add(this.draw.draw());
-
-		this.playerOneHand.draw(this.draw, 7);
-		this.playerTwoHand.draw(this.draw, 7);
+		this.playerOneHand.draw(this.draw, this.cardAmount);
+		this.playerTwoHand.draw(this.draw, this.cardAmount);
+		// Deals the cards
 	}
 
+	/**
+	 * Merges the discard pile into the draw pile. This is to be called by the
+	 * implementation when the draw pile gets empty.
+	 */
 	protected void discardIntoDraw() {
 		this.draw.mergeResetShuffle(this.discard.createDrawPile());
 	}
 
+	/**
+	 * Plays a hand. This method should get a card to place from a hand
+	 *
+	 * @param hand
+	 */
 	protected abstract void playHand(UnoHand hand);
 
 	/**

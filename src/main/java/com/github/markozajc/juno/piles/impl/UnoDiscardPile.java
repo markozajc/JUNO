@@ -12,6 +12,11 @@ import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.piles.UnoPile;
 
+/**
+ * A class representing
+ *
+ * @author Marko Zajc
+ */
 public class UnoDiscardPile implements UnoPile {
 
 	@Nonnull

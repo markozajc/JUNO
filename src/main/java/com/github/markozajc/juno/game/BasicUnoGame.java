@@ -7,31 +7,78 @@ import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
+import com.github.markozajc.juno.cards.UnoStandardDeck;
 import com.github.markozajc.juno.cards.impl.UnoActionCard;
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.cards.impl.UnoWildCard;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.utils.UnoUtils;
 
+/**
+ * A {@link UnoGame} implementation that endorses the official UNO rules (see
+ * "Specification" in the README for the details). This implementation works only
+ * with the official set of {@link UnoCard}s. It also has a few events that you can
+ * extend.
+ *
+ * @author Marko Zajc
+ */
 public abstract class BasicUnoGame extends UnoGame {
 
+	/**
+	 * Called when a hand is placed to the discard pile.
+	 *
+	 * @param hand
+	 *            the card's placer
+	 * @param card
+	 *            the {@link UnoCard}
+	 */
 	@SuppressWarnings("unused")
 	protected void onCardPlaced(UnoHand hand, UnoCard card) {}
 
+	/**
+	 * Called when a hand changes the color (using a wild card).
+	 *
+	 * @param hand
+	 *            the {@link UnoHand} that has changed the color
+	 * @param newColor
+	 *            the new {@link UnoCardColor}
+	 */
 	@SuppressWarnings("unused")
 	protected void onColorChanged(UnoHand hand, UnoCardColor newColor) {}
 
+	/**
+	 * Called when the discard pile is merged and shuffled into the draw pile.
+	 */
 	protected void onPileShuffle() {}
 
+	/**
+	 * Called when a hand draws cards from the draw pile.
+	 *
+	 * @param hand
+	 *            the {@link UnoHand} drawing the cards
+	 * @param quantity
+	 *            the quantity of drawn cards
+	 */
 	@SuppressWarnings("unused")
 	protected void onDrawCards(UnoHand hand, int quantity) {}
 
+	/**
+	 * Called when a {@link UnoHand} tries to place an illegal {@link UnoCard}. This
+	 * means that the card is either not compatible with the top card or the hand does
+	 * not actually possess the card it tried to place.
+	 *
+	 * @param hand
+	 *            the offending {@link UnoHand}
+	 * @param card
+	 *            the invalid {@link UnoCard}
+	 */
 	@SuppressWarnings("unused")
-	protected void onInvalidCard(UnoHand hand) {}
+	protected void onInvalidCard(UnoHand hand, UnoCard card) {}
 
 	/**
-	 * Executed when an illegal color request has been made. This means that a hand has
-	 * returned {@link UnoCardColor#WILD} on {@link UnoHand#chooseColor(UnoGame)}.
+	 * Called when an invalid {@link UnoCardColor} request has been made. This means that
+	 * a hand has returned {@link UnoCardColor#WILD} on
+	 * {@link UnoHand#chooseColor(UnoGame)}. {@link UnoHand#chooseColor(UnoGame)}.
 	 *
 	 * @param hand
 	 *            the offending {@link UnoHand}
@@ -41,8 +88,16 @@ public abstract class BasicUnoGame extends UnoGame {
 	@SuppressWarnings("unused")
 	protected void onInvalidColor(UnoHand hand, UnoCardColor color) {}
 
+	/**
+	 * Creates a new {@link BasicUnoGame}
+	 *
+	 * @param playerOneHand
+	 *            the first player's hand
+	 * @param playerTwoHand
+	 *            the second player's hand
+	 */
 	public BasicUnoGame(@Nonnull UnoHand playerOneHand, @Nonnull UnoHand playerTwoHand) {
-		super(playerOneHand, playerTwoHand);
+		super(playerOneHand, playerTwoHand, new UnoStandardDeck(), 7);
 	}
 
 	private void changeColor(UnoHand hand, UnoCard card) {
@@ -108,7 +163,7 @@ public abstract class BasicUnoGame extends UnoGame {
 				if (UnoUtils.analyzePossibleCards(topCard, Arrays.asList(card)).isEmpty()
 						|| !hand.getCards().remove(card)) {
 					// Should be checked by Hand implementation in the first place
-					onInvalidCard(hand);
+					onInvalidCard(hand, card);
 					continue;
 				}
 				// Checks if the card is valid and exists

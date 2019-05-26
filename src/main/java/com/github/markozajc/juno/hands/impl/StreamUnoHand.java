@@ -14,6 +14,13 @@ import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.utils.UnoUtils;
 
+/**
+ * A human-driven hand that uses a {@link Scanner} to read input and sends the output
+ * to the given {@link PrintStream}. Blocks invalid card and color placements
+ * automatically. This is meant as an example hand.
+ *
+ * @author Marko Zajc
+ */
 public class StreamUnoHand extends UnoHand {
 
 	private static final String INVALID_CHOICE_STRING = "Invalid choice!";
@@ -21,6 +28,13 @@ public class StreamUnoHand extends UnoHand {
 	private final Scanner scanner;
 	private final PrintStream ps;
 
+	/**
+	 * Creates a new {@link StreamUnoHand}.
+	 *
+	 * @param name hand's name
+	 * @param is {@link InputStream} to read from
+	 * @param ps {@link PrintStream} to write to
+	 */
 	public StreamUnoHand(@Nonnull String name, @Nonnull InputStream is, @Nonnull PrintStream ps) {
 		super(name);
 		this.scanner = new Scanner(is);

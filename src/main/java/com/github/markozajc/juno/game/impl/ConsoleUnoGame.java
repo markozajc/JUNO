@@ -1,7 +1,5 @@
 package com.github.markozajc.juno.game.impl;
 
-import javax.annotation.Nonnull;
-
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.game.BasicUnoGame;
@@ -10,14 +8,29 @@ import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.hands.impl.ConsoleUnoHand;
 import com.github.markozajc.juno.hands.impl.StrategicUnoHand;
 
+/**
+ * A console-based {@link BasicUnoGame} implementation. This is not meant to be used
+ * in production and is solely an example implementation.
+ *
+ * @author Marko Zajc
+ */
 public class ConsoleUnoGame extends BasicUnoGame {
 
-	public ConsoleUnoGame(@Nonnull UnoHand playerOneHand, @Nonnull UnoHand playerTwoHand) {
-		super(playerOneHand, playerTwoHand);
+	/**
+	 * Creates a new {@link ConsoleUnoGame} with a {@link ConsoleUnoHand} named "You" and
+	 * a {@link StrategicUnoHand} named "Billy the StrategicUnoHand".
+	 */
+	public ConsoleUnoGame() {
+		super(new ConsoleUnoHand("You"), new StrategicUnoHand("Billy the StrategicUnoHand"));
 	}
 
+	/**
+	 * The main method
+	 *
+	 * @param args arguments (will be ignored)
+	 */
 	public static void main(String[] args) {
-		UnoGame game = new ConsoleUnoGame(new ConsoleUnoHand("You"), new StrategicUnoHand("Billy"));
+		UnoGame game = new ConsoleUnoGame();
 
 		switch (game.playGame()) {
 			case PLAYER2:
@@ -56,8 +69,8 @@ public class ConsoleUnoGame extends BasicUnoGame {
 	}
 
 	@Override
-	protected void onInvalidCard(UnoHand hand) {
-		System.out.println(hand.getName() + " placed an invalid card.");
+	protected void onInvalidCard(UnoHand hand, UnoCard card) {
+		System.out.println(hand.getName() + " placed a " + card + ", which is an invalid card.");
 
 	}
 

@@ -5,14 +5,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
-import java.util.stream.Collectors;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.UnoCard;
+import com.github.markozajc.juno.cards.impl.UnoNumericCard;
 import com.github.markozajc.juno.decks.UnoDeck;
+import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.piles.UnoPile;
+import com.github.markozajc.juno.utils.UnoUtils;
 
 /**
  * A class representing a UNO draw pile. A draw pile behaves as the "entry point" for
@@ -26,6 +28,7 @@ public class UnoDrawPile implements UnoPile {
 
 	@Nonnull
 	private final Queue<UnoCard> cards;
+	private boolean initialDrawn = false;
 
 	/**
 	 * Creates a new {@link UnoDrawPile} from a {@link UnoDeck}.
@@ -61,7 +64,7 @@ public class UnoDrawPile implements UnoPile {
 
 	@Override
 	public List<UnoCard> getCards() {
-		return this.cards.stream().collect(Collectors.toList());
+		return new ArrayList<>(this.cards);
 	}
 
 	@Override
@@ -74,6 +77,7 @@ public class UnoDrawPile implements UnoPile {
 	 * both s
 	 *
 	 * @param pile
+	 *            the pile to merge
 	 */
 	public void mergeResetShuffle(UnoDrawPile pile) {
 		this.cards.addAll(pile.cards);
@@ -125,11 +129,32 @@ public class UnoDrawPile implements UnoPile {
 		return this.cards.poll();
 	}
 
+	/**
+	 * Shuffles the entire pile.
+	 */
 	public void shuffle() {
 		List<UnoCard> cardsCopy = new ArrayList<>(getCards());
 		Collections.shuffle(cardsCopy);
-		this.cards.removeIf(c -> true);
+		this.cards.clear();
 		this.cards.addAll(cardsCopy);
 	}
 
+	/**
+	 * Draws a card that suits the initial card requirements (means that it can be the
+	 * initial card in a discard pile). This means that the card is a
+	 * {@link UnoNumericCard}. This method can only be called once for a
+	 * {@link UnoDrawPile} and is intended to be called by {@link UnoGame}'s initialization method.
+	 *
+	 * @return the initial card
+	 */
+	public UnoCard drawInitalCard() {
+		if(this.initialDrawn)
+			throw new IllegalStateException("The initial card has already been drawn!");
+
+		this.initialDrawn = true;
+
+		UnoCard initial = UnoUtils.filterKind(UnoNumericCard.class, this.cards).get(0);
+		this.cards.remove(initial);
+		return initial;
+	}
 }
