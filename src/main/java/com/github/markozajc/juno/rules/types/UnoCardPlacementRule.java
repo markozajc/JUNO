@@ -17,6 +17,30 @@ import com.github.markozajc.juno.rules.UnoRule;
 public abstract class UnoCardPlacementRule extends UnoRule {
 
 	/**
+	 * The placement clearance for a card that determines whether a card can be placed
+	 * atop of a card or not. The rules for deciding whether a card can be placed in a
+	 * multirule environment are as follows:
+	 * <ul>
+	 * <li>If all are NEUTRAL the card <b>can't be placed</b>
+	 * <li>If there are NEUTRAL but at there's least one ALLOWED the card <b>can be
+	 * placed</b>
+	 * <li>If all are ALLOWED the card <b>can be placed</b>
+	 * <li>If there are ALLOWED but there's at least one PROHIBITED the card <b>can't be
+	 * placed</b>
+	 * <li>If all are PROHIBITED <b>can't be placed</b>
+	 * </ul>
+	 *
+	 * @author Marko Zajc
+	 */
+	public enum PlacementClearance {
+
+		ALLOWED,
+		NEUTRAL,
+		PROHIBITED;
+
+	}
+
+	/**
 	 * Checks whether a certain card can be placed atop of a target card.
 	 *
 	 * @param target
@@ -25,8 +49,10 @@ public abstract class UnoCardPlacementRule extends UnoRule {
 	 * @param card
 	 *            the {@link Collection} of cards to analyze (eg. {@link UnoHand}'s
 	 *            cards)
+	 * @param hand
+	 *            the {@link UnoHand} placing the card
 	 * @return whether {@code card} can be placed atop of {@code target}
 	 */
-	public abstract boolean canBePlaced(@Nonnull UnoCard target, @Nonnull UnoCard card);
+	public abstract PlacementClearance canBePlaced(@Nonnull UnoCard target, @Nonnull UnoCard card, @Nonnull UnoHand hand);
 
 }

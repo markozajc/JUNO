@@ -21,7 +21,7 @@ public class UnoRuleUtils {
 		List<UnoCardPlacementRule> rules = filterRuleKind(pack.getRules(), UnoCardPlacementRule.class);
 		return cards.stream() /* 1 */
 				.filter(c -> rules.stream()
-						/* 2 */.map(r -> r.canBePlaced(target, c))
+						/* 2 */.map(r -> r.canBePlaced(target, c, null))
 						/* 3 */.filter(v -> v)
 						/* 4 */.count() > 0/* 5 */)
 				.collect(Collectors.toList()); /* 6 */
