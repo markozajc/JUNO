@@ -37,6 +37,7 @@ public class UnoRulePack {
 	 * @param rules
 	 *            the {@link UnoRule}s
 	 */
+	@SuppressWarnings("null")
 	public UnoRulePack(@Nonnull UnoRule... rules) {
 		this(Arrays.asList(rules));
 	}

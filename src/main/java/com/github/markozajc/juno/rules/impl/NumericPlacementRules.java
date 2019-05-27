@@ -6,6 +6,11 @@ import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.types.UnoCardPlacementRule;
 
+/**
+ * Placement rules for {@link UnoNumericCard}.
+ *
+ * @author Marko Zajc
+ */
 public class NumericPlacementRules {
 
 	private NumericPlacementRules() {}
