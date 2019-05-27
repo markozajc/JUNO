@@ -34,8 +34,19 @@ public abstract class UnoCardPlacementRule extends UnoRule {
 	 */
 	public enum PlacementClearance {
 
+		/**
+		 * The cards may be placed on each other (for example Blue 1 on Blue 2)
+		 */
 		ALLOWED,
+		/**
+		 * That is out of this rule's field (for example Blue 1 on Green draw two)
+		 */
 		NEUTRAL,
+		/**
+		 * The cards must not be placed atop of each other (for example Wild draw four while
+		 * its holder has a card that's the color of the top card - the extra hitch to the
+		 * Wild draw four that's in the official UNO rules)
+		 */
 		PROHIBITED;
 
 	}
@@ -51,7 +62,13 @@ public abstract class UnoCardPlacementRule extends UnoRule {
 	 *            cards)
 	 * @param hand
 	 *            the {@link UnoHand} placing the card
-	 * @return whether {@code card} can be placed atop of {@code target}
+	 * @return whether {@code card} can be placed atop of {@code target}. This should
+	 *         return ALLOWED if the cards may be placed atop of each other (for example
+	 *         Blue 1 on Blue 2), NEUTRAL if that is out of this rule's field (for
+	 *         example Blue 1 on Green draw two) and PROHOBITED if the cards must not be
+	 *         placed atop of each other (for example Wild draw four while its holder has
+	 *         a card that's the color of the top card - the extra hitch to the Wild draw
+	 *         four that's in the official UNO rules)
 	 */
 	public abstract PlacementClearance canBePlaced(@Nonnull UnoCard target, @Nonnull UnoCard card, @Nonnull UnoHand hand);
 
