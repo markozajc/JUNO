@@ -18,11 +18,18 @@ public class UnoRuleUtils {
 	@SuppressWarnings("null")
 	@Nonnull
 	public static List<UnoCard> combinedPlacementAnalysis(@Nonnull UnoCard target, @Nonnull Collection<UnoCard> cards, @Nonnull UnoRulePack pack) {
-		return filterRuleKind(pack.getRules(), UnoCardPlacementRule.class).stream()
-				.flatMap(r -> r.analyzePossiblePlacements(target, cards).stream())
-				.distinct()
-				.collect(Collectors.toList());
+		List<UnoCardPlacementRule> rules = filterRuleKind(pack.getRules(), UnoCardPlacementRule.class);
+		return cards.stream() /* 1 */
+				.filter(c -> rules.stream()
+						/* 2 */.map(r -> r.canBePlaced(target, c))
+						/* 3 */.filter(v -> v)
+						/* 4 */.count() > 0/* 5 */)
+				.collect(Collectors.toList()); /* 6 */
 		// Lambda magic
+		// Basically iterates over the cards (1), then iterates over the placement rules for
+		// each card (2), maps all rules' return values to a stream of booleans (3), filters
+		// out the falses (4) and checks if there are any elements in the filtered stream
+		// (5), then collects the stream into a list (6)
 	}
 
 	@SuppressWarnings("null")

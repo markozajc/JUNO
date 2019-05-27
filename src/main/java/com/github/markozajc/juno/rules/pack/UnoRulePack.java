@@ -1,6 +1,7 @@
 package com.github.markozajc.juno.rules.pack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,13 +22,23 @@ public class UnoRulePack {
 	private final List<UnoRule> rules;
 
 	/**
-	 * Creates a new {@link UnoRulePack} from a {@link Collection} of {@link UnoRule}s
+	 * Creates a new {@link UnoRulePack} from a {@link Collection} of {@link UnoRule}s.
 	 *
 	 * @param rules
 	 *            the {@link UnoRule}s
 	 */
 	public UnoRulePack(@Nonnull Collection<UnoRule> rules) {
 		this.rules = new ArrayList<>(rules);
+	}
+
+	/**
+	 * Creates a new {@link UnoRulePack} from a vararg of {@link UnoRule}s.
+	 *
+	 * @param rules
+	 *            the {@link UnoRule}s
+	 */
+	public UnoRulePack(@Nonnull UnoRule... rules) {
+		this(Arrays.asList(rules));
 	}
 
 	/**
