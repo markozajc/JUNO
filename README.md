@@ -3,15 +3,17 @@
 JUNO is a UNO framework for Java that includes the standard UNO deck, lots of extensibility and out-of-the-box implementation of hands, game flow and more.
 
 ## Installation
-JUNO is published to the Maven central and can be obtained by adding the following lines to your `pom.x
+JUNO is published to the Maven central and can be obtained by adding the following lines to your pom.xml:
 
+```xml
     <dependency>
         <groupId>com.github.markozajc</groupId>
         <artifactId>juno</artifactId>
         <version>VERSION</version>
     </dependency>
+```
     
-and replacing `VERSION` with the following version: **the project is still waiting approval by the JFrog Bintray team**.
+and replacing `VERSION` with the following version: [![Download](https://api.bintray.com/packages/iareas/Libraries/JUNO/images/download.svg) ](https://bintray.com/iareas/Libraries/JUNO/_latestVersion).
 
 ## Usage
 JUNO consists of multiple modules; UnoGame, UnoDeck, UnoPile, UnoHand, and UnoCard. You must correctly use those to implement JUNO into your code.
@@ -24,7 +26,7 @@ You will most likely be using the StrategicUnoHand (the more strategic of the tw
 #### Implementing UnoHand
 UnoHand implementation is pretty straightforward; you need to implement the abstract class UnoHand and its two methods; `#playCard(UnoGame, boolean)` and `#chooseColor(UnoGame)`.
 
-The first method, `#playCard(UnoGame, boolean)` is responsible for selecting and returning a UnoCard to place on the discard pile. This is the method where you provide the user with the list of their cards, the top card of the discard pile, the information aboutthe other hand and so on. Of course, this method may also be completely automated (as with the StragicUnoHand and the PureRandomUnoHand). Do note, however, that illegal placements and placements of cards that the hand doesn't possess will be rejected by the UnoGame (unless you specifically change it not to do so, which isn't recommended). You may help yourself with the `UnoUtils` class, specifically the `analyzePossibleCards(UnoCard,List)` to reject incorrect card from the UnoHand itself, which is advised, and guide the user.
+The first method, `#playCard(UnoGame, boolean)` is responsible for selecting and returning a UnoCard to place on the discard pile. This is the method where you provide the user with the list of their cards, the top card of the discard pile, the information about the other hand and so on. Of course, this method may also be completely automated (as with the StragicUnoHand and the PureRandomUnoHand). Do note, however, that illegal placements and placements of cards that the hand doesn't possess will be rejected by the UnoGame (unless you specifically change it not to do so, which isn't recommended). You may help yourself with the `UnoUtils` class, specifically the `analyzePossibleCards(UnoCard,List)` to reject incorrect card from the UnoHand itself, which is advised, and guide the user.
 
 As you might have noticed, `#playCard(UnoGame, boolean)` also has the second argument, a `boolean` named "drawn". This boolean indicates whether a hand has already drawn a card and must now decide whether to place the newly-drawn card. StreamUnoHand will, for example, change "Draw a card" to "Pass" when this argument is `true`.
 
@@ -119,7 +121,7 @@ All changes to the upstream must thus comply with the rules above with a few exc
 1. The defined objective of the game (to reach "500 points") is not present in JUNO isn't intended for more-round plays. Of course, you may implement the actual scoring system as defined in the rules in your code, but keep it out of upstream
 2. There is no "dealer" so the first player to place a card is not the one "on the dealer's left" but "the first player given to the UnoGame"
 3. There is no yelling "UNO!" in JUNO. An event that would signal it may be added to BasicUnoGame, but it should be done automatically as making the hands yell it really doesn't make much sense
-4. The additional "hitch" to the wild draw four has not been implemented. It may be implemented, but it really just doesn't make sense to me
+4. The additional "hitch" to the wild draw four has not been implemented. It will be implemented along with the modularization of the rules
 5. Jump-in rule can't be implemented into JUNO because JUNO isn't asynchronous and implementing a human-like delay to the automated hands doesn't seem like a great idea
-6. Seven-O may be implemented, but the "seven" part of it wouldn't work because JUNO is currently a 2-player game (similar to how "reverse" and "skip" cards both do the same thing in JUNO)
+6. Seven-O will be implemented with the modularization of rules, but the "seven" part of it won't really work because JUNO is currently a 2-player game (similar to how "reverse" and "skip" cards both do the same thing in JUNO)
 7. The initial card is always a numeric card so there are no special-case scenarios for action cards
