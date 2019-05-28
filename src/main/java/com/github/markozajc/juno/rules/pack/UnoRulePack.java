@@ -52,9 +52,22 @@ public class UnoRulePack {
 	 */
 	@SuppressWarnings("null")
 	@Nonnull
-	public UnoRulePack ofPacks(@Nonnull Collection<UnoRulePack> packs) {
+	public static UnoRulePack ofPacks(@Nonnull Collection<UnoRulePack> packs) {
 		return new UnoRulePack(packs.stream().flatMap(p -> p.getRules().stream()).collect(Collectors.toList()));
 		// Lambda magic to flatten a list of UnoRulePack-s
+	}
+
+	/**
+	 * Creates a new {@link UnoRulePack} from a vararg of {@link UnoRulePack}s
+	 *
+	 * @param packs
+	 *            the {@link UnoRulePack}s
+	 * @return the combined {@link UnoRulePack}
+	 */
+	@SuppressWarnings("null")
+	@Nonnull
+	public static UnoRulePack ofPacks(@Nonnull UnoRulePack... packs) {
+		return ofPacks(Arrays.asList(packs));
 	}
 
 	/**

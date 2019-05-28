@@ -10,7 +10,9 @@ import com.github.markozajc.juno.rules.types.UnoCardPlacementRule;
  * Placement rules for {@link UnoWildCard}.
  *
  * @author Marko Zajc
+ * @deprecated Already defined in {@link ColorPlacementRules}
  */
+@Deprecated
 public class WildPlacementRules {
 
 	private WildPlacementRules() {}

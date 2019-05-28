@@ -44,7 +44,7 @@ public class ColorPlacementRules {
 
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
-			if (target.getColor().equals(UnoCardColor.WILD))
+			if (card.getColor().equals(UnoCardColor.WILD))
 				return PlacementClearance.ALLOWED;
 
 			return PlacementClearance.NEUTRAL;

@@ -20,7 +20,7 @@ public class DrawPlacementRules {
 	private static UnoRulePack pack;
 
 	private static void createPack() {
-		pack = new UnoRulePack(new DrawAmountPlacementRule(), new DrawFourHitchPlacementRule());
+		pack = new UnoRulePack(new DrawAmountPlacementRule(), new DrawFourHitchPlacementRule(), new UnplayedCardPlacementRule());
 	}
 
 	public static class DrawAmountPlacementRule extends UnoCardPlacementRule {
@@ -40,15 +40,27 @@ public class DrawPlacementRules {
 
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
-			if (card instanceof UnoDrawCard && target.getColor().equals(UnoCardColor.WILD)
-					&& !UnoUtils.getColorCards(target.getColor(), hand.getCards()).isEmpty()) {
+			if (card instanceof UnoDrawCard && !target.getColor().equals(UnoCardColor.WILD)
+					&& ((UnoDrawCard) card).getAmount() == 4
+					&& !UnoUtils.getColorCards(target.getColor(), hand.getCards()).isEmpty())
 				return PlacementClearance.PROHIBITED;
-			}
 			// Prohibits the placement of the wild draw four if the hand possesses a card that
 			// has the same color as the target (assumed to be the top of the discard pile) card.
 
 			return PlacementClearance.NEUTRAL;
 		}
+	}
+
+	public static class UnplayedCardPlacementRule extends UnoCardPlacementRule {
+
+		@Override
+		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
+			if (target instanceof UnoDrawCard && !((UnoDrawCard) target).isPlayed())
+				return PlacementClearance.PROHIBITED;
+
+			return PlacementClearance.NEUTRAL;
+		}
+
 	}
 
 	/**
