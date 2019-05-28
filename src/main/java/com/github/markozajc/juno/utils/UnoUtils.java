@@ -43,6 +43,7 @@ public class UnoUtils {
 	 * @return a {@link List} of all possible cards from {@code cards} can be placed on
 	 *         the {@code targetCard}.
 	 */
+	@Deprecated
 	public static List<UnoCard> analyzePossibleCards(UnoCard targetCard, Collection<UnoCard> cards) {
 		List<UnoCard> result = new ArrayList<>();
 

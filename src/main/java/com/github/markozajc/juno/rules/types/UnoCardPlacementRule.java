@@ -1,7 +1,5 @@
 package com.github.markozajc.juno.rules.types;
 
-import java.util.Collection;
-
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.UnoCard;
@@ -58,8 +56,7 @@ public abstract class UnoCardPlacementRule extends UnoRule {
 	 *            the target card (eg. the top {@link UnoCard} of the
 	 *            {@link UnoDiscardPile})
 	 * @param card
-	 *            the {@link Collection} of cards to analyze (eg. {@link UnoHand}'s
-	 *            cards)
+	 *            the of card to check
 	 * @param hand
 	 *            the {@link UnoHand} placing the card
 	 * @return whether {@code card} can be placed atop of {@code target}. This should

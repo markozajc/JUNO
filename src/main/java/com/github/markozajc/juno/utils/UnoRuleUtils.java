@@ -1,5 +1,6 @@
 package com.github.markozajc.juno.utils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -7,9 +8,11 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.UnoCard;
+import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.rules.UnoRule;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.types.UnoCardPlacementRule;
+import com.github.markozajc.juno.rules.types.UnoCardPlacementRule.PlacementClearance;
 
 public class UnoRuleUtils {
 
@@ -17,19 +20,23 @@ public class UnoRuleUtils {
 
 	@SuppressWarnings("null")
 	@Nonnull
-	public static List<UnoCard> combinedPlacementAnalysis(@Nonnull UnoCard target, @Nonnull Collection<UnoCard> cards, @Nonnull UnoRulePack pack) {
+	public static List<UnoCard> combinedPlacementAnalysis(@Nonnull UnoCard target, @Nonnull Collection<UnoCard> cards, @Nonnull UnoRulePack pack, @Nonnull UnoHand hand) {
 		List<UnoCardPlacementRule> rules = filterRuleKind(pack.getRules(), UnoCardPlacementRule.class);
-		return cards.stream() /* 1 */
-				.filter(c -> rules.stream()
-						/* 2 */.map(r -> r.canBePlaced(target, c, null))
-						/* 3 */.filter(v -> v)
-						/* 4 */.count() > 0/* 5 */)
-				.collect(Collectors.toList()); /* 6 */
-		// Lambda magic
-		// Basically iterates over the cards (1), then iterates over the placement rules for
-		// each card (2), maps all rules' return values to a stream of booleans (3), filters
-		// out the falses (4) and checks if there are any elements in the filtered stream
-		// (5), then collects the stream into a list (6)
+		List<UnoCard> result = new ArrayList<>();
+
+		for (UnoCard card : cards) {
+			// Iterates over all cards
+			List<PlacementClearance> clearance = rules.stream()
+					.map(r -> r.canBePlaced(target, card, hand))
+					.collect(Collectors.toList());
+			// Gets the PlacementClearance-s for this card
+
+			if (clearance.contains(PlacementClearance.ALLOWED) && !clearance.contains(PlacementClearance.PROHIBITED))
+				result.add(card);
+			// Adds the card if allowed
+		}
+
+		return result;
 	}
 
 	@SuppressWarnings("null")

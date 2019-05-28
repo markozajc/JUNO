@@ -1,4 +1,4 @@
-package com.github.markozajc.juno;
+package com.github.markozajc.juno.utils;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import org.junit.jupiter.api.Test;
 
+import com.github.markozajc.juno.TestUtils;
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.cards.impl.UnoActionCard;
