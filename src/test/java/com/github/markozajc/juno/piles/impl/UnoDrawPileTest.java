@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import com.github.markozajc.juno.TestUtils;
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.cards.UnoStandardDeck;
@@ -27,26 +27,14 @@ class UnoDrawPileTest {
 
 		assertEquals(deck.getExpectedSize(), pile.getSize());
 		// Checks whether the deck and the pile are of the same size
-}
+	}
 
+	@SuppressWarnings("null")
 	@Test
 	void testShuffle() {
-		UnoDeck deck = new UnoDeck() {
-
-			@Override
-			public int getExpectedSize() {
-				return 4;
-			}
-
-			@SuppressWarnings("null")
-			@Override
-			public List<UnoCard> getCards() {
-				return Arrays.asList(new UnoNumericCard(0, UnoCardColor.RED), new UnoNumericCard(1, UnoCardColor.GREEN),
-					new UnoNumericCard(2, UnoCardColor.BLUE), new UnoNumericCard(3, UnoCardColor.YELLOW));
-				// Doesn't actually make a clone because we need the list to be equal. A production
-				// deck should always make a clone here.
-			}
-		};
+		UnoDeck deck = TestUtils.getDummyDeck(
+			Arrays.asList(new UnoNumericCard(0, UnoCardColor.RED), new UnoNumericCard(1, UnoCardColor.GREEN),
+				new UnoNumericCard(2, UnoCardColor.BLUE), new UnoNumericCard(3, UnoCardColor.YELLOW)));
 		// Creates a new dummy deck
 
 		UnoDrawPile pile = new UnoDrawPile(deck);

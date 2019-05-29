@@ -12,7 +12,8 @@ import com.github.markozajc.juno.cards.impl.UnoActionCard;
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.cards.impl.UnoWildCard;
 import com.github.markozajc.juno.hands.UnoHand;
-import com.github.markozajc.juno.utils.UnoUtils;
+import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
+import com.github.markozajc.juno.utils.UnoRuleUtils;
 
 /**
  * A {@link UnoGame} implementation that endorses the official UNO rules (see
@@ -97,7 +98,7 @@ public abstract class BasicUnoGame extends UnoGame {
 	 *            the second player's hand
 	 */
 	public BasicUnoGame(@Nonnull UnoHand playerOneHand, @Nonnull UnoHand playerTwoHand) {
-		super(playerOneHand, playerTwoHand, new UnoStandardDeck(), 7);
+		super(playerOneHand, playerTwoHand, new UnoStandardDeck(), 7, UnoOfficialRules.getPack());
 	}
 
 	private void changeColor(UnoHand hand, UnoCard card) {
@@ -118,6 +119,7 @@ public abstract class BasicUnoGame extends UnoGame {
 			((UnoDrawCard) card).setColor(color);
 	}
 
+	@SuppressWarnings("null")
 	@Override
 	protected void playHand(UnoHand hand) {
 		start: while (true) {
@@ -150,7 +152,8 @@ public abstract class BasicUnoGame extends UnoGame {
 
 					List<UnoCard> drawnCards = hand.draw(this.draw, draw);
 					onDrawCards(hand, draw);
-					if (drawnCards.size() == 1 && UnoUtils.analyzePossibleCards(topCard, drawnCards).size() == 1) {
+					if (drawnCards.size() == 1
+							&& UnoRuleUtils.combinedPlacementAnalysis(topCard, drawnCards, this.getRules(), hand).size() == 1) {
 						drawn = true;
 						continue;
 					}
@@ -160,7 +163,7 @@ public abstract class BasicUnoGame extends UnoGame {
 					return;
 				}
 
-				if (UnoUtils.analyzePossibleCards(topCard, Arrays.asList(card)).isEmpty()
+				if (UnoRuleUtils.combinedPlacementAnalysis(topCard, Arrays.asList(card), this.getRules(), hand).isEmpty()
 						|| !hand.getCards().remove(card)) {
 					// Should be checked by Hand implementation in the first place
 					onInvalidCard(hand, card);

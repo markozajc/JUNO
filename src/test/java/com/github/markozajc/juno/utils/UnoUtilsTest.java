@@ -1,14 +1,14 @@
-package com.github.markozajc.juno;
+package com.github.markozajc.juno.utils;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 
 import org.junit.jupiter.api.Test;
 
+import com.github.markozajc.juno.TestUtils;
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.cards.impl.UnoActionCard;
@@ -16,7 +16,6 @@ import com.github.markozajc.juno.cards.impl.UnoActionCard.UnoAction;
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.cards.impl.UnoNumericCard;
 import com.github.markozajc.juno.cards.impl.UnoWildCard;
-import com.github.markozajc.juno.utils.UnoUtils;
 
 class UnoUtilsTest {
 
@@ -26,105 +25,6 @@ class UnoUtilsTest {
 		System.out.println("< color  > " + entry.getValue() + " : " + expectedColor);
 
 		return entry.getKey() == expectedQuantity && entry.getValue().equals(expectedColor);
-	}
-
-	@Test
-	void testAnalyzePossibleCards() {
-		UnoCard[] cards = new UnoCard[] {
-				/* 0 */ new UnoNumericCard(0, UnoCardColor.BLUE),
-				/* 1 */ new UnoNumericCard(0, UnoCardColor.RED),
-				/* 2 */ new UnoNumericCard(1, UnoCardColor.YELLOW),
-				/* 3 */ new UnoNumericCard(1, UnoCardColor.BLUE),
-				/* 4 */ new UnoWildCard(),
-				/* 5 */ new UnoDrawCard(),
-				/* 6 */ new UnoDrawCard(UnoCardColor.BLUE),
-				/* 7 */ new UnoDrawCard(UnoCardColor.RED),
-				/* 8 */ new UnoActionCard(UnoAction.SKIP, UnoCardColor.YELLOW),
-				/* 9 */ new UnoActionCard(UnoAction.REVERSE, UnoCardColor.GREEN),
-				/* 10 */ new UnoActionCard(UnoAction.REVERSE, UnoCardColor.BLUE)
-
-		};
-
-		/*
-		 * Cards: Blue 0, Red 0, Yellow 1, Blue 1, Wild, Draw four, Blue draw two, Red draw
-		 * two, Yellow skip, Green reverse, Blue reverse
-		 */
-
-		assertTrue(TestUtils.listEqualsUnordered(UnoUtils.analyzePossibleCards(cards[0], Arrays.asList(cards)),
-			Arrays.asList(cards[0], cards[1], cards[3], cards[4], cards[5], cards[6], cards[10])));
-		// Card: Blue 0 <0>
-		/*
-		 * Expected: Blue 0, Red 0, Blue 1, Wild, Draw four, Blue draw two, Blue reverse
-		 */
-
-		assertTrue(TestUtils.listEqualsUnordered(UnoUtils.analyzePossibleCards(cards[1], Arrays.asList(cards)),
-			Arrays.asList(cards[0], cards[1], cards[4], cards[5], cards[7])));
-		// Card: Red 0 <1>
-		/*
-		 * Expected: Blue 0, Red 0, Wild, Draw four, Red draw two
-		 */
-
-		assertTrue(TestUtils.listEqualsUnordered(UnoUtils.analyzePossibleCards(cards[2], Arrays.asList(cards)),
-			Arrays.asList(cards[2], cards[3], cards[4], cards[5], cards[8])));
-		// Card: Yellow 1 <2>
-		/*
-		 * Expected: Yellow 1, Blue 1, Wild, Draw four, Yellow skip
-		 */
-
-		assertTrue(TestUtils.listEqualsUnordered(UnoUtils.analyzePossibleCards(cards[3], Arrays.asList(cards)),
-			Arrays.asList(cards[0], cards[2], cards[3], cards[4], cards[5], cards[6], cards[10])));
-		// Card: Blue 1 <3>
-		/*
-		 * Expected: Blue 0, Yellow 1, Blue 1, Wild, Draw four, Blue draw two, Blue reverse
-		 */
-
-		assertTrue(TestUtils.listEqualsUnordered(UnoUtils.analyzePossibleCards(cards[4], Arrays.asList(cards)), Collections.emptyList()));
-		// Card: Wild <4>
-		/*
-		 * Expected: (none)
-		 */
-
-		assertTrue(TestUtils.listEqualsUnordered(UnoUtils.analyzePossibleCards(cards[5], Arrays.asList(cards)), Arrays.asList(cards[5])));
-		// Card: Draw four (unplayed) <5>
-		/*
-		 * Expected: Draw four
-		 */
-
-		assertTrue(TestUtils.listEqualsUnordered(UnoUtils.analyzePossibleCards(cards[6], Arrays.asList(cards)),
-			Arrays.asList(cards[6], cards[7])));
-		// Card: Blue draw two (unplayed) <6>
-		/*
-		 * Expected: Blue draw two, Red draw two
-		 */
-
-		assertTrue(TestUtils.listEqualsUnordered(UnoUtils.analyzePossibleCards(cards[7], Arrays.asList(cards)),
-			Arrays.asList(cards[6], cards[7])));
-		// Card: Red draw two (unplayed) <7>
-		/*
-		 * Expected: Blue draw two, Red draw two
-		 */
-
-		assertTrue(TestUtils.listEqualsUnordered(UnoUtils.analyzePossibleCards(cards[8], Arrays.asList(cards)),
-			Arrays.asList(cards[2], cards[4], cards[5], cards[8])));
-		// Card: Yellow skip <8>
-		/*
-		 * Expected: Yellow 1, Wild, Wild draw four, Yellow skip
-		 */
-
-		assertTrue(TestUtils.listEqualsUnordered(UnoUtils.analyzePossibleCards(cards[9], Arrays.asList(cards)),
-			Arrays.asList(cards[4], cards[5], cards[9], cards[10])));
-		// Card: Green reverse <9>
-		/*
-		 * Expected: Wild, Draw four, Green reverse, Blue reverse
-		 */
-
-		assertTrue(TestUtils.listEqualsUnordered(UnoUtils.analyzePossibleCards(cards[10], Arrays.asList(cards)),
-			Arrays.asList(cards[0], cards[3], cards[4], cards[5], cards[6], cards[9], cards[10])));
-		// Card: Blue reverse <10>
-		/*
-		 * Expected: Blue 0, Blue 1, Wild, Draw four, Blue draw two, Green reverse, Blue
-		 * reverse
-		 */
 	}
 
 	@Test
@@ -231,9 +131,12 @@ class UnoUtilsTest {
 				/* 7 Wild */ new UnoDrawCard()
 		};
 
-		assertTrue(TestUtils.listEqualsUnordered(UnoUtils.getNumberCards(3, Arrays.asList(cards)), Arrays.asList(cards[0], cards[1])));
-		assertTrue(TestUtils.listEqualsUnordered(UnoUtils.getNumberCards(6, Arrays.asList(cards)), Arrays.asList(cards[2], cards[3])));
-		assertTrue(TestUtils.listEqualsUnordered(UnoUtils.getNumberCards(9, Arrays.asList(cards)), Arrays.asList(cards[4], cards[5])));
+		assertTrue(TestUtils.listEqualsUnordered(UnoUtils.getNumberCards(3, Arrays.asList(cards)),
+			Arrays.asList(cards[0], cards[1])));
+		assertTrue(TestUtils.listEqualsUnordered(UnoUtils.getNumberCards(6, Arrays.asList(cards)),
+			Arrays.asList(cards[2], cards[3])));
+		assertTrue(TestUtils.listEqualsUnordered(UnoUtils.getNumberCards(9, Arrays.asList(cards)),
+			Arrays.asList(cards[4], cards[5])));
 	}
 
 	@Test
@@ -258,6 +161,7 @@ class UnoUtilsTest {
 			Arrays.asList(cards[3], cards[4])));
 		assertTrue(TestUtils.listEqualsUnordered(UnoUtils.filterKind(UnoDrawCard.class, Arrays.asList(cards)),
 			Arrays.asList(cards[5], cards[6])));
-		assertTrue(TestUtils.listEqualsUnordered(UnoUtils.filterKind(UnoWildCard.class, Arrays.asList(cards)), Arrays.asList(cards[7])));
+		assertTrue(TestUtils.listEqualsUnordered(UnoUtils.filterKind(UnoWildCard.class, Arrays.asList(cards)),
+			Arrays.asList(cards[7])));
 	}
 }

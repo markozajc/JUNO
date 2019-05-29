@@ -14,11 +14,13 @@ import com.github.markozajc.juno.cards.impl.UnoNumericCard;
 import com.github.markozajc.juno.cards.impl.UnoWildCard;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.utils.UnoRuleUtils;
 import com.github.markozajc.juno.utils.UnoUtils;
 
 /**
- * An automated hand that uses actual strategic "thinking" to decide cards and colors to return.
- * Is suitable for production so you may use it as a "CPU" opponent in your code.
+ * An automated hand that uses actual strategic "thinking" to decide cards and colors
+ * to return. Is suitable for production so you may use it as a "CPU" opponent in
+ * your code.
  *
  * @author Marko Zajc
  */
@@ -27,7 +29,8 @@ public class StrategicUnoHand extends UnoHand {
 	/**
 	 * Creates a new {@link StrategicUnoHand}.
 	 *
-	 * @param name hand's name
+	 * @param name
+	 *            hand's name
 	 */
 	public StrategicUnoHand(@Nonnull String name) {
 		super(name);
@@ -117,10 +120,11 @@ public class StrategicUnoHand extends UnoHand {
 		// Fallback method
 	}
 
+	@SuppressWarnings("null")
 	@Override
 	public UnoCard playCard(UnoGame game, boolean drawn) {
 		UnoCard top = game.discard.getTop();
-		List<UnoCard> possible = UnoUtils.analyzePossibleCards(top, this.cards);
+		List<UnoCard> possible = UnoRuleUtils.combinedPlacementAnalysis(top, this.cards, game.getRules(), this);
 
 		if (possible.isEmpty())
 			return null;
