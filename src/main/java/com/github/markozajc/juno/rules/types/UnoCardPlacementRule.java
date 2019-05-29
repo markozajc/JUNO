@@ -8,11 +8,11 @@ import com.github.markozajc.juno.piles.impl.UnoDiscardPile;
 import com.github.markozajc.juno.rules.UnoRule;
 
 /**
- * A rule type that defines what cards can be placed on what.
+ * A rule type that defines what {@link UnoCard} can be placed on what {@link UnoCard}.
  *
  * @author Marko Zajc
  */
-public abstract class UnoCardPlacementRule extends UnoRule {
+public interface UnoCardPlacementRule extends UnoRule {
 
 	/**
 	 * The placement clearance for a card that determines whether a card can be placed

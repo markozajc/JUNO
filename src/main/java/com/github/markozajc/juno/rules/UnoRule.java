@@ -1,6 +1,8 @@
 package com.github.markozajc.juno.rules;
 
-
-public class UnoRule {
-
-}
+/**
+ * A meta-interface for UNO rules.
+ *
+ * @author Marko Zajc
+ */
+public interface UnoRule {}

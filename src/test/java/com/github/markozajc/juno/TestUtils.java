@@ -1,12 +1,14 @@
 package com.github.markozajc.juno;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
+import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
 
@@ -18,23 +20,44 @@ import com.github.markozajc.juno.hands.UnoHand;
  */
 public class TestUtils {
 
-	private static class UnoDummyHand extends UnoHand {
+	private static class DummyUnoHand extends UnoHand {
 
-		public UnoDummyHand(Collection<UnoCard> cards) {
+		public DummyUnoHand(@Nonnull Collection<UnoCard> cards) {
 			super("Dummy Hand");
 			this.cards.addAll(cards);
 		}
 
 		@Override
 		public UnoCard playCard(UnoGame game, boolean drawn) {
-			return this.getCards().get(0);
+			throw new UnsupportedOperationException("DummyUnoHand can not play cards.");
 		}
 
 		@Override
 		public UnoCardColor chooseColor(UnoGame game) {
-			return UnoCardColor.RED;
+			throw new UnsupportedOperationException("DummyUnoHand can not choose colors.");
 		}
 
+	}
+
+	private static class DummyUnoDeck implements UnoDeck {
+
+		@Nonnull
+		private final List<UnoCard> cards;
+
+		public DummyUnoDeck(@Nonnull List<UnoCard> cards) {
+			this.cards = cards;
+		}
+
+		@Override
+		public int getExpectedSize() {
+			return this.cards.size();
+		}
+
+		@Override
+		public List<UnoCard> getCards() {
+			return this.cards;
+			// Doesn't actually make a clone. A production deck should always make a clone here.
+		}
 	}
 
 	/**
@@ -57,9 +80,34 @@ public class TestUtils {
 		return collection1.size() == collection2.size() && collection1.containsAll(collection2);
 	}
 
+	/**
+	 * Returns a dummy {@link UnoDeck} containing a preferred {@link Collection} of
+	 * cards. Calling either {@link UnoHand#playCard(UnoGame, boolean)} or
+	 * {@link UnoHand#chooseColor(UnoGame)} will throw an
+	 * {@link UnsupportedOperationException}.
+	 *
+	 * @param cards
+	 *            {@link Collection} of {@link UnoCard}s the {@link UnoHand} should
+	 *            contain
+	 * @return the created {@link UnoHand}
+	 */
 	@Nonnull
-	public static UnoHand getDummyHand(Collection<UnoCard> cards) {
-		return new UnoDummyHand(cards);
+	public static UnoHand getDummyHand(@Nonnull Collection<UnoCard> cards) {
+		return new DummyUnoHand(cards);
+	}
+
+	/**
+	 * Returns a dummy {@link UnoDeck} containing a preferred {@link List} of cards.
+	 * {@link UnoDeck#getExpectedSize()} will contain the size of the provided
+	 * {@link List}.
+	 *
+	 * @param cards
+	 *            {@link List} of {@link UnoCard}s the {@link UnoDeck} should contain
+	 * @return the built {@link UnoDeck}
+	 */
+	@Nonnull
+	public static UnoDeck getDummyDeck(@Nonnull List<UnoCard> cards) {
+		return new DummyUnoDeck(cards);
 	}
 
 }

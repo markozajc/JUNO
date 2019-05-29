@@ -20,10 +20,17 @@ public class DrawPlacementRules {
 	private static UnoRulePack pack;
 
 	private static void createPack() {
-		pack = new UnoRulePack(new DrawAmountPlacementRule(), new DrawFourHitchPlacementRule(), new UnplayedCardPlacementRule());
+		pack = new UnoRulePack(new DrawAmountPlacementRule(), new DrawFourHitchPlacementRule(),
+				new UnplayedCardPlacementRule());
 	}
 
-	public static class DrawAmountPlacementRule extends UnoCardPlacementRule {
+	/**
+	 * An amount-based placement rule that allows {@link UnoDrawCard} of the same amount
+	 * to be placed on each other.
+	 *
+	 * @author Marko Zajc
+	 */
+	public static class DrawAmountPlacementRule implements UnoCardPlacementRule {
 
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
@@ -36,7 +43,14 @@ public class DrawPlacementRules {
 		}
 	}
 
-	public static class DrawFourHitchPlacementRule extends UnoCardPlacementRule {
+	/**
+	 * The extra "hitch" to the draw four; prohibits placement of wild draw four on a
+	 * card in case its holder has a hand of the same color as that card (doesn't apply
+	 * to wild-colored cards).
+	 *
+	 * @author Marko Zajc
+	 */
+	public static class DrawFourHitchPlacementRule implements UnoCardPlacementRule {
 
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
@@ -51,7 +65,13 @@ public class DrawPlacementRules {
 		}
 	}
 
-	public static class UnplayedCardPlacementRule extends UnoCardPlacementRule {
+	/**
+	 * A placement rule that prohibits all cards from being placed on an unplayed
+	 * {@link UnoDrawCard}.
+	 *
+	 * @author Marko Zajc
+	 */
+	public static class UnplayedCardPlacementRule implements UnoCardPlacementRule {
 
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {

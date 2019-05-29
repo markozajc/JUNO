@@ -27,7 +27,7 @@ public class NumericPlacementRules {
 	 *
 	 * @author Marko Zajc
 	 */
-	public static class NumericPlacementRule extends UnoCardPlacementRule {
+	public static class NumericPlacementRule implements UnoCardPlacementRule {
 
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {

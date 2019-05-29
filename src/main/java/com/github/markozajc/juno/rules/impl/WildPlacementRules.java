@@ -29,7 +29,7 @@ public class WildPlacementRules {
 	 *
 	 * @author Marko Zajc
 	 */
-	public static class WildPlacementRule extends UnoCardPlacementRule {
+	public static class WildPlacementRule implements UnoCardPlacementRule {
 
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {

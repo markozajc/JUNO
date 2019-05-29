@@ -6,6 +6,11 @@ import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.types.UnoCardPlacementRule;
 
+/**
+ * {@link UnoCardColor}-based rules for all {@link UnoCard}s.
+ *
+ * @author Marko Zajc
+ */
 public class ColorPlacementRules {
 
 	private ColorPlacementRules() {}
@@ -22,7 +27,7 @@ public class ColorPlacementRules {
 	 *
 	 * @author Marko Zajc
 	 */
-	public static class ColorPlacementRule extends UnoCardPlacementRule {
+	public static class ColorPlacementRule implements UnoCardPlacementRule {
 
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
@@ -40,7 +45,7 @@ public class ColorPlacementRules {
 	 *
 	 * @author Marko Zajc
 	 */
-	public static class WildColorPlacementRule extends UnoCardPlacementRule {
+	public static class WildColorPlacementRule implements UnoCardPlacementRule {
 
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
