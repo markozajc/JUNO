@@ -68,6 +68,8 @@ public abstract class UnoGame {
 	@Nonnull
 	private final UnoRulePack rules;
 
+	private UnoCard topCard;
+
 	/**
 	 * Returns the other {@link UnoPlayer}.
 	 *
@@ -127,6 +129,13 @@ public abstract class UnoGame {
 		this.playerOneHand.draw(this.draw, this.cardAmount);
 		this.playerTwoHand.draw(this.draw, this.cardAmount);
 		// Deals the cards
+	}
+
+	/**
+	 * Updates the {@link UnoCard} returned by {@link #getTopCard()}.
+	 */
+	private void updateTopCard() {
+		this.topCard = this.discard.getTop();
 	}
 
 	/**
@@ -227,6 +236,9 @@ public abstract class UnoGame {
 	 * @return the victor or {@code null} if nobody has won yet
 	 */
 	private UnoPlayer playAndCheckHand(@Nonnull UnoHand playerHand, @Nonnull UnoPlayer player, @Nonnull UnoHand foeHand, @Nonnull UnoPlayer foe) {
+		updateTopCard();
+		// Updates the top card
+
 		playHand(playerHand);
 		// Plays player's hand
 
@@ -249,6 +261,10 @@ public abstract class UnoGame {
 	@Nonnull
 	public UnoRulePack getRules() {
 		return this.rules;
+	}
+
+	public UnoCard getTopCard() {
+		return this.topCard;
 	}
 
 }
