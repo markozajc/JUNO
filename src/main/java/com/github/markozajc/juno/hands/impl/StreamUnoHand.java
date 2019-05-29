@@ -12,7 +12,7 @@ import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
-import com.github.markozajc.juno.utils.UnoUtils;
+import com.github.markozajc.juno.utils.UnoRuleUtils;
 
 /**
  * A human-driven hand that uses a {@link Scanner} to read input and sends the output
@@ -31,9 +31,12 @@ public class StreamUnoHand extends UnoHand {
 	/**
 	 * Creates a new {@link StreamUnoHand}.
 	 *
-	 * @param name hand's name
-	 * @param is {@link InputStream} to read from
-	 * @param ps {@link PrintStream} to write to
+	 * @param name
+	 *            hand's name
+	 * @param is
+	 *            {@link InputStream} to read from
+	 * @param ps
+	 *            {@link PrintStream} to write to
 	 */
 	public StreamUnoHand(@Nonnull String name, @Nonnull InputStream is, @Nonnull PrintStream ps) {
 		super(name);
@@ -41,10 +44,11 @@ public class StreamUnoHand extends UnoHand {
 		this.ps = ps;
 	}
 
+	@SuppressWarnings("null")
 	@Override
 	public UnoCard playCard(UnoGame game, boolean drawn) {
 		UnoCard top = game.discard.getTop();
-		List<UnoCard> possible = UnoUtils.analyzePossibleCards(top, this.cards);
+		List<UnoCard> possible = UnoRuleUtils.combinedPlacementAnalysis(top, this.cards, game.getRules(), this);
 
 		this.ps.println("Choose a card:      [" + game.playerTwoHand.getName() + "'s hand size: "
 				+ game.playerTwoHand.getSize() + " | Draw pile size: " + game.draw.getSize() + " | Discard pile size: "

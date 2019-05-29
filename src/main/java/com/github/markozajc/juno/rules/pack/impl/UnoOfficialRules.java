@@ -7,7 +7,6 @@ import com.github.markozajc.juno.rules.impl.ActionPlacementRules;
 import com.github.markozajc.juno.rules.impl.ColorPlacementRules;
 import com.github.markozajc.juno.rules.impl.DrawPlacementRules;
 import com.github.markozajc.juno.rules.impl.NumericPlacementRules;
-import com.github.markozajc.juno.rules.impl.WildPlacementRules;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 
 /**
@@ -23,7 +22,7 @@ public class UnoOfficialRules {
 
 	private static void createPack() {
 		pack = UnoRulePack.ofPacks(ActionPlacementRules.getPack(), ColorPlacementRules.getPack(),
-			DrawPlacementRules.getPack(), NumericPlacementRules.getPack(), WildPlacementRules.getPack());
+			DrawPlacementRules.getPack(), NumericPlacementRules.getPack());
 	}
 
 	/**

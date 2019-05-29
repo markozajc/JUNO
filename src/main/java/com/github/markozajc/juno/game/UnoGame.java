@@ -8,11 +8,13 @@ import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.piles.impl.UnoDiscardPile;
 import com.github.markozajc.juno.piles.impl.UnoDrawPile;
+import com.github.markozajc.juno.rules.pack.UnoRulePack;
 
 /**
  * A class representing a UnoGame. UnoGame is the thing that controls flow and
  * actions that take place in a round of UNO. An implementation of this that endorses
- * official UNO rules is {@link BasicUnoGame} (see "Specification" in the README for the details)
+ * official UNO rules is {@link BasicUnoGame} (see "Specification" in the README for
+ * the details)
  *
  * @author Marko Zajc
  * @see BasicUnoGame
@@ -63,6 +65,9 @@ public abstract class UnoGame {
 	@Nonnull
 	public final UnoDiscardPile discard = new UnoDiscardPile();
 
+	@Nonnull
+	private final UnoRulePack rules;
+
 	/**
 	 * Returns the other {@link UnoPlayer}.
 	 *
@@ -105,11 +110,12 @@ public abstract class UnoGame {
 	 *            the amount of card each player gets initially
 	 */
 	public UnoGame(@Nonnull UnoHand playerOneHand, @Nonnull UnoHand playerTwoHand, @Nonnull UnoDeck unoDeck,
-			@Nonnegative int cardAmount) {
+			@Nonnegative int cardAmount, @Nonnull UnoRulePack rules) {
 		this.playerOneHand = playerOneHand;
 		this.playerTwoHand = playerTwoHand;
 		this.draw = new UnoDrawPile(unoDeck);
 		this.cardAmount = cardAmount;
+		this.rules = rules;
 	}
 
 	private void init() {
@@ -234,4 +240,10 @@ public abstract class UnoGame {
 
 		return null;
 	}
+
+	@Nonnull
+	public UnoRulePack getRules() {
+		return this.rules;
+	}
+
 }

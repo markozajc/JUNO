@@ -9,7 +9,7 @@ import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
-import com.github.markozajc.juno.utils.UnoUtils;
+import com.github.markozajc.juno.utils.UnoRuleUtils;
 
 /**
  * An automated hand that uses {@link Random} to decide everything. Still compiles
@@ -32,9 +32,11 @@ public class PureRandomUnoHand extends UnoHand {
 		super(name);
 	}
 
+	@SuppressWarnings("null")
 	@Override
 	public UnoCard playCard(UnoGame game, boolean drawn) {
-		List<UnoCard> possibilities = UnoUtils.analyzePossibleCards(game.discard.getTop(), this.cards);
+		List<UnoCard> possibilities = UnoRuleUtils.combinedPlacementAnalysis(game.discard.getTop(), this.cards,
+			game.getRules(), this);
 		if (possibilities.isEmpty())
 			return null;
 		return possibilities.get(RANDOM.nextInt(possibilities.size()));
