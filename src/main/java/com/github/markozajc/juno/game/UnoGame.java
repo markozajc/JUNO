@@ -108,6 +108,8 @@ public abstract class UnoGame {
 	 *            the {@link UnoDeck} to use
 	 * @param cardAmount
 	 *            the amount of card each player gets initially
+	 * @param rules
+	 *            the {@link UnoRulePack} for this {@link UnoGame}
 	 */
 	public UnoGame(@Nonnull UnoHand playerOneHand, @Nonnull UnoHand playerTwoHand, @Nonnull UnoDeck unoDeck,
 			@Nonnegative int cardAmount, @Nonnull UnoRulePack rules) {
@@ -241,6 +243,9 @@ public abstract class UnoGame {
 		return null;
 	}
 
+	/**
+	 * @return the {@link UnoRulePack} in use by this {@link UnoGame}
+	 */
 	@Nonnull
 	public UnoRulePack getRules() {
 		return this.rules;

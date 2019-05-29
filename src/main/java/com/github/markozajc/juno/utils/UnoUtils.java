@@ -34,14 +34,21 @@ public class UnoUtils {
 	 * {@link List} of cards. This implements all standard UNO rules (same color for all
 	 * {@link UnoCard}s, same number for all {@link UnoNumericCard}s or same action for
 	 * {@link UnoActionCard}) as well as the progressive UNO rule (same quantity for
-	 * {@link UnoDrawCard}s). This is intended to be utilized by {@link UnoHand}s to be able
-	 * to decide between their available cards better and more easily and by
+	 * {@link UnoDrawCard}s). This is intended to be utilized by {@link UnoHand}s to be
+	 * able to decide between their available cards better and more easily and by
 	 * {@link UnoGame} implementations to prevent cheating - accidental or not.
 	 *
-	 * @param targetCard the target card (eg. the top {@link UnoCard} of the {@link UnoDiscardPile})
-	 * @param cards the {@link Collection} of cards to analyze (eg. {@link UnoHand}'s cards)
+	 * @param targetCard
+	 *            the target card (eg. the top {@link UnoCard} of the
+	 *            {@link UnoDiscardPile})
+	 * @param cards
+	 *            the {@link Collection} of cards to analyze (eg. {@link UnoHand}'s
+	 *            cards)
 	 * @return a {@link List} of all possible cards from {@code cards} can be placed on
 	 *         the {@code targetCard}.
+	 * @deprecated This method only supports a hard-coded set of rules. Use
+	 *             {@link UnoRuleUtils#combinedPlacementAnalysis(UnoCard, Collection, com.github.markozajc.juno.rules.pack.UnoRulePack, UnoHand)}
+	 *             instead.
 	 */
 	@Deprecated
 	public static List<UnoCard> analyzePossibleCards(UnoCard targetCard, Collection<UnoCard> cards) {
@@ -61,10 +68,9 @@ public class UnoUtils {
 		// case the other player placed a draw card (a progressive UNO thing, similar to the
 		// "check" state in Chess)
 
-		if(targetCard instanceof UnoWildCard && targetCard.getColor().equals(UnoCardColor.WILD))
+		if (targetCard instanceof UnoWildCard && targetCard.getColor().equals(UnoCardColor.WILD))
 			return Collections.emptyList();
 		// No card can be placed on an unset wild card
-
 
 		if (targetCard instanceof UnoNumericCard) {
 			UnoNumericCard castTop = (UnoNumericCard) targetCard;
