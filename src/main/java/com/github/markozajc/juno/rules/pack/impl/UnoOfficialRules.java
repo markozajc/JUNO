@@ -3,10 +3,10 @@ package com.github.markozajc.juno.rules.pack.impl;
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
-import com.github.markozajc.juno.rules.impl.ActionPlacementRules;
-import com.github.markozajc.juno.rules.impl.ColorPlacementRules;
-import com.github.markozajc.juno.rules.impl.DrawPlacementRules;
-import com.github.markozajc.juno.rules.impl.NumericPlacementRules;
+import com.github.markozajc.juno.rules.impl.placement.ActionPlacementRules;
+import com.github.markozajc.juno.rules.impl.placement.ColorPlacementRules;
+import com.github.markozajc.juno.rules.impl.placement.DrawPlacementRules;
+import com.github.markozajc.juno.rules.impl.placement.NumericPlacementRules;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 
 /**

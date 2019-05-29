@@ -197,4 +197,18 @@ public class UnoUtils {
 		return cards.stream().filter(targetKind::isInstance).map(targetKind::cast).collect(Collectors.toList());
 	}
 
+	// TODO add a better way to change card's color
+	public static boolean setColor(UnoCard card, UnoCardColor color) {
+		if (color == UnoCardColor.WILD)
+			throw new IllegalArgumentException("Can't set the card's color to wild!");
+
+		if (card instanceof UnoWildCard)
+			((UnoWildCard) card).setColor(color);
+
+		if (card instanceof UnoDrawCard)
+			((UnoDrawCard) card).setColor(color);
+
+		return true;
+	}
+
 }
