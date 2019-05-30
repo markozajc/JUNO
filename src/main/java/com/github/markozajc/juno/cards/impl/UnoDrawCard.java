@@ -1,5 +1,8 @@
 package com.github.markozajc.juno.cards.impl;
 
+import javax.annotation.Nonnegative;
+import javax.annotation.Nonnull;
+
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
 
@@ -17,9 +20,8 @@ import com.github.markozajc.juno.cards.UnoCardColor;
  *
  * @author Marko Zajc
  */
-public class UnoDrawCard implements UnoCard {
+public class UnoDrawCard extends UnoCard {
 
-	private UnoCardColor color;
 	private final int draw;
 	private boolean played = false;
 
@@ -31,7 +33,7 @@ public class UnoDrawCard implements UnoCard {
 	 * @throws IllegalArgumentException
 	 *             if {@code color} is equal to {@link UnoCardColor#WILD}
 	 */
-	public UnoDrawCard(UnoCardColor color) {
+	public UnoDrawCard(@Nonnull UnoCardColor color) {
 		this(color, 2);
 
 		if (color.equals(UnoCardColor.WILD))
@@ -45,8 +47,8 @@ public class UnoDrawCard implements UnoCard {
 		this(UnoCardColor.WILD, 4);
 	}
 
-	UnoDrawCard(UnoCardColor color, int draw) {
-		this.color = color;
+	private UnoDrawCard(@Nonnull UnoCardColor color, @Nonnegative int draw) {
+		super(color);
 		this.draw = draw;
 	}
 
@@ -61,37 +63,6 @@ public class UnoDrawCard implements UnoCard {
 	 */
 	public void setPlayed() {
 		this.played = true;
-	}
-
-	/**
-	 * Sets the card's color
-	 *
-	 * @param color the new color
-	 * @throws IllegalStateException
-	 *             if this card is a draw two card
-	 */
-	public void setColor(UnoCardColor color) {
-		if (this.draw == 2)
-			throw new IllegalStateException("Can't change the color of a draw two card.");
-
-		this.color = color;
-	}
-
-	@Override
-	public UnoCardColor getColor() {
-		return this.color;
-	}
-
-	/**
-	 * Gets the original color of the card. This is useful for draw four cards where
-	 * {@link #getColor()} can represent the changed color.
-	 *
-	 * @return the original color
-	 */
-	public UnoCardColor getOriginalColor() {
-		if (this.draw == 4)
-			return UnoCardColor.WILD;
-		return getColor();
 	}
 
 	/**
@@ -111,9 +82,9 @@ public class UnoDrawCard implements UnoCard {
 
 	@Override
 	public void reset() {
+		super.reset();
+
 		this.played = false;
-		if (this.draw == 4)
-			this.color = UnoCardColor.WILD;
 	}
 
 }
