@@ -1,27 +1,26 @@
 package com.github.markozajc.juno.game.impl;
 
-import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.cards.UnoCardColor;
-import com.github.markozajc.juno.game.BasicUnoGame;
+import com.github.markozajc.juno.cards.UnoStandardDeck;
+import com.github.markozajc.juno.game.UnoControlledGame;
 import com.github.markozajc.juno.game.UnoGame;
-import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.hands.impl.ConsoleUnoHand;
 import com.github.markozajc.juno.hands.impl.StrategicUnoHand;
+import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
 
 /**
- * A console-based {@link BasicUnoGame} implementation. This is not meant to be used
+ * A console-based {@link UnoControlledGame} implementation. This is not meant to be used
  * in production and is solely an example implementation.
  *
  * @author Marko Zajc
  */
-public class ConsoleUnoGame extends BasicUnoGame {
+public class ConsoleUnoGame extends UnoControlledGame {
 
 	/**
 	 * Creates a new {@link ConsoleUnoGame} with a {@link ConsoleUnoHand} named "You" and
 	 * a {@link StrategicUnoHand} named "Billy the StrategicUnoHand".
 	 */
 	public ConsoleUnoGame() {
-		super(new ConsoleUnoHand("You"), new StrategicUnoHand("Billy the StrategicUnoHand"));
+		super(new ConsoleUnoHand("You"), new StrategicUnoHand("Billy the StrategicUnoHand"), new UnoStandardDeck(), 7, UnoOfficialRules.getPack());
 	}
 
 	/**
@@ -48,35 +47,6 @@ public class ConsoleUnoGame extends BasicUnoGame {
 			default:
 				break;
 		}
-	}
-
-	@Override
-	protected void onColorChanged(UnoHand hand, UnoCardColor newColor) {
-		System.out.println(hand.getName() + " chose " + newColor + ".");
-
-	}
-
-	@Override
-	protected void onPileShuffle() {
-		System.out.println("Shuffling the discard pile into draw pile..");
-
-	}
-
-	@Override
-	protected void onDrawCards(UnoHand hand, int quantity) {
-		System.out.println(hand.getName() + " drew " + quantity + " card(s).");
-
-	}
-
-	@Override
-	protected void onInvalidCard(UnoHand hand, UnoCard card) {
-		System.out.println(hand.getName() + " placed a " + card + ", which is an invalid card.");
-
-	}
-
-	@Override
-	protected void onCardPlaced(UnoHand hand, UnoCard card) {
-		System.out.println(hand.getName() + " placed " + card + ".");
 	}
 
 }

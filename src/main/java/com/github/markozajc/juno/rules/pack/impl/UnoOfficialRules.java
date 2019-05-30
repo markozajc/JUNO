@@ -3,6 +3,9 @@ package com.github.markozajc.juno.rules.pack.impl;
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
+import com.github.markozajc.juno.rules.impl.flow.CardDrawingRule;
+import com.github.markozajc.juno.rules.impl.flow.CardPlacementRule;
+import com.github.markozajc.juno.rules.impl.flow.ColorChoosingRule;
 import com.github.markozajc.juno.rules.impl.placement.ActionPlacementRules;
 import com.github.markozajc.juno.rules.impl.placement.ColorPlacementRules;
 import com.github.markozajc.juno.rules.impl.placement.DrawPlacementRules;
@@ -22,7 +25,8 @@ public class UnoOfficialRules {
 
 	private static void createPack() {
 		pack = UnoRulePack.ofPacks(ActionPlacementRules.getPack(), ColorPlacementRules.getPack(),
-			DrawPlacementRules.getPack(), NumericPlacementRules.getPack());
+			DrawPlacementRules.getPack(), NumericPlacementRules.getPack(),
+			new UnoRulePack(new CardDrawingRule(), new CardPlacementRule(), new ColorChoosingRule()));
 	}
 
 	/**
