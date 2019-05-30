@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.rules.impl.flow.exception.UnoGameFlowException;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
 import com.github.markozajc.juno.utils.UnoRuleUtils;
@@ -22,9 +23,36 @@ public class UnoControlledGame extends UnoGame {
 	@Override
 	protected void playHand(UnoHand hand) {
 		List<UnoGameFlowRule> rules = UnoRuleUtils.filterRuleKind(this.getRules().getRules(), UnoGameFlowRule.class);
-		rules.forEach(r -> r.turnInitialization(hand, this));
-		UnoCard card = hand.playCard(this, false);
-		rules.forEach(r -> r.afterHandDecision(hand, this, card));
+
+		boolean repeatInitialization = true;
+		while (!repeatInitialization) {
+			for (UnoGameFlowRule rule : rules) {
+				try {
+					rule.turnInitialization(hand, this);
+				} catch (UnoGameFlowException e) {
+					if (e.shouldRepeat())
+						repeatInitialization = true;
+				}
+			}
+
+			repeatInitialization = false;
+		}
+
+		boolean repeatDecision = true;
+		while (!repeatInitialization) {
+			UnoCard decision = hand.playCard(this, false);
+
+			for (UnoGameFlowRule rule : rules) {
+				try {
+					rule.afterHandDecision(hand, this, decision);
+				} catch (UnoGameFlowException e) {
+					if (e.shouldRepeat())
+						repeatDecision = true;
+				}
+			}
+
+			repeatDecision = false;
+		}
 	}
 
 }

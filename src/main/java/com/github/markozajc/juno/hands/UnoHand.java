@@ -3,6 +3,7 @@ package com.github.markozajc.juno.hands;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -11,7 +12,7 @@ import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.game.UnoGame.UnoPlayer;
 import com.github.markozajc.juno.piles.UnoPile;
-import com.github.markozajc.juno.piles.impl.UnoDrawPile;
+import com.github.markozajc.juno.utils.UnoGameUtils;
 
 /**
  * A representation of a hand - the thing that holds and places cards to the discard
@@ -57,17 +58,18 @@ public abstract class UnoHand implements UnoPile {
 	}
 
 	/**
-	 * Draws an amount of cards from a given {@link UnoDrawPile}.
+	 * Draws an amount of cards from the draw pile in the given {@link UnoGame} (this
+	 * will also add the cards to the {@link UnoHand}).
 	 *
-	 * @param pile
-	 *            the {@link UnoDrawPile} to draw from
+	 * @param game
+	 *            the ongoing {@link UnoGame}
 	 * @param amount
 	 *            the amount of cards to draw
 	 * @return the drawn cards
 	 */
 	@Nonnull
-	public final List<UnoCard> draw(UnoDrawPile pile, int amount) {
-		List<UnoCard> drawnCards = pile.draw(amount);
+	public final List<UnoCard> draw(@Nonnull UnoGame game, @Nonnegative int amount) {
+		List<UnoCard> drawnCards = UnoGameUtils.drawCards(game, amount);
 		this.cards.addAll(drawnCards);
 		return drawnCards;
 	}

@@ -126,8 +126,8 @@ public abstract class UnoGame {
 		this.discard.add(this.draw.drawInitalCard());
 		// Draws the initial card
 
-		this.playerOneHand.draw(this.draw, this.cardAmount);
-		this.playerTwoHand.draw(this.draw, this.cardAmount);
+		this.playerOneHand.draw(this, this.cardAmount);
+		this.playerTwoHand.draw(this, this.cardAmount);
 		// Deals the cards
 	}
 
@@ -142,7 +142,7 @@ public abstract class UnoGame {
 	 * Merges the discard pile into the draw pile. This is to be called by the
 	 * implementation when the draw pile gets empty.
 	 */
-	protected void discardIntoDraw() {
+	public void discardIntoDraw() {
 		this.draw.mergeResetShuffle(this.discard.createDrawPile());
 	}
 
@@ -151,7 +151,7 @@ public abstract class UnoGame {
 	 *
 	 * @param hand
 	 */
-	protected abstract void playHand(UnoHand hand);
+	protected abstract void playHand(@Nonnull UnoHand hand);
 
 	/**
 	 * Checks whether a hand has won. Criteria for winning in UNO is
