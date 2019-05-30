@@ -6,10 +6,10 @@ import java.util.Collections;
 import java.util.List;
 
 import com.github.markozajc.juno.cards.impl.UnoActionCard;
+import com.github.markozajc.juno.cards.impl.UnoActionCard.UnoAction;
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.cards.impl.UnoNumericCard;
 import com.github.markozajc.juno.cards.impl.UnoWildCard;
-import com.github.markozajc.juno.cards.impl.UnoActionCard.UnoAction;
 import com.github.markozajc.juno.decks.UnoDeck;
 
 /**
@@ -18,6 +18,7 @@ import com.github.markozajc.juno.decks.UnoDeck;
  * @author Marko Zajc
  * @see <a href="https://en.wikipedia.org/wiki/File:UNO_cards_deck.svg">Reference vector graphic of a UNO deck</a>
  */
+@SuppressWarnings("null")
 public class UnoStandardDeck implements UnoDeck {
 
 	private static final int EXPECTED_SIZE = 108;
@@ -30,7 +31,7 @@ public class UnoStandardDeck implements UnoDeck {
 				if (color.equals(UnoCardColor.WILD))
 					continue;
 
-				UnoCard card = new UnoActionCard(action, color);
+				UnoCard card = new UnoActionCard(color, action);
 				tempDeck.addAll(Arrays.asList(card, card));
 				// Adds two of each action cards
 			}
@@ -42,7 +43,7 @@ public class UnoStandardDeck implements UnoDeck {
 				continue;
 
 			for (int i = 0; i <= 9; i++) {
-				UnoCard card = new UnoNumericCard(i, color);
+				UnoCard card = new UnoNumericCard(color, i);
 
 				if (i != 0) {
 					tempDeck.addAll(Arrays.asList(card, card));
