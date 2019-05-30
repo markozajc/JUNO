@@ -22,7 +22,10 @@ import com.github.markozajc.juno.utils.UnoRuleUtils;
  * extend.
  *
  * @author Marko Zajc
+ * @deprecated Only supports a hard-coded set of rules. Use {@link UnoControlledGame}
+ *             instead.
  */
+@Deprecated
 public abstract class BasicUnoGame extends UnoGame {
 
 	/**
@@ -112,11 +115,7 @@ public abstract class BasicUnoGame extends UnoGame {
 		}
 		onColorChanged(hand, color);
 
-		if (card instanceof UnoWildCard)
-			((UnoWildCard) card).setColor(color);
-
-		if (card instanceof UnoDrawCard)
-			((UnoDrawCard) card).setColor(color);
+		card.setColorMask(color);
 	}
 
 	@SuppressWarnings("null")
@@ -153,7 +152,8 @@ public abstract class BasicUnoGame extends UnoGame {
 					List<UnoCard> drawnCards = hand.draw(this.draw, draw);
 					onDrawCards(hand, draw);
 					if (drawnCards.size() == 1
-							&& UnoRuleUtils.combinedPlacementAnalysis(topCard, drawnCards, this.getRules(), hand).size() == 1) {
+							&& UnoRuleUtils.combinedPlacementAnalysis(topCard, drawnCards, this.getRules(), hand)
+									.size() == 1) {
 						drawn = true;
 						continue;
 					}
@@ -163,8 +163,8 @@ public abstract class BasicUnoGame extends UnoGame {
 					return;
 				}
 
-				if (UnoRuleUtils.combinedPlacementAnalysis(topCard, Arrays.asList(card), this.getRules(), hand).isEmpty()
-						|| !hand.getCards().remove(card)) {
+				if (UnoRuleUtils.combinedPlacementAnalysis(topCard, Arrays.asList(card), this.getRules(), hand)
+						.isEmpty() || !hand.getCards().remove(card)) {
 					// Should be checked by Hand implementation in the first place
 					onInvalidCard(hand, card);
 					continue;

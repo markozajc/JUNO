@@ -11,7 +11,6 @@ public class ColorChoosingRule implements UnoGameFlowRule {
 	public void turnInitialization(UnoHand hand, UnoGame game) {
 		if (game.getTopCard().getColor().equals(UnoCardColor.WILD) && game.getTopCard().isPlayed())
 			game.getTopCard().setColorMask(hand.chooseColor(game));
-
 	}
 
 }
