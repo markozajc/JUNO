@@ -9,13 +9,20 @@ import com.github.markozajc.juno.utils.UnoGameUtils;
 
 public class CardPlacementRule implements UnoGameFlowRule {
 
+	private static final String CARD_PLACED = "%s placed a %s.";
+	private static final String INVALID_CARD = "%s tried to place an invalid card.";
+
 	@Override
 	public void afterHandDecision(UnoHand hand, UnoGame game, UnoCard decidedCard) throws UnoGameFlowException {
 		if (decidedCard != null) {
-			if (!UnoGameUtils.canPlaceCard(hand, game, decidedCard))
+			if (!UnoGameUtils.canPlaceCard(hand, game, decidedCard)) {
+				game.onEvent(INVALID_CARD, hand.getName());
 				throw new UnoGameFlowException(true);
+			}
+
 
 			hand.addToDiscard(game.discard, decidedCard);
+			game.onEvent(CARD_PLACED, hand.getName(), decidedCard.toString());
 		}
 	}
 

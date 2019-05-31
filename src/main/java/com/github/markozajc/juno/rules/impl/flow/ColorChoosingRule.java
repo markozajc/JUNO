@@ -9,9 +9,22 @@ import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
 
 public class ColorChoosingRule implements UnoGameFlowRule {
 
-	private void selectColorForCard(UnoCard card, UnoHand hand, UnoGame game) {
-		if (card != null && card.getColor().equals(UnoCardColor.WILD) && card.isPlayed())
-			card.setColorMask(hand.chooseColor(game));
+	private static final String COLOR_CHANGED = "%s set the color to %s.";
+
+
+
+	private void selectColorForCard(UnoCard card, UnoHand hand, UnoGame game) throws UnoGameFlowException {
+		if (card != null && card.getColor().equals(UnoCardColor.WILD) && card.isPlayed()) {
+			UnoCardColor color = hand.chooseColor(game);
+
+			if(color.equals(UnoCardColor.WILD)) {
+				game.onEvent("%s tried to set an invalid color.", hand.getName());
+				throw new UnoGameFlowException(true);
+			}
+
+			card.setColorMask(color);
+			game.onEvent(COLOR_CHANGED, hand.getName(), color.toString());
+		}
 	}
 
 

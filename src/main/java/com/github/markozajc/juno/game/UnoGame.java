@@ -267,4 +267,6 @@ public abstract class UnoGame {
 		return this.topCard;
 	}
 
+	public abstract void onEvent(String format, Object... arguments);
+
 }

@@ -57,4 +57,9 @@ public class UnoControlledGame extends UnoGame {
 		}
 	}
 
+	@Override
+	public void onEvent(String format, Object... arguments) {
+		System.out.printf(format, arguments);
+	}
+
 }
