@@ -12,7 +12,7 @@ public class CardDrawingRule implements UnoGameFlowRule {
 	@Override
 	public void turnInitialization(UnoHand hand, UnoGame game) throws UnoGameFlowException {
 		if (game.getTopCard() instanceof UnoDrawCard && !game.getTopCard().isPlayed())
-			hand.draw(game, ((UnoDrawCard) game.getTopCard()).getAmount());
+			((UnoDrawCard) game.getTopCard()).drawTo(game, hand);
 	}
 
 	@Override

@@ -5,6 +5,8 @@ import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
+import com.github.markozajc.juno.game.UnoGame;
+import com.github.markozajc.juno.hands.UnoHand;
 
 /**
  * A card that makes the other player draw two or four cards, depending on the
@@ -22,7 +24,7 @@ import com.github.markozajc.juno.cards.UnoCardColor;
  */
 public class UnoDrawCard extends UnoCard {
 
-	private final int draw;
+	private final int amount;
 	private boolean played = false;
 
 	/**
@@ -47,9 +49,9 @@ public class UnoDrawCard extends UnoCard {
 		this(UnoCardColor.WILD, 4);
 	}
 
-	private UnoDrawCard(@Nonnull UnoCardColor color, @Nonnegative int draw) {
+	private UnoDrawCard(@Nonnull UnoCardColor color, @Nonnegative int amount) {
 		super(color);
-		this.draw = draw;
+		this.amount = amount;
 	}
 
 	@Override
@@ -60,7 +62,11 @@ public class UnoDrawCard extends UnoCard {
 	/**
 	 * Marks this card as "played". This means that a player has already drawn because of
 	 * it.
+	 *
+	 * @deprecated You shouldn't be using this directly as
+	 *             {@link #drawTo(UnoGame, UnoHand)} already does it for you.
 	 */
+	@Deprecated
 	public void setPlayed() {
 		this.played = true;
 	}
@@ -72,12 +78,12 @@ public class UnoDrawCard extends UnoCard {
 	 * @return the draw amount of this cards
 	 */
 	public int getAmount() {
-		return this.draw;
+		return this.amount;
 	}
 
 	@Override
 	public String toString() {
-		return getOriginalColor().toString() + " draw " + this.draw;
+		return getOriginalColor().toString() + " draw " + this.getAmount();
 	}
 
 	@Override
@@ -85,6 +91,11 @@ public class UnoDrawCard extends UnoCard {
 		super.reset();
 
 		this.played = false;
+	}
+
+	public void drawTo(@Nonnull UnoGame game, @Nonnull UnoHand hand) {
+		hand.draw(game, getAmount());
+		this.played = true;
 	}
 
 }
