@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.cards.impl.UnoNumericCard;
-import com.github.markozajc.juno.piles.impl.UnoDiscardPile;
 
 class UnoDiscardPileTest {
 
@@ -31,7 +30,7 @@ class UnoDiscardPileTest {
 		// That is a consecutive draw of 12 cards
 		assertEquals(discard.getConsecutiveDraw(), 12);
 
-		discard.add(new UnoNumericCard(0, UnoCardColor.RED));
+		discard.add(new UnoNumericCard(UnoCardColor.RED, 0));
 		// Adds an irrelevant color to the top
 
 		// That is a consecutive draw of 0 cards

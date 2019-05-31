@@ -33,8 +33,8 @@ class UnoDrawPileTest {
 	@Test
 	void testShuffle() {
 		UnoDeck deck = TestUtils.getDummyDeck(
-			Arrays.asList(new UnoNumericCard(0, UnoCardColor.RED), new UnoNumericCard(1, UnoCardColor.GREEN),
-				new UnoNumericCard(2, UnoCardColor.BLUE), new UnoNumericCard(3, UnoCardColor.YELLOW)));
+			Arrays.asList(new UnoNumericCard(UnoCardColor.RED, 0), new UnoNumericCard(UnoCardColor.GREEN, 1),
+				new UnoNumericCard(UnoCardColor.BLUE, 2), new UnoNumericCard(UnoCardColor.YELLOW, 3)));
 		// Creates a new dummy deck
 
 		UnoDrawPile pile = new UnoDrawPile(deck);
