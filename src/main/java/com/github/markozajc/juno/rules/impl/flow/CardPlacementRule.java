@@ -9,14 +9,13 @@ import com.github.markozajc.juno.utils.UnoGameUtils;
 
 public class CardPlacementRule implements UnoGameFlowRule {
 
-	@SuppressWarnings("null")
 	@Override
 	public void afterHandDecision(UnoHand hand, UnoGame game, UnoCard decidedCard) throws UnoGameFlowException {
 		if (decidedCard != null) {
 			if (!UnoGameUtils.canPlaceCard(hand, game, decidedCard))
 				throw new UnoGameFlowException(true);
 
-			game.discard.add(decidedCard);
+			hand.addToDiscard(game.discard, decidedCard);
 		}
 	}
 

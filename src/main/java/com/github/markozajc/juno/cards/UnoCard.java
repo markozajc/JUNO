@@ -61,11 +61,11 @@ public abstract class UnoCard {
 	/**
 	 * Resets the card's state. The card should be in the same state as if it were just
 	 * created from the constructor after this method is called.
-	 *
 	 */
 	public void reset() {
-		setColorMask(null);
-		// Unsets the color mask
+		if (getOriginalColor().equals(UnoCardColor.WILD))
+			setColorMask(null);
+		// Unsets the color mask (if possible)
 	}
 
 	/**

@@ -12,6 +12,7 @@ import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.game.UnoGame.UnoPlayer;
 import com.github.markozajc.juno.piles.UnoPile;
+import com.github.markozajc.juno.piles.impl.UnoDiscardPile;
 import com.github.markozajc.juno.utils.UnoGameUtils;
 
 /**
@@ -110,6 +111,28 @@ public abstract class UnoHand implements UnoPile {
 	@Nonnull
 	public String getName() {
 		return this.name;
+	}
+
+	/**
+	 * Adds a {@link UnoCard} from this {@link UnoHand} to a {@link UnoDiscardPile} and
+	 * removes it from the {@link UnoHand}. The return value here determines whether the
+	 * {@link UnoHand} actually possesses the given {@link UnoCard} or not. The
+	 * {@link UnoCard} will also not be added to the {@link UnoDiscardPile} in case the
+	 * {@link UnoHand} doesn't possess it.
+	 *
+	 * @param discard
+	 *            the {@link UnoDiscardPile} to discard the {@link UnoCard} to
+	 * @param card
+	 *            the {@link UnoCard} to discard
+	 * @return whether the {@link UnoHand} actually possesses the given {@link UnoCard}
+	 */
+	public final boolean addToDiscard(@Nonnull UnoDiscardPile discard, @Nonnull UnoCard card) {
+		if (!this.cards.remove(card))
+			return false;
+
+		discard.add(card);
+
+		return true;
 	}
 
 }

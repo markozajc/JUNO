@@ -25,7 +25,9 @@ public class UnoControlledGame extends UnoGame {
 		List<UnoGameFlowRule> rules = UnoRuleUtils.filterRuleKind(this.getRules().getRules(), UnoGameFlowRule.class);
 
 		boolean repeatInitialization = true;
-		while (!repeatInitialization) {
+		while (repeatInitialization) {
+			repeatInitialization = false;
+
 			for (UnoGameFlowRule rule : rules) {
 				try {
 					rule.turnInitialization(hand, this);
@@ -34,12 +36,12 @@ public class UnoControlledGame extends UnoGame {
 						repeatInitialization = true;
 				}
 			}
-
-			repeatInitialization = false;
 		}
 
 		boolean repeatDecision = true;
-		while (!repeatInitialization) {
+		while (repeatDecision) {
+			repeatDecision = false;
+
 			UnoCard decision = hand.playCard(this, false);
 
 			for (UnoGameFlowRule rule : rules) {
@@ -51,7 +53,7 @@ public class UnoControlledGame extends UnoGame {
 				}
 			}
 
-			repeatDecision = false;
+
 		}
 	}
 
