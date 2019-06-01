@@ -7,13 +7,17 @@ import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.rules.UnoRule;
-import com.github.markozajc.juno.rules.impl.flow.exception.UnoGameFlowException;
+import com.github.markozajc.juno.rules.types.flow.UnoFlowPhaseConclusion;
+import com.github.markozajc.juno.rules.types.flow.UnoTurnInitializationConclusion;
 
 public interface UnoGameFlowRule extends UnoRule {
 
-	public default void turnInitialization(@Nonnull UnoHand hand, @Nonnull UnoGame game) throws UnoGameFlowException {}
+	public default UnoTurnInitializationConclusion turnInitialization(@Nonnull UnoHand hand, @Nonnull UnoGame game) {
+		return UnoTurnInitializationConclusion.NOTHING;
+	}
 
-	public default void afterHandDecision(@Nonnull UnoHand hand, @Nonnull UnoGame game, @Nullable UnoCard decidedCard)
-			throws UnoGameFlowException {}
+	public default UnoFlowPhaseConclusion afterHandDecision(@Nonnull UnoHand hand, @Nonnull UnoGame game, @Nullable UnoCard decidedCard) {
+		return UnoFlowPhaseConclusion.NOTHING;
+	}
 
 }

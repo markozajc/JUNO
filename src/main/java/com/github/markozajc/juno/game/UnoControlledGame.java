@@ -8,9 +8,10 @@ import javax.annotation.Nonnull;
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.hands.UnoHand;
-import com.github.markozajc.juno.rules.impl.flow.exception.UnoGameFlowException;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
+import com.github.markozajc.juno.rules.types.flow.UnoFlowPhaseConclusion;
+import com.github.markozajc.juno.rules.types.flow.UnoTurnInitializationConclusion;
 import com.github.markozajc.juno.utils.UnoRuleUtils;
 
 public class UnoControlledGame extends UnoGame {
@@ -25,34 +26,32 @@ public class UnoControlledGame extends UnoGame {
 		List<UnoGameFlowRule> rules = UnoRuleUtils.filterRuleKind(this.getRules().getRules(), UnoGameFlowRule.class);
 
 		boolean repeatInitialization = true;
+		boolean shouldLoseATurn = false;
+
 		while (repeatInitialization) {
 			repeatInitialization = false;
 
 			for (UnoGameFlowRule rule : rules) {
-				try {
-					rule.turnInitialization(hand, this);
-				} catch (UnoGameFlowException e) {
-					if (e.shouldRepeat())
-						repeatInitialization = true;
-				}
+				UnoTurnInitializationConclusion tic = rule.turnInitialization(hand, this);
+				if (tic.shouldRepeat())
+					repeatInitialization = true;
+
+				if (tic.shouldLoseATurn())
+					shouldLoseATurn = true;
 			}
 		}
 
 		boolean repeatDecision = true;
-		while (repeatDecision) {
+		while (repeatDecision && !shouldLoseATurn) {
 			repeatDecision = false;
 
 			UnoCard decision = hand.playCard(this, false);
 
 			for (UnoGameFlowRule rule : rules) {
-				try {
-					rule.afterHandDecision(hand, this, decision);
-				} catch (UnoGameFlowException e) {
-					if (e.shouldRepeat())
-						repeatDecision = true;
-				}
+				UnoFlowPhaseConclusion fpc = rule.afterHandDecision(hand, this, decision);
+				if (fpc.shouldRepeat())
+					repeatDecision = true;
 			}
-
 
 		}
 	}
@@ -60,6 +59,7 @@ public class UnoControlledGame extends UnoGame {
 	@Override
 	public void onEvent(String format, Object... arguments) {
 		System.out.printf(format, arguments);
+		System.out.println();
 	}
 
 }
