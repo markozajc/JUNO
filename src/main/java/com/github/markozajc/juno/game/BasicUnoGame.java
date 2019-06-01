@@ -149,7 +149,7 @@ public abstract class BasicUnoGame extends UnoGame {
 						discardIntoDraw();
 					}
 
-					List<UnoCard> drawnCards = hand.draw(this.draw, draw);
+					List<UnoCard> drawnCards = hand.draw(this, draw);
 					onDrawCards(hand, draw);
 					if (drawnCards.size() == 1
 							&& UnoRuleUtils.combinedPlacementAnalysis(topCard, drawnCards, this.getRules(), hand)
