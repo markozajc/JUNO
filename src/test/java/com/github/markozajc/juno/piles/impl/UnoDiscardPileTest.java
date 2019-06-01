@@ -2,6 +2,8 @@ package com.github.markozajc.juno.piles.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.lang.reflect.Field;
+
 import org.junit.jupiter.api.Test;
 
 import com.github.markozajc.juno.cards.UnoCardColor;
@@ -11,7 +13,7 @@ import com.github.markozajc.juno.cards.impl.UnoNumericCard;
 class UnoDiscardPileTest {
 
 	@Test
-	void testGetConsecutiveDraw() {
+	void testGetConsecutiveDraw() throws ReflectiveOperationException {
 		UnoDiscardPile discard = new UnoDiscardPile();
 		// Initializes the discard pile
 
@@ -25,7 +27,9 @@ class UnoDiscardPileTest {
 		assertEquals(discard.getConsecutiveDraw(), 16);
 
 		// Sets the bottom card as played
-		((UnoDrawCard) discard.getCards().get(3)).setPlayed();
+		Field f = UnoDrawCard.class.getDeclaredField("played");
+		f.setAccessible(true);
+		f.set(discard.getCards().get(3), true);
 
 		// That is a consecutive draw of 12 cards
 		assertEquals(discard.getConsecutiveDraw(), 12);

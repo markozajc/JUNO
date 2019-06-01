@@ -22,8 +22,8 @@ import com.github.markozajc.juno.utils.UnoRuleUtils;
  * extend.
  *
  * @author Marko Zajc
- * @deprecated Only supports a hard-coded set of rules. Use {@link UnoControlledGame}
- *             instead.
+ * @deprecated Only supports a hard-coded set of rules and does not utilize some of
+ *             the newer utilities. Use {@link UnoControlledGame} instead.
  */
 @Deprecated
 public abstract class BasicUnoGame extends UnoGame {
