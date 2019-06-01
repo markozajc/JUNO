@@ -18,6 +18,8 @@ import com.github.markozajc.juno.cards.UnoCardColor;
  */
 public class UnoActionCard extends UnoCard {
 
+	boolean played = false;
+
 	/**
 	 * The two variations of the action card.
 	 *
@@ -52,8 +54,10 @@ public class UnoActionCard extends UnoCard {
 	/**
 	 * Creates a new {@link UnoActionCard}.
 	 *
-	 * @param action the {@link UnoAction}
-	 * @param color the {@link UnoCardColor}
+	 * @param action
+	 *            the {@link UnoAction}
+	 * @param color
+	 *            the {@link UnoCardColor}
 	 */
 	public UnoActionCard(@Nonnull UnoCardColor color, @Nonnull UnoAction action) {
 		super(color);
@@ -70,6 +74,15 @@ public class UnoActionCard extends UnoCard {
 	@Override
 	public String toString() {
 		return this.getColor().toString() + " " + this.action.toString();
+	}
+
+	public void setPlayed() {
+		this.played = true;
+	}
+
+	@Override
+	public boolean isPlayed() {
+		return this.played;
 	}
 
 }
