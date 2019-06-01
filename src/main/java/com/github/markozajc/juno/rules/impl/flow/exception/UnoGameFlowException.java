@@ -13,10 +13,19 @@ public class UnoGameFlowException extends Exception {
 
 	private final boolean repeat;
 
+	/**
+	 * Creates a new {@link UnoGameFlowException}
+	 *
+	 * @param repeat
+	 *            whether to repeat the phase
+	 */
 	public UnoGameFlowException(boolean repeat) {
 		this.repeat = repeat;
 	}
 
+	/**
+	 * @return whether to repeat the phase
+	 */
 	public boolean shouldRepeat() {
 		return this.repeat;
 	}

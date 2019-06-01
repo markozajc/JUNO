@@ -1,5 +1,7 @@
 package com.github.markozajc.juno.game;
 
+import java.io.PrintStream;
+
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
@@ -8,16 +10,16 @@ import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.piles.impl.UnoDiscardPile;
 import com.github.markozajc.juno.piles.impl.UnoDrawPile;
+import com.github.markozajc.juno.rules.UnoRule;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 
 /**
- * A class representing a UnoGame. UnoGame is the thing that controls flow and
- * actions that take place in a round of UNO. An implementation of this that endorses
- * official UNO rules is {@link BasicUnoGame} (see "Specification" in the README for
- * the details)
+ * A class representing a game of UNO. {@link UnoGame} is the thing that controls the
+ * flow and actions that take place in a round of UNO. A {@link UnoGame} utilizes
+ * {@link UnoRule}s to do stuff and an implementation of this that does it is
+ * {@link UnoControlledGame}.
  *
  * @author Marko Zajc
- * @see BasicUnoGame
  */
 public abstract class UnoGame {
 
@@ -263,10 +265,29 @@ public abstract class UnoGame {
 		return this.rules;
 	}
 
+	/**
+	 * The top {@link UnoCard} of the discard pile. This is the preferred method of
+	 * obtaining the top {@link UnoCard} as it fetches and stores the top card at the end
+	 * of each turn, thus only having to actually get it from the {@link UnoDiscardPile}
+	 * pile once, reducing response time a little.
+	 *
+	 * @return the {@link UnoCard} that's on top of the discard pile
+	 */
 	public UnoCard getTopCard() {
 		return this.topCard;
 	}
 
+	/**
+	 * Called when an event (such as a card being placed, the color of the top card being
+	 * changed, etc) occurs. The given format can be formatted with
+	 * {@link String#format(String, Object...)} or
+	 * {@link PrintStream#printf(String, Object...)} (or a similar method).
+	 *
+	 * @param format
+	 *            the format of the message
+	 * @param arguments
+	 *            arguments for the format
+	 */
 	public abstract void onEvent(String format, Object... arguments);
 
 }

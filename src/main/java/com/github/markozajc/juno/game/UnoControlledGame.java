@@ -8,14 +8,35 @@ import javax.annotation.Nonnull;
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.rules.UnoRule;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
 import com.github.markozajc.juno.rules.types.flow.UnoFlowPhaseConclusion;
 import com.github.markozajc.juno.rules.types.flow.UnoTurnInitializationConclusion;
 import com.github.markozajc.juno.utils.UnoRuleUtils;
 
-public class UnoControlledGame extends UnoGame {
+/**
+ * An implementation of {@link UnoGame} that lets you control most of the things with
+ * {@link UnoRule}s.
+ *
+ * @author Marko Zajc
+ */
+public abstract class UnoControlledGame extends UnoGame {
 
+	/**
+	 * Creates a new {@link UnoControlledGame}.
+	 *
+	 * @param playerOneHand
+	 *            the first player's hand
+	 * @param playerTwoHand
+	 *            the second player's hand
+	 * @param unoDeck
+	 *            the {@link UnoDeck} to use
+	 * @param cardAmount
+	 *            the amount of card each player gets initially
+	 * @param rules
+	 *            the {@link UnoRulePack} for this {@link UnoGame}
+	 */
 	public UnoControlledGame(@Nonnull UnoHand playerOneHand, @Nonnull UnoHand playerTwoHand, @Nonnull UnoDeck unoDeck,
 			@Nonnegative int cardAmount, @Nonnull UnoRulePack rules) {
 		super(playerOneHand, playerTwoHand, unoDeck, cardAmount, rules);
@@ -54,12 +75,6 @@ public class UnoControlledGame extends UnoGame {
 			}
 
 		}
-	}
-
-	@Override
-	public void onEvent(String format, Object... arguments) {
-		System.out.printf(format, arguments);
-		System.out.println();
 	}
 
 }

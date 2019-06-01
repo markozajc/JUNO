@@ -8,7 +8,8 @@ import com.github.markozajc.juno.piles.impl.UnoDiscardPile;
 import com.github.markozajc.juno.rules.UnoRule;
 
 /**
- * A rule type that defines what {@link UnoCard} can be placed on what {@link UnoCard}.
+ * A rule type that defines what {@link UnoCard} can be placed on what
+ * {@link UnoCard}.
  *
  * @author Marko Zajc
  */

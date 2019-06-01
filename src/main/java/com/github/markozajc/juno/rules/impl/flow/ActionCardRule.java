@@ -6,6 +6,11 @@ import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
 import com.github.markozajc.juno.rules.types.flow.UnoTurnInitializationConclusion;
 
+/**
+ * The game flow rule responsible for handling {@link UnoActionCard}s.
+ *
+ * @author Marko Zajc
+ */
 public class ActionCardRule implements UnoGameFlowRule {
 
 	private static final String LOST_A_TURN = "%s lost a turn.";

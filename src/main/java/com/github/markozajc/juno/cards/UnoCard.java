@@ -17,6 +17,14 @@ public abstract class UnoCard {
 	@Nullable
 	private UnoCardColor mask;
 
+	/**
+	 * Creates a new {@link UnoCard}.
+	 *
+	 * @param color
+	 *            this card's color. If this is {@link UnoCardColor#WILD}, you will also
+	 *            be able able to set a color mask using
+	 *            {@link #setColorMask(UnoCardColor)}
+	 */
 	public UnoCard(@Nonnull UnoCardColor color) {
 		this.color = color;
 	}

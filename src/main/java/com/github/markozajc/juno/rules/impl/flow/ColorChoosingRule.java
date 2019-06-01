@@ -8,11 +8,17 @@ import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
 import com.github.markozajc.juno.rules.types.flow.UnoFlowPhaseConclusion;
 import com.github.markozajc.juno.rules.types.flow.UnoTurnInitializationConclusion;
 
+/**
+ * The game flow rule responsible for letting hands change the color of wild
+ * {@link UnoCard}s.
+ *
+ * @author Marko Zajc
+ */
 public class ColorChoosingRule implements UnoGameFlowRule {
 
 	private static final String COLOR_CHANGED = "%s set the color to %s.";
 
-	private UnoTurnInitializationConclusion selectColorForCard(UnoCard card, UnoHand hand, UnoGame game) {
+	private static UnoTurnInitializationConclusion selectColorForCard(UnoCard card, UnoHand hand, UnoGame game) {
 		if (card != null && card.getColor().equals(UnoCardColor.WILD) && card.isPlayed()) {
 			UnoCardColor color = hand.chooseColor(game);
 

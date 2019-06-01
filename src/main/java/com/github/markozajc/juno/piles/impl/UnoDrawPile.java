@@ -14,6 +14,7 @@ import com.github.markozajc.juno.cards.impl.UnoNumericCard;
 import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.piles.UnoPile;
+import com.github.markozajc.juno.utils.UnoGameUtils;
 import com.github.markozajc.juno.utils.UnoUtils;
 
 /**
@@ -86,7 +87,11 @@ public class UnoDrawPile implements UnoPile {
 	}
 
 	/**
-	 * Draws a number of cards from this pile.
+	 * Draws a number of cards from this pile.<br>
+	 * <b>CAUTION!</b><br>
+	 * This method will not safely draw cards. This means that it will throw an exception
+	 * in case there aren't enough cards in it. Use
+	 * {@link UnoGameUtils#drawCards(UnoGame, int)} to draw cards instead!
 	 *
 	 * @param amount
 	 *            the amount of {@link UnoCard}s to draw
@@ -143,12 +148,13 @@ public class UnoDrawPile implements UnoPile {
 	 * Draws a card that suits the initial card requirements (means that it can be the
 	 * initial card in a discard pile). This means that the card is a
 	 * {@link UnoNumericCard}. This method can only be called once for a
-	 * {@link UnoDrawPile} and is intended to be called by {@link UnoGame}'s initialization method.
+	 * {@link UnoDrawPile} and is intended to be called by {@link UnoGame}'s
+	 * initialization method.
 	 *
 	 * @return the initial card
 	 */
 	public UnoCard drawInitalCard() {
-		if(this.initialDrawn)
+		if (this.initialDrawn)
 			throw new IllegalStateException("The initial card has already been drawn!");
 
 		this.initialDrawn = true;

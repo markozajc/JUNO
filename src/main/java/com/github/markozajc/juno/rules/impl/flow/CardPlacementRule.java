@@ -7,6 +7,12 @@ import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
 import com.github.markozajc.juno.rules.types.flow.UnoFlowPhaseConclusion;
 import com.github.markozajc.juno.utils.UnoGameUtils;
 
+/**
+ * The game flow rule responsible for placing the {@link UnoCard}s that {@link UnoHand}s decide
+ * to place.
+ *
+ * @author Marko Zajc
+ */
 public class CardPlacementRule implements UnoGameFlowRule {
 
 	private static final String CARD_PLACED = "%s placed a %s.";

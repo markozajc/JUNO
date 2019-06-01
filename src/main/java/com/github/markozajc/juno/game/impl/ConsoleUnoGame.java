@@ -8,8 +8,8 @@ import com.github.markozajc.juno.hands.impl.StrategicUnoHand;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
 
 /**
- * A console-based {@link UnoControlledGame} implementation. This is not meant to be used
- * in production and is solely an example implementation.
+ * A console-based {@link UnoControlledGame} implementation. This is not meant to be
+ * used in production and is solely an example implementation.
  *
  * @author Marko Zajc
  */
@@ -20,13 +20,15 @@ public class ConsoleUnoGame extends UnoControlledGame {
 	 * a {@link StrategicUnoHand} named "Billy the StrategicUnoHand".
 	 */
 	public ConsoleUnoGame() {
-		super(new ConsoleUnoHand("You"), new StrategicUnoHand("Billy the StrategicUnoHand"), new UnoStandardDeck(), 7, UnoOfficialRules.getPack());
+		super(new ConsoleUnoHand("You"), new StrategicUnoHand("Billy the StrategicUnoHand"), new UnoStandardDeck(), 7,
+				UnoOfficialRules.getPack());
 	}
 
 	/**
 	 * The main method
 	 *
-	 * @param args arguments (will be ignored)
+	 * @param args
+	 *            arguments (will be ignored)
 	 */
 	public static void main(String[] args) {
 		UnoGame game = new ConsoleUnoGame();
@@ -47,6 +49,12 @@ public class ConsoleUnoGame extends UnoControlledGame {
 			default:
 				break;
 		}
+	}
+
+	@Override
+	public void onEvent(String format, Object... arguments) {
+		System.out.printf(format, arguments);
+		System.out.println();
 	}
 
 }

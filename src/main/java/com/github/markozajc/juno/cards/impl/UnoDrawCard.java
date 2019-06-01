@@ -93,7 +93,22 @@ public class UnoDrawCard extends UnoCard {
 		this.played = false;
 	}
 
+	/**
+	 * Draws the set amount of {@link UnoCard}s from the draw pile of the given
+	 * {@link UnoGame} and adds them to a {@link UnoHand}. This method is safe as it uses
+	 * {@link UnoHand#draw(UnoGame, int)}.
+	 *
+	 * @param game
+	 *            the ongoing {@link UnoGame}
+	 * @param hand
+	 *            the {@link UnoHand} to add the drawn cards to
+	 * @throws IllegalStateException
+	 *             in case this card is already marked as played
+	 */
 	public void drawTo(@Nonnull UnoGame game, @Nonnull UnoHand hand) {
+		if (isPlayed())
+			throw new IllegalStateException("This card has already been played.");
+
 		hand.draw(game, getAmount());
 		this.played = true;
 	}

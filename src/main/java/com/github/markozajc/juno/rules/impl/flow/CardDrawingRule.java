@@ -8,6 +8,12 @@ import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
 import com.github.markozajc.juno.rules.types.flow.UnoFlowPhaseConclusion;
 import com.github.markozajc.juno.rules.types.flow.UnoTurnInitializationConclusion;
 
+/**
+ * The game flow rule responsible for drawing {@link UnoCard}s from the discard pile
+ * and adding them to the {@link UnoHand}s when necessary or requested.
+ *
+ * @author Marko Zajc
+ */
 public class CardDrawingRule implements UnoGameFlowRule {
 
 	@Override
