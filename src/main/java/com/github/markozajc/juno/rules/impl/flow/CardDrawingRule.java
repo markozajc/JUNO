@@ -17,7 +17,7 @@ import com.github.markozajc.juno.utils.UnoGameUtils;
  */
 public class CardDrawingRule implements UnoGameFlowRule {
 
-	private static final String PLACED_DRAWN = "%s has placed the drawn card.";
+	private static final String PLACED_DRAWN = "%s has placed the drawn %s.";
 	private static final String DRAW_CARDS = "%s drew %s cards from a %s.";
 	private static final String DRAW_CARD = "%s drew a card.";
 
@@ -43,7 +43,7 @@ public class CardDrawingRule implements UnoGameFlowRule {
 
 			if (UnoGameUtils.canPlaceCard(hand, game, drawn) && hand.shouldPlayDrawnCard(game, drawn)
 					&& UnoGameUtils.placeCard(game, hand, drawn)) {
-				game.onEvent(PLACED_DRAWN, drawn.getPlacer().getName());
+				game.onEvent(PLACED_DRAWN, drawn.getPlacer().getName(), drawn.toString());
 			}
 		}
 
