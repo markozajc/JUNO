@@ -1,12 +1,12 @@
 package com.github.markozajc.juno.rules.impl.flow.exception;
 
-import com.github.markozajc.juno.rules.types.flow.UnoTurnInitializationConclusion;
+import com.github.markozajc.juno.rules.types.flow.UnoInitializationConclusion;
 
 /**
  * An exception signaling that something went wrong during UNO game flow calculation.
  *
  * @author Marko Zajc
- * @deprecated Use {@link UnoTurnInitializationConclusion} instead.
+ * @deprecated Use {@link UnoInitializationConclusion} instead.
  */
 @Deprecated
 public class UnoGameFlowException extends Exception {

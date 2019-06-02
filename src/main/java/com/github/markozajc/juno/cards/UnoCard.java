@@ -3,6 +3,8 @@ package com.github.markozajc.juno.cards;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.github.markozajc.juno.hands.UnoHand;
+
 /**
  * A class representing a card in UNO. The only mandatory thing for a card is a
  * color, which can be one of five colors in {@link UnoCardColor}.
@@ -13,9 +15,10 @@ public abstract class UnoCard {
 
 	@Nonnull
 	private final UnoCardColor color;
-
 	@Nullable
 	private UnoCardColor mask;
+	@Nullable
+	private UnoHand placer;
 
 	/**
 	 * Creates a new {@link UnoCard}.
@@ -66,14 +69,32 @@ public abstract class UnoCard {
 		this.mask = mask;
 	}
 
+	public final void setPlacer(@Nonnull UnoHand placer) {
+		if (this.placer != null)
+			throw new IllegalStateException("This card's placer has already been set.");
+
+		this.placer = placer;
+	}
+
+	@Nonnull
+	public UnoHand getPlacer() {
+		UnoHand cardPlacer = this.placer;
+		if (cardPlacer == null)
+			throw new IllegalStateException("This card's placer hasn't been set yet.");
+
+		return cardPlacer;
+	}
+
 	/**
 	 * Resets the card's state. The card should be in the same state as if it were just
 	 * created from the constructor after this method is called.
 	 */
 	public void reset() {
-		if (getOriginalColor().equals(UnoCardColor.WILD))
-			setColorMask(null);
-		// Unsets the color mask (if possible)
+		this.mask = null;
+		// Unsets the color mask
+
+		this.placer = null;
+		// Unsets the placer
 	}
 
 	/**

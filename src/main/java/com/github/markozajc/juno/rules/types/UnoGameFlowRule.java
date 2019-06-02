@@ -8,8 +8,8 @@ import com.github.markozajc.juno.game.UnoControlledGame;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.rules.UnoRule;
-import com.github.markozajc.juno.rules.types.flow.UnoFlowPhaseConclusion;
-import com.github.markozajc.juno.rules.types.flow.UnoTurnInitializationConclusion;
+import com.github.markozajc.juno.rules.types.flow.UnoInitializationConclusion;
+import com.github.markozajc.juno.rules.types.flow.UnoPhaseConclusion;
 
 /**
  * A rule type that controls the flow of the game in {@link UnoControlledGame}.
@@ -25,11 +25,11 @@ public interface UnoGameFlowRule extends UnoRule {
 	 *            {@link UnoHand} of this turn
 	 * @param game
 	 *            the ongoing {@link UnoGame}
-	 * @return a {@link UnoTurnInitializationConclusion}
+	 * @return a {@link UnoInitializationConclusion}
 	 */
 	@SuppressWarnings("unused")
-	public default UnoTurnInitializationConclusion turnInitialization(@Nonnull UnoHand hand, @Nonnull UnoGame game) {
-		return UnoTurnInitializationConclusion.NOTHING;
+	public default UnoInitializationConclusion initializationPhase(@Nonnull UnoHand hand, @Nonnull UnoGame game) {
+		return UnoInitializationConclusion.NOTHING;
 	}
 
 	/**
@@ -42,11 +42,11 @@ public interface UnoGameFlowRule extends UnoRule {
 	 * @param decidedCard
 	 *            the {@link UnoCard} the hand has decided to play (or {@code null} -
 	 *            request to draw a card)
-	 * @return a {@link UnoFlowPhaseConclusion}
+	 * @return a {@link UnoPhaseConclusion}
 	 */
 	@SuppressWarnings("unused")
-	public default UnoFlowPhaseConclusion afterHandDecision(@Nonnull UnoHand hand, @Nonnull UnoGame game, @Nullable UnoCard decidedCard) {
-		return UnoFlowPhaseConclusion.NOTHING;
+	public default UnoPhaseConclusion decisionPhase(@Nonnull UnoHand hand, @Nonnull UnoGame game, @Nullable UnoCard decidedCard) {
+		return UnoPhaseConclusion.NOTHING;
 	}
 
 }

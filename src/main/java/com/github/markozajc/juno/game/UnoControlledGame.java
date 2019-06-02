@@ -11,8 +11,8 @@ import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.rules.UnoRule;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
-import com.github.markozajc.juno.rules.types.flow.UnoFlowPhaseConclusion;
-import com.github.markozajc.juno.rules.types.flow.UnoTurnInitializationConclusion;
+import com.github.markozajc.juno.rules.types.flow.UnoInitializationConclusion;
+import com.github.markozajc.juno.rules.types.flow.UnoPhaseConclusion;
 import com.github.markozajc.juno.utils.UnoRuleUtils;
 
 /**
@@ -46,30 +46,41 @@ public abstract class UnoControlledGame extends UnoGame {
 	protected void playHand(UnoHand hand) {
 		List<UnoGameFlowRule> rules = UnoRuleUtils.filterRuleKind(this.getRules().getRules(), UnoGameFlowRule.class);
 
-		boolean repeatInitialization = true;
-		boolean shouldLoseATurn = false;
+		boolean skip = initializationPhase(hand, this, rules);
 
-		while (repeatInitialization) {
-			repeatInitialization = false;
+		if (!skip)
+			decisionPhase(hand, this, rules);
+
+	}
+
+	private static boolean initializationPhase(@Nonnull UnoHand hand, @Nonnull UnoGame game, @Nonnull List<UnoGameFlowRule> rules) {
+		boolean repeat = true;
+		boolean loseATurn = false;
+		while (repeat) {
+			repeat = false;
 
 			for (UnoGameFlowRule rule : rules) {
-				UnoTurnInitializationConclusion tic = rule.turnInitialization(hand, this);
+				UnoInitializationConclusion tic = rule.initializationPhase(hand, game);
 				if (tic.shouldRepeat())
-					repeatInitialization = true;
+					repeat = true;
 
 				if (tic.shouldLoseATurn())
-					shouldLoseATurn = true;
+					loseATurn = true;
 			}
 		}
 
+		return loseATurn;
+	}
+
+	private static void decisionPhase(@Nonnull UnoHand hand, @Nonnull UnoGame game, @Nonnull List<UnoGameFlowRule> rules) {
 		boolean repeatDecision = true;
-		while (repeatDecision && !shouldLoseATurn) {
+		while (repeatDecision) {
 			repeatDecision = false;
 
-			UnoCard decision = hand.playCard(this, false);
+			UnoCard decision = hand.playCard(game, false);
 
 			for (UnoGameFlowRule rule : rules) {
-				UnoFlowPhaseConclusion fpc = rule.afterHandDecision(hand, this, decision);
+				UnoPhaseConclusion fpc = rule.decisionPhase(hand, game, decision);
 				if (fpc.shouldRepeat())
 					repeatDecision = true;
 			}
