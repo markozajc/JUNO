@@ -44,7 +44,7 @@ public class DrawPlacementRules {
 	}
 
 	/**
-	 * The extra "hitch" to the draw four; prohibits placement of wild draw four on a
+	 * The extra color-based "hitch" to the draw four; prohibits placement of wild draw four on a
 	 * card in case its holder has a hand of the same color as that card (doesn't apply
 	 * to wild-colored cards).
 	 *
@@ -54,9 +54,9 @@ public class DrawPlacementRules {
 
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
-			if (card instanceof UnoDrawCard && !target.getColor().equals(UnoCardColor.WILD)
+			if (card instanceof UnoDrawCard && !target.getOriginalColor().equals(UnoCardColor.WILD)
 					&& ((UnoDrawCard) card).getAmount() == 4
-					&& !UnoUtils.getColorCards(target.getColor(), hand.getCards()).isEmpty())
+					&& !UnoUtils.getColorCards(target.getOriginalColor(), hand.getCards()).isEmpty())
 				return PlacementClearance.PROHIBITED;
 			// Prohibits the placement of the wild draw four if the hand possesses a card that
 			// has the same color as the target (assumed to be the top of the discard pile) card.
