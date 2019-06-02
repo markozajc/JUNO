@@ -2,6 +2,7 @@ package com.github.markozajc.juno.hands.impl;
 
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -122,7 +123,7 @@ public class StrategicUnoHand extends UnoHand {
 
 	@SuppressWarnings("null")
 	@Override
-	public UnoCard playCard(UnoGame game, boolean drawn) {
+	public UnoCard playCard(UnoGame game) {
 		UnoCard top = game.discard.getTop();
 		List<UnoCard> possible = UnoRuleUtils.combinedPlacementAnalysis(top, this.cards, game.getRules(), this);
 
@@ -166,6 +167,11 @@ public class StrategicUnoHand extends UnoHand {
 				.findFirst()
 				.orElseThrow(() -> new IllegalStateException("Couldn't choose a color (UnoUtils malfuntioned!)"))
 				.getValue();
+	}
+
+	@Override
+	public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard) {
+		return Objects.equals(playCard(game), drawnCard);
 	}
 
 }

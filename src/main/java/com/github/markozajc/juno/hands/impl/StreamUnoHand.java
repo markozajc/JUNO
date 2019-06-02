@@ -46,7 +46,7 @@ public class StreamUnoHand extends UnoHand {
 
 	@SuppressWarnings("null")
 	@Override
-	public UnoCard playCard(UnoGame game, boolean drawn) {
+	public UnoCard playCard(UnoGame game) {
 		UnoCard top = game.discard.getTop();
 		List<UnoCard> possible = UnoRuleUtils.combinedPlacementAnalysis(top, this.cards, game.getRules(), this);
 
@@ -54,10 +54,7 @@ public class StreamUnoHand extends UnoHand {
 				+ game.playerTwoHand.getSize() + " | Draw pile size: " + game.draw.getSize() + " | Discard pile size: "
 				+ game.discard.getSize() + " | Top card: " + game.discard.getTop() + "]");
 
-		if (drawn) {
-			this.ps.println("0 - Pass");
-
-		} else if (top instanceof UnoDrawCard && !((UnoDrawCard) top).isPlayed()) {
+		if (top instanceof UnoDrawCard && !((UnoDrawCard) top).isPlayed()) {
 			this.ps.println("0 - Draw " + game.discard.getConsecutiveDraw() + " cards from a " + top);
 
 		} else {
@@ -142,6 +139,12 @@ public class StreamUnoHand extends UnoHand {
 
 			this.ps.println(INVALID_CHOICE_STRING);
 		}
+	}
+
+	@Override
+	public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard) {
+		this.ps.println("You have drawn a " + drawnCard.toString() + ". Do you want to place it? [y/n]");
+		return this.scanner.nextLine().equals("y");
 	}
 
 }
