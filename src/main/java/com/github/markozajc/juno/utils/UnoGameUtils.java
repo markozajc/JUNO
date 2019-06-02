@@ -70,6 +70,19 @@ public class UnoGameUtils {
 		return game.draw.draw(amount);
 	}
 
+	/**
+	 * Places a card to the {@link UnoGame}'s discard pile. This will also set the card's
+	 * placer accordingly.
+	 *
+	 * @param game
+	 *            the ongoing {@link UnoGame}
+	 * @param placer
+	 *            the {@link UnoHand} placing the card
+	 * @param toPlace
+	 *            the {@link UnoCard} to place
+	 * @return whether the card was placed or not. Returns {@code false} in case
+	 *         {@link #canPlaceCard(UnoHand, UnoGame, UnoCard)} returns {@code false}
+	 */
 	public static boolean placeCard(@Nonnull UnoGame game, @Nonnull UnoHand placer, @Nonnull UnoCard toPlace) {
 		if (!canPlaceCard(placer, game, toPlace))
 			return false;

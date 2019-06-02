@@ -88,8 +88,9 @@ public class TestUtils {
 
 	/**
 	 * Returns a dummy {@link UnoDeck} containing a preferred {@link Collection} of
-	 * cards. Calling either {@link UnoHand#playCard(UnoGame, boolean)} or
-	 * {@link UnoHand#chooseColor(UnoGame)} will throw an
+	 * cards. Calling either {@link UnoHand#playCard(UnoGame)},
+	 * {@link UnoHand#chooseColor(UnoGame)} or
+	 * {@link UnoHand#shouldPlayDrawnCard(UnoGame, UnoCard)} will throw an
 	 * {@link UnsupportedOperationException}.
 	 *
 	 * @param cards

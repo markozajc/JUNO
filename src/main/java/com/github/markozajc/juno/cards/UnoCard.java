@@ -69,6 +69,15 @@ public abstract class UnoCard {
 		this.mask = mask;
 	}
 
+	/**
+	 * Sets this card's placer - the one placing the card. A placer can only be set once
+	 * and should be set when the card is placed to the discard pile.
+	 *
+	 * @param placer
+	 *            this card's placer
+	 * @throws IllegalStateException
+	 *             in case the placer has already been set.
+	 */
 	public final void setPlacer(@Nonnull UnoHand placer) {
 		if (this.placer != null)
 			throw new IllegalStateException("This card's placer has already been set.");
@@ -76,6 +85,17 @@ public abstract class UnoCard {
 		this.placer = placer;
 	}
 
+	/**
+	 * Returns the card's placer - the {@link UnoHand} that has placed it. This will
+	 * throw an {@link IllegalStateException} if the placer has not been set, so be
+	 * careful about calling it on cards - only cards that are in the discard pile
+	 * (should) have a placer. Neither cards in the draw pile or the ones possessed by
+	 * the hands shouldn't have this value set.
+	 *
+	 * @return this card's placer
+	 * @throws IllegalStateException
+	 *             in case this card's placer hasn't been set yet
+	 */
 	@Nonnull
 	public UnoHand getPlacer() {
 		UnoHand cardPlacer = this.placer;

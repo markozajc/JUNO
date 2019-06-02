@@ -100,6 +100,17 @@ public abstract class UnoHand implements UnoPile {
 	@Nonnull
 	public abstract UnoCardColor chooseColor(UnoGame game);
 
+	/**
+	 * Lets the hand decide whether to place the just-drawn {@link UnoCard} or not. This
+	 * method will only be called if the card can actually be placed so there's no need
+	 * to check that.
+	 *
+	 * @param game
+	 *            the ongoing {@link UnoGame}
+	 * @param drawnCard
+	 *            the just-drawn {@link UnoCard}
+	 * @return whether the card should be placed
+	 */
 	public abstract boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard);
 
 	/**
