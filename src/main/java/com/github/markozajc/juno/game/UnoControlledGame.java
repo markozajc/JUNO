@@ -77,7 +77,7 @@ public abstract class UnoControlledGame extends UnoGame {
 		while (repeatDecision) {
 			repeatDecision = false;
 
-			UnoCard decision = hand.playCard(game, false);
+			UnoCard decision = hand.playCard(game);
 
 			for (UnoGameFlowRule rule : rules) {
 				UnoPhaseConclusion fpc = rule.decisionPhase(hand, game, decision);
