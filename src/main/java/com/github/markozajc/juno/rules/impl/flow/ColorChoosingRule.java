@@ -15,6 +15,7 @@ import com.github.markozajc.juno.rules.types.flow.UnoInitializationConclusion;
  */
 public class ColorChoosingRule implements UnoGameFlowRule {
 
+	private static final String INVALID_COLOR = "%s tried to set an invalid color.";
 	private static final String COLOR_CHANGED = "%s set the color to %s.";
 
 	@Override
@@ -23,7 +24,7 @@ public class ColorChoosingRule implements UnoGameFlowRule {
 			UnoCardColor color = game.getTopCard().getPlacer().chooseColor(game);
 
 			if (color.equals(UnoCardColor.WILD)) {
-				game.onEvent("%s tried to set an invalid color.", game.getTopCard().getPlacer().getName());
+				game.onEvent(INVALID_COLOR, game.getTopCard().getPlacer().getName());
 				return new UnoInitializationConclusion(true, false);
 			}
 
