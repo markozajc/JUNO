@@ -28,13 +28,19 @@ public class TestUtils {
 		}
 
 		@Override
-		public UnoCard playCard(UnoGame game, boolean drawn) {
+		public UnoCard playCard(UnoGame game) {
 			throw new UnsupportedOperationException("DummyUnoHand can not play cards.");
 		}
 
 		@Override
 		public UnoCardColor chooseColor(UnoGame game) {
 			throw new UnsupportedOperationException("DummyUnoHand can not choose colors.");
+		}
+
+		@Override
+		public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard) {
+			throw new UnsupportedOperationException(
+					"DummyUnoHand can not decide whether it should play drawn cards or not.");
 		}
 
 	}
