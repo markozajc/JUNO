@@ -84,11 +84,6 @@ public abstract class UnoHand implements UnoPile {
 	 *
 	 * @param game
 	 *            the ongoing {@link UnoGame}
-	 * @param drawn
-	 *            whether this hand has drawn a card in this turn. This method can
-	 *            actually be called twice in a turn; first time to let it do something
-	 *            and second time in case the hand has requested to draw and has drawn a
-	 *            card that it can place on top of the discard pile
 	 * @return the {@link UnoCard} to play or {@code null} if the hand wants to draw a
 	 *         card
 	 */
