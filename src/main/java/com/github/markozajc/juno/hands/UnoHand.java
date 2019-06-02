@@ -93,7 +93,7 @@ public abstract class UnoHand implements UnoPile {
 	 *         card
 	 */
 	@Nullable
-	public abstract UnoCard playCard(UnoGame game, boolean drawn);
+	public abstract UnoCard playCard(UnoGame game);
 
 	/**
 	 * Chooses the {@link UnoCardColor} to set for a wild card.
@@ -104,6 +104,8 @@ public abstract class UnoHand implements UnoPile {
 	 */
 	@Nonnull
 	public abstract UnoCardColor chooseColor(UnoGame game);
+
+	public abstract boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard);
 
 	/**
 	 * @return hand's name
