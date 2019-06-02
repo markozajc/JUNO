@@ -8,8 +8,8 @@ import com.github.markozajc.juno.rules.types.flow.UnoPhaseConclusion;
 import com.github.markozajc.juno.utils.UnoGameUtils;
 
 /**
- * The game flow rule responsible for placing the {@link UnoCard}s that {@link UnoHand}s decide
- * to place.
+ * The game flow rule responsible for placing the {@link UnoCard}s that
+ * {@link UnoHand}s decide to place.
  *
  * @author Marko Zajc
  */
@@ -21,13 +21,11 @@ public class CardPlacementRule implements UnoGameFlowRule {
 	@Override
 	public UnoPhaseConclusion decisionPhase(UnoHand hand, UnoGame game, UnoCard decidedCard) {
 		if (decidedCard != null) {
-			if (!UnoGameUtils.canPlaceCard(hand, game, decidedCard)) {
+			if (!UnoGameUtils.placeCard(game, hand, decidedCard)) {
 				game.onEvent(INVALID_CARD, hand.getName());
 				return new UnoPhaseConclusion(true);
 			}
 
-			hand.addToDiscard(game.discard, decidedCard);
-			decidedCard.setPlacer(hand);
 			game.onEvent(CARD_PLACED, decidedCard.getPlacer().getName(), decidedCard.toString());
 		}
 
