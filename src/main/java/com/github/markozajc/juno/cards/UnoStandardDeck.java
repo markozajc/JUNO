@@ -16,7 +16,8 @@ import com.github.markozajc.juno.decks.UnoDeck;
  * An immutable class containing the standard deck of UNO cards.
  *
  * @author Marko Zajc
- * @see <a href="https://en.wikipedia.org/wiki/File:UNO_cards_deck.svg">Reference vector graphic of a UNO deck</a>
+ * @see <a href="https://en.wikipedia.org/wiki/File:UNO_cards_deck.svg">Reference
+ *      vector graphic of a UNO deck</a>
  */
 @SuppressWarnings("null")
 public class UnoStandardDeck implements UnoDeck {
@@ -31,8 +32,7 @@ public class UnoStandardDeck implements UnoDeck {
 				if (color.equals(UnoCardColor.WILD))
 					continue;
 
-				UnoCard card = new UnoActionCard(color, action);
-				tempDeck.addAll(Arrays.asList(card, card));
+				tempDeck.addAll(Arrays.asList(new UnoActionCard(color, action), new UnoActionCard(color, action)));
 				// Adds two of each action cards
 			}
 		}
@@ -43,13 +43,11 @@ public class UnoStandardDeck implements UnoDeck {
 				continue;
 
 			for (int i = 0; i <= 9; i++) {
-				UnoCard card = new UnoNumericCard(color, i);
-
 				if (i != 0) {
-					tempDeck.addAll(Arrays.asList(card, card));
+					tempDeck.addAll(Arrays.asList(new UnoNumericCard(color, i), new UnoNumericCard(color, i)));
 
 				} else {
-					tempDeck.add(card);
+					tempDeck.add(new UnoNumericCard(color, i));
 					// Yes, there's just one of each 0 cards in the official rules
 				}
 			}
