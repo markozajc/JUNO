@@ -23,12 +23,12 @@ public class ColorChoosingRule implements UnoGameFlowRule {
 			UnoCardColor color = game.getTopCard().getPlacer().chooseColor(game);
 
 			if (color.equals(UnoCardColor.WILD)) {
-				game.onEvent("%s tried to set an invalid color.", hand.getName());
+				game.onEvent("%s tried to set an invalid color.", game.getTopCard().getPlacer().getName());
 				return new UnoInitializationConclusion(true, false);
 			}
 
 			game.getTopCard().setColorMask(color);
-			game.onEvent(COLOR_CHANGED, hand.getName(), color.toString());
+			game.onEvent(COLOR_CHANGED, game.getTopCard().getPlacer().getName(), color.toString());
 		}
 
 		return UnoInitializationConclusion.NOTHING;

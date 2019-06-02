@@ -28,7 +28,7 @@ public class CardPlacementRule implements UnoGameFlowRule {
 
 			hand.addToDiscard(game.discard, decidedCard);
 			decidedCard.setPlacer(hand);
-			game.onEvent(CARD_PLACED, hand.getName(), decidedCard.toString());
+			game.onEvent(CARD_PLACED, decidedCard.getPlacer().getName(), decidedCard.toString());
 		}
 
 		return UnoPhaseConclusion.NOTHING;
