@@ -70,4 +70,14 @@ public class UnoGameUtils {
 		return game.draw.draw(amount);
 	}
 
+	public static boolean placeCard(@Nonnull UnoGame game, @Nonnull UnoHand placer, @Nonnull UnoCard toPlace) {
+		if (!canPlaceCard(placer, game, toPlace))
+			return false;
+
+		placer.addToDiscard(game.discard, toPlace);
+		toPlace.setPlacer(placer);
+
+		return true;
+	}
+
 }
