@@ -34,8 +34,8 @@ public class PureRandomUnoHand extends UnoHand {
 
 	@SuppressWarnings("null")
 	@Override
-	public UnoCard playCard(UnoGame game, boolean drawn) {
-		List<UnoCard> possibilities = UnoRuleUtils.combinedPlacementAnalysis(game.discard.getTop(), this.cards,
+	public UnoCard playCard(UnoGame game) {
+		List<UnoCard> possibilities = UnoRuleUtils.combinedPlacementAnalysis(game.getDiscard().getTop(), this.cards,
 			game.getRules(), this);
 		if (possibilities.isEmpty())
 			return null;
@@ -46,6 +46,11 @@ public class PureRandomUnoHand extends UnoHand {
 	@Override
 	public UnoCardColor chooseColor(UnoGame game) {
 		return UnoCardColor.values()[RANDOM.nextInt(3)];
+	}
+
+	@Override
+	public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard) {
+		return RANDOM.nextBoolean();
 	}
 
 }

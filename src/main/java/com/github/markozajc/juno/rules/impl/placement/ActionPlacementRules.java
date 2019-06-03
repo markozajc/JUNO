@@ -1,4 +1,4 @@
-package com.github.markozajc.juno.rules.impl;
+package com.github.markozajc.juno.rules.impl.placement;
 
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.impl.UnoActionCard;

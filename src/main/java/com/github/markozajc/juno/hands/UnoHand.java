@@ -3,6 +3,7 @@ package com.github.markozajc.juno.hands;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -11,7 +12,8 @@ import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.game.UnoGame.UnoPlayer;
 import com.github.markozajc.juno.piles.UnoPile;
-import com.github.markozajc.juno.piles.impl.UnoDrawPile;
+import com.github.markozajc.juno.piles.impl.UnoDiscardPile;
+import com.github.markozajc.juno.utils.UnoGameUtils;
 
 /**
  * A representation of a hand - the thing that holds and places cards to the discard
@@ -57,17 +59,18 @@ public abstract class UnoHand implements UnoPile {
 	}
 
 	/**
-	 * Draws an amount of cards from a given {@link UnoDrawPile}.
+	 * Draws an amount of cards from the draw pile in the given {@link UnoGame} (this
+	 * will also add the cards to the {@link UnoHand}).
 	 *
-	 * @param pile
-	 *            the {@link UnoDrawPile} to draw from
+	 * @param game
+	 *            the ongoing {@link UnoGame}
 	 * @param amount
 	 *            the amount of cards to draw
 	 * @return the drawn cards
 	 */
 	@Nonnull
-	public final List<UnoCard> draw(UnoDrawPile pile, int amount) {
-		List<UnoCard> drawnCards = pile.draw(amount);
+	public final List<UnoCard> draw(@Nonnull UnoGame game, @Nonnegative int amount) {
+		List<UnoCard> drawnCards = UnoGameUtils.drawCards(game, amount);
 		this.cards.addAll(drawnCards);
 		return drawnCards;
 	}
@@ -81,16 +84,11 @@ public abstract class UnoHand implements UnoPile {
 	 *
 	 * @param game
 	 *            the ongoing {@link UnoGame}
-	 * @param drawn
-	 *            whether this hand has drawn a card in this turn. This method can
-	 *            actually be called twice in a turn; first time to let it do something
-	 *            and second time in case the hand has requested to draw and has drawn a
-	 *            card that it can place on top of the discard pile
 	 * @return the {@link UnoCard} to play or {@code null} if the hand wants to draw a
 	 *         card
 	 */
 	@Nullable
-	public abstract UnoCard playCard(UnoGame game, boolean drawn);
+	public abstract UnoCard playCard(UnoGame game);
 
 	/**
 	 * Chooses the {@link UnoCardColor} to set for a wild card.
@@ -103,11 +101,53 @@ public abstract class UnoHand implements UnoPile {
 	public abstract UnoCardColor chooseColor(UnoGame game);
 
 	/**
+	 * Lets the hand decide whether to place the just-drawn {@link UnoCard} or not. This
+	 * method will only be called if the card can actually be placed so there's no need
+	 * to check that.
+	 *
+	 * @param game
+	 *            the ongoing {@link UnoGame}
+	 * @param drawnCard
+	 *            the just-drawn {@link UnoCard}
+	 * @return whether the card should be placed
+	 */
+	public abstract boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard);
+
+	/**
 	 * @return hand's name
 	 */
 	@Nonnull
 	public String getName() {
 		return this.name;
+	}
+
+	/**
+	 * Adds a {@link UnoCard} from this {@link UnoHand} to a {@link UnoDiscardPile} and
+	 * removes it from the {@link UnoHand}. The return value here determines whether the
+	 * {@link UnoHand} actually possesses the given {@link UnoCard} or not. The
+	 * {@link UnoCard} will also not be added to the {@link UnoDiscardPile} in case the
+	 * {@link UnoHand} doesn't possess it.
+	 *
+	 * @param discard
+	 *            the {@link UnoDiscardPile} to discard the {@link UnoCard} to
+	 * @param card
+	 *            the {@link UnoCard} to discard
+	 * @return whether the {@link UnoHand} actually possesses the given {@link UnoCard}
+	 */
+	public final boolean addToDiscard(@Nonnull UnoDiscardPile discard, @Nonnull UnoCard card) {
+		if (!this.cards.remove(card))
+			return false;
+
+		discard.add(card);
+
+		return true;
+	}
+
+	/**
+	 * Clears the {@link UnoHand}, dereferencing all {@link UnoCard}s from it.
+	 */
+	public final void clear() {
+		this.cards.clear();
 	}
 
 }

@@ -46,19 +46,17 @@ public class StreamUnoHand extends UnoHand {
 
 	@SuppressWarnings("null")
 	@Override
-	public UnoCard playCard(UnoGame game, boolean drawn) {
-		UnoCard top = game.discard.getTop();
+	public UnoCard playCard(UnoGame game) {
+		UnoCard top = game.getDiscard().getTop();
 		List<UnoCard> possible = UnoRuleUtils.combinedPlacementAnalysis(top, this.cards, game.getRules(), this);
 
-		this.ps.println("Choose a card:      [" + game.playerTwoHand.getName() + "'s hand size: "
-				+ game.playerTwoHand.getSize() + " | Draw pile size: " + game.draw.getSize() + " | Discard pile size: "
-				+ game.discard.getSize() + " | Top card: " + game.discard.getTop() + "]");
+		this.ps.println(
+			"Choose a card:      [" + game.playerTwoHand.getName() + "'s hand size: " + game.playerTwoHand.getSize()
+					+ " | Draw pile size: " + game.getDraw().getSize() + " | Discard pile size: "
+					+ game.getDiscard().getSize() + " | Top card: " + game.getDiscard().getTop() + "]");
 
-		if (drawn) {
-			this.ps.println("0 - Pass");
-
-		} else if (top instanceof UnoDrawCard && !((UnoDrawCard) top).isPlayed()) {
-			this.ps.println("0 - Draw " + game.discard.getConsecutiveDraw() + " cards from a " + top);
+		if (top instanceof UnoDrawCard && !((UnoDrawCard) top).isPlayed()) {
+			this.ps.println("0 - Draw " + game.getDiscard().getConsecutiveDraw() + " cards from a " + top);
 
 		} else {
 			this.ps.println("0 - Draw");
@@ -142,6 +140,12 @@ public class StreamUnoHand extends UnoHand {
 
 			this.ps.println(INVALID_CHOICE_STRING);
 		}
+	}
+
+	@Override
+	public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard) {
+		this.ps.println("You have drawn a " + drawnCard.toString() + ". Do you want to place it? [y/n]");
+		return this.scanner.nextLine().equals("y");
 	}
 
 }

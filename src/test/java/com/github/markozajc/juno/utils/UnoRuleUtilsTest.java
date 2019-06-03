@@ -27,17 +27,17 @@ class UnoRuleUtilsTest {
 		UnoRulePack pack = UnoOfficialRules.getPack();
 
 		UnoCard[] cards = new UnoCard[] {
-				/* 0 */ new UnoNumericCard(0, UnoCardColor.BLUE),
-				/* 1 */ new UnoNumericCard(0, UnoCardColor.RED),
-				/* 2 */ new UnoNumericCard(1, UnoCardColor.YELLOW),
-				/* 3 */ new UnoNumericCard(1, UnoCardColor.BLUE),
+				/* 0 */ new UnoNumericCard(UnoCardColor.BLUE, 0),
+				/* 1 */ new UnoNumericCard(UnoCardColor.RED, 0),
+				/* 2 */ new UnoNumericCard(UnoCardColor.YELLOW, 1),
+				/* 3 */ new UnoNumericCard(UnoCardColor.BLUE, 1),
 				/* 4 */ new UnoWildCard(),
 				/* 5 */ new UnoDrawCard(),
 				/* 6 */ new UnoDrawCard(UnoCardColor.BLUE),
 				/* 7 */ new UnoDrawCard(UnoCardColor.RED),
-				/* 8 */ new UnoActionCard(UnoAction.SKIP, UnoCardColor.YELLOW),
-				/* 9 */ new UnoActionCard(UnoAction.REVERSE, UnoCardColor.GREEN),
-				/* 10 */ new UnoActionCard(UnoAction.REVERSE, UnoCardColor.BLUE)
+				/* 8 */ new UnoActionCard(UnoCardColor.YELLOW, UnoAction.SKIP),
+				/* 9 */ new UnoActionCard(UnoCardColor.GREEN, UnoAction.REVERSE),
+				/* 10 */ new UnoActionCard(UnoCardColor.BLUE, UnoAction.REVERSE)
 
 		};
 		// Creates a list of cards to be tested
@@ -92,6 +92,17 @@ class UnoRuleUtilsTest {
 		/*
 		 * Expected: Wild, Draw four
 		 */
+
+		cards[4].setColorMask(UnoCardColor.BLUE);
+		assertTrue(TestUtils.listEqualsUnordered(
+			UnoRuleUtils.combinedPlacementAnalysis(cards[4], Arrays.asList(cards), pack, hand),
+			Arrays.asList(cards[0], cards[3], cards[4], cards[5], cards[6], cards[10])));
+		// Pack: official
+		// Card: Wild <4>, masked as Red
+		/*
+		 * Expected: Blue 0, Blue 1, Wild, Draw four, Blue draw two, Blue reverse
+		 */
+		cards[4].reset();
 
 		assertTrue(TestUtils.listEqualsUnordered(
 			UnoRuleUtils.combinedPlacementAnalysis(cards[5], Arrays.asList(cards), pack, hand),

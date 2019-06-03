@@ -28,13 +28,19 @@ public class TestUtils {
 		}
 
 		@Override
-		public UnoCard playCard(UnoGame game, boolean drawn) {
+		public UnoCard playCard(UnoGame game) {
 			throw new UnsupportedOperationException("DummyUnoHand can not play cards.");
 		}
 
 		@Override
 		public UnoCardColor chooseColor(UnoGame game) {
 			throw new UnsupportedOperationException("DummyUnoHand can not choose colors.");
+		}
+
+		@Override
+		public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard) {
+			throw new UnsupportedOperationException(
+					"DummyUnoHand can not decide whether it should play drawn cards or not.");
 		}
 
 	}
@@ -82,8 +88,9 @@ public class TestUtils {
 
 	/**
 	 * Returns a dummy {@link UnoDeck} containing a preferred {@link Collection} of
-	 * cards. Calling either {@link UnoHand#playCard(UnoGame, boolean)} or
-	 * {@link UnoHand#chooseColor(UnoGame)} will throw an
+	 * cards. Calling either {@link UnoHand#playCard(UnoGame)},
+	 * {@link UnoHand#chooseColor(UnoGame)} or
+	 * {@link UnoHand#shouldPlayDrawnCard(UnoGame, UnoCard)} will throw an
 	 * {@link UnsupportedOperationException}.
 	 *
 	 * @param cards

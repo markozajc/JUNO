@@ -95,7 +95,13 @@ public class UnoDiscardPile implements UnoPile {
 
 	/**
 	 * Marks the top {@link UnoCard} as played (if possible).
+	 *
+	 * @deprecated Uses a deprecated way of changing the card, does not let you know
+	 *             whether the card has actually been deprecated and requires you
+	 *             hardcode in the methods for each {@link UnoCard}. Overall a method you
+	 *             shouldn't be using.
 	 */
+	@Deprecated
 	public void markTopPlayed() {
 		UnoCard top = getTop();
 		if (!(top instanceof UnoDrawCard))
@@ -171,6 +177,13 @@ public class UnoDiscardPile implements UnoPile {
 		this.cards.add(top);
 
 		return pile;
+	}
+
+	/**
+	 * Clears the pile, dereferencing all {@link UnoCard}s from it.
+	 */
+	public void clear() {
+		this.cards.clear();
 	}
 
 }
