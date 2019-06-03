@@ -4,6 +4,7 @@ import java.io.PrintStream;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.decks.UnoDeck;
@@ -23,26 +24,6 @@ import com.github.markozajc.juno.rules.pack.UnoRulePack;
  * @author Marko Zajc
  */
 public abstract class UnoGame {
-
-	/**
-	 * A list of players in an UNO game.
-	 *
-	 * @author Marko Zajc
-	 */
-	public enum UnoPlayerIdentification {
-		/**
-		 * The first player. This player gets to place a card first.
-		 */
-		PLAYER1,
-		/**
-		 * The second player.
-		 */
-		PLAYER2,
-		/**
-		 * Nobody. This is used to signal a tie by {@link UnoGame#playGame()}.
-		 */
-		NOBODY;
-	}
 
 	/**
 	 * The first player.
@@ -71,34 +52,15 @@ public abstract class UnoGame {
 	private UnoCard topCard;
 
 	/**
-	 * Returns the other {@link UnoPlayerIdentification}.
+	 * Returns the other {@link UnoPlayer}.
 	 *
 	 * @param player
-	 *            the {@link UnoPlayerIdentification} to reverse
-	 * @return the other {@link UnoPlayerIdentification}
+	 *            the {@link UnoPlayer} to reverse
+	 * @return the other {@link UnoPlayer}
 	 */
 	@Nonnull
-	private static UnoPlayerIdentification reversePlayerId(UnoPlayerIdentification player) {
-		return player.equals(UnoPlayerIdentification.PLAYER1) ? UnoPlayerIdentification.PLAYER2
-				: UnoPlayerIdentification.PLAYER1;
-	}
-
-	/**
-	 * Returns the {@link UnoPlayer} connected with the given
-	 * {@link UnoPlayerIdentification}.
-	 *
-	 * @param playerId
-	 *            the {@link UnoPlayerIdentification}
-	 * @param first
-	 *            the first {@link UnoPlayer}
-	 * @param second
-	 *            the second {@link UnoPlayer}
-	 * @return the resolved {@link UnoPlayer}
-	 */
-	@SuppressWarnings("null")
-	@Nonnull
-	private static UnoPlayer decidePlayer(UnoPlayerIdentification playerId, UnoPlayer first, UnoPlayer second) {
-		return playerId.equals(UnoPlayerIdentification.PLAYER1) ? first : second;
+	private UnoPlayer reversePlayer(UnoPlayer player) {
+		return player.equals(this.first) ? this.second : this.first;
 	}
 
 	/**
@@ -188,18 +150,20 @@ public abstract class UnoGame {
 	 * {@link UnoHand}s malfunctioned (unlikely) or that both {@link UnoPlayer}s'
 	 * {@link UnoHand}s were intentionally made to just draw cards (the most likely).
 	 *
-	 * @return the fallback winner
+	 * @return the fallback winner or {@code null} if it's a tie (very, very unlikely,
+	 *         but still worth mentioning)
 	 */
-	private final UnoPlayerIdentification fallbackVictory() {
+	@Nullable
+	private final UnoPlayer fallbackVictory() {
 		if (this.first.getHand().getSize() < this.second.getHand().getSize()) {
-			return UnoPlayerIdentification.PLAYER1;
+			return this.first;
 			// P1 has less cards
 
 		} else if (this.second.getHand().getSize() < this.first.getHand().getSize()) {
-			return UnoPlayerIdentification.PLAYER2;
+			return this.second;
 			// P2 has less cards
 		} else {
-			return UnoPlayerIdentification.NOBODY;
+			return null;
 			// P1 and P2 have the same amount of cards (tie)
 		}
 	}
@@ -207,21 +171,24 @@ public abstract class UnoGame {
 	/**
 	 * Plays a game of UNO.
 	 *
-	 * @return the winner {@link UnoPlayerIdentification}
+	 * @return the victorious {@link UnoPlayer}
 	 */
+	@SuppressWarnings("null")
 	@Nonnull
-	public UnoPlayerIdentification playGame() {
+	public UnoPlayer playGame() {
 		init();
 		// Initiates game
 
-		UnoPlayerIdentification winner = null;
-		for (UnoPlayerIdentification playerId = UnoPlayerIdentification.PLAYER1; winner == null; playerId = reversePlayerId(
-			playerId)) {
-			UnoPlayerIdentification reversePlayerId = reversePlayerId(playerId);
+		UnoPlayer winner = null;
+		UnoPlayer[] players = new UnoPlayer[] {
+				this.first, this.second
+		};
+
+		for (UnoPlayer player = players[0]; winner == null; player = reversePlayer(player)) {
+			UnoPlayer reversePlayer = reversePlayer(player);
 			// Gets the other player
 
-			winner = playAndCheckPlayer(decidePlayer(playerId, this.first, this.second), playerId,
-				decidePlayer(reversePlayerId, this.first, this.second), reversePlayerId);
+			winner = playAndCheckPlayer(player, reversePlayer);
 			// Gives the players a turn and checks both
 
 			if (this.discard.getSize() <= 1 && this.draw.getSize() == 0)
@@ -243,13 +210,9 @@ public abstract class UnoGame {
 	 *            the {@link UnoPlayer} to give the turn to
 	 * @param foe
 	 *            the other {@link UnoPlayer}
-	 * @param playerId
-	 *            the {@link UnoPlayerIdentification} connected with {@code player}
-	 * @param foeId
-	 *            the {@link UnoPlayerIdentification} connected with {@code foe}
 	 * @return the victor or {@code null} if nobody has won yet
 	 */
-	private UnoPlayerIdentification playAndCheckPlayer(@Nonnull UnoPlayer player, @Nonnull UnoPlayerIdentification playerId, @Nonnull UnoPlayer foe, @Nonnull UnoPlayerIdentification foeId) {
+	private UnoPlayer playAndCheckPlayer(@Nonnull UnoPlayer player, @Nonnull UnoPlayer foe) {
 		updateTopCard();
 		// Updates the top card
 
@@ -257,11 +220,11 @@ public abstract class UnoGame {
 		// Plays player's hand
 
 		if (checkVictory(player, this.discard))
-			return playerId;
+			return player;
 		// Checks whether whether player has won
 
 		if (checkVictory(foe, this.discard))
-			return foeId;
+			return foe;
 		// Checks whether whether the foe has won (only ran if the top card was a draw card
 		// and player
 		// didn't defend)
