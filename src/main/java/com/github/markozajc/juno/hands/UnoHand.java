@@ -35,19 +35,6 @@ public abstract class UnoHand implements UnoPile {
 	@Nonnull
 	protected final List<UnoCard> cards = new ArrayList<>();
 
-	@Nonnull
-	private final String name;
-
-	/**
-	 * Creates a new {@link UnoHand}.
-	 *
-	 * @param name
-	 *            hand's name
-	 */
-	public UnoHand(@Nonnull String name) {
-		this.name = name;
-	}
-
 	@Override
 	public List<UnoCard> getCards() {
 		return this.cards;
@@ -112,14 +99,6 @@ public abstract class UnoHand implements UnoPile {
 	 * @return whether the card should be placed
 	 */
 	public abstract boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard);
-
-	/**
-	 * @return hand's name
-	 */
-	@Nonnull
-	public String getName() {
-		return this.name;
-	}
 
 	/**
 	 * Adds a {@link UnoCard} from this {@link UnoHand} to a {@link UnoDiscardPile} and
