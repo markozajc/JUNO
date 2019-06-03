@@ -143,4 +143,11 @@ public abstract class UnoHand implements UnoPile {
 		return true;
 	}
 
+	/**
+	 * Clears the {@link UnoHand}, dereferencing all {@link UnoCard}s from it.
+	 */
+	public final void clear() {
+		this.cards.clear();
+	}
+
 }
