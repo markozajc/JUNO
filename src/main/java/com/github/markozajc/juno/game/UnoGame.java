@@ -301,8 +301,14 @@ public abstract class UnoGame {
 	 *
 	 * @return the {@link UnoDrawPile}
 	 */
+	@Nonnull
 	public UnoDrawPile getDraw() {
-		return this.draw;
+		UnoDrawPile drawPile = this.draw;
+		if (drawPile == null)
+			throw new IllegalStateException(
+					"The draw pile is null - please play at least one game to initialize the piles.");
+
+		return drawPile;
 	}
 
 	/**
@@ -310,6 +316,7 @@ public abstract class UnoGame {
 	 *
 	 * @return the {@link UnoDiscardPile}
 	 */
+	@Nonnull
 	public UnoDiscardPile getDiscard() {
 		return this.discard;
 	}
@@ -320,6 +327,7 @@ public abstract class UnoGame {
 	 *
 	 * @return the {@link UnoDeck}
 	 */
+	@Nonnull
 	public UnoDeck getDeck() {
 		return this.deck;
 	}
