@@ -122,7 +122,7 @@ public abstract class BasicUnoGame extends UnoGame {
 	@Override
 	protected void playHand(UnoHand hand) {
 		start: while (true) {
-			UnoCard topCard = this.discard.getTop();
+			UnoCard topCard = this.getDiscard().getTop();
 			boolean hasToDraw = topCard instanceof UnoDrawCard && !((UnoDrawCard) topCard).isPlayed();
 
 			if (!hasToDraw)
@@ -137,12 +137,12 @@ public abstract class BasicUnoGame extends UnoGame {
 
 					int draw = 1;
 					if (hasToDraw) {
-						draw = this.discard.getConsecutiveDraw();
-						this.discard.markTopPlayed();
+						draw = this.getDiscard().getConsecutiveDraw();
+						this.getDiscard().markTopPlayed();
 					}
 
-					if (this.draw.getSize() < draw) {
-						if (this.discard.getSize() < draw /* minimum draw requirement */ + 1 /* the top card */)
+					if (this.getDraw().getSize() < draw) {
+						if (this.getDiscard().getSize() < draw /* minimum draw requirement */ + 1 /* the top card */)
 							return;
 
 						onPileShuffle();
@@ -176,7 +176,7 @@ public abstract class BasicUnoGame extends UnoGame {
 				if (card instanceof UnoWildCard)
 					changeColor(hand, card);
 
-				this.discard.add(card);
+				this.getDiscard().add(card);
 
 				if (card instanceof UnoActionCard && hand.getSize() > 0)
 					continue start;

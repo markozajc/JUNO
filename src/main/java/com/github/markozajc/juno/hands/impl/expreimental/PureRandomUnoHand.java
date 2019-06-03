@@ -35,7 +35,7 @@ public class PureRandomUnoHand extends UnoHand {
 	@SuppressWarnings("null")
 	@Override
 	public UnoCard playCard(UnoGame game) {
-		List<UnoCard> possibilities = UnoRuleUtils.combinedPlacementAnalysis(game.discard.getTop(), this.cards,
+		List<UnoCard> possibilities = UnoRuleUtils.combinedPlacementAnalysis(game.getDiscard().getTop(), this.cards,
 			game.getRules(), this);
 		if (possibilities.isEmpty())
 			return null;

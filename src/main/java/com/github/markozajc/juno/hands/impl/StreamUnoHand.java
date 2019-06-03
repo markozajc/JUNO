@@ -47,15 +47,16 @@ public class StreamUnoHand extends UnoHand {
 	@SuppressWarnings("null")
 	@Override
 	public UnoCard playCard(UnoGame game) {
-		UnoCard top = game.discard.getTop();
+		UnoCard top = game.getDiscard().getTop();
 		List<UnoCard> possible = UnoRuleUtils.combinedPlacementAnalysis(top, this.cards, game.getRules(), this);
 
-		this.ps.println("Choose a card:      [" + game.playerTwoHand.getName() + "'s hand size: "
-				+ game.playerTwoHand.getSize() + " | Draw pile size: " + game.draw.getSize() + " | Discard pile size: "
-				+ game.discard.getSize() + " | Top card: " + game.discard.getTop() + "]");
+		this.ps.println(
+			"Choose a card:      [" + game.playerTwoHand.getName() + "'s hand size: " + game.playerTwoHand.getSize()
+					+ " | Draw pile size: " + game.getDraw().getSize() + " | Discard pile size: "
+					+ game.getDiscard().getSize() + " | Top card: " + game.getDiscard().getTop() + "]");
 
 		if (top instanceof UnoDrawCard && !((UnoDrawCard) top).isPlayed()) {
-			this.ps.println("0 - Draw " + game.discard.getConsecutiveDraw() + " cards from a " + top);
+			this.ps.println("0 - Draw " + game.getDiscard().getConsecutiveDraw() + " cards from a " + top);
 
 		} else {
 			this.ps.println("0 - Draw");

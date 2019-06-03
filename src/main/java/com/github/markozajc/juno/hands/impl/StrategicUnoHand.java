@@ -124,7 +124,7 @@ public class StrategicUnoHand extends UnoHand {
 	@SuppressWarnings("null")
 	@Override
 	public UnoCard playCard(UnoGame game) {
-		UnoCard top = game.discard.getTop();
+		UnoCard top = game.getDiscard().getTop();
 		List<UnoCard> possible = UnoRuleUtils.combinedPlacementAnalysis(top, this.cards, game.getRules(), this);
 
 		if (possible.isEmpty())
