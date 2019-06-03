@@ -3,8 +3,6 @@ package com.github.markozajc.juno.hands.impl.expreimental;
 import java.util.List;
 import java.util.Random;
 
-import javax.annotation.Nonnull;
-
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.game.UnoGame;
@@ -21,16 +19,6 @@ import com.github.markozajc.juno.utils.UnoRuleUtils;
 public class PureRandomUnoHand extends UnoHand {
 
 	private static final Random RANDOM = new Random();
-
-	/**
-	 * Creates a new {@link PureRandomUnoHand}.
-	 *
-	 * @param name
-	 *            hand's name
-	 */
-	public PureRandomUnoHand(@Nonnull String name) {
-		super(name);
-	}
 
 	@SuppressWarnings("null")
 	@Override

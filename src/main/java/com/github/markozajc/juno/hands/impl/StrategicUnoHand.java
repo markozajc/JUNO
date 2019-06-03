@@ -29,12 +29,8 @@ public class StrategicUnoHand extends UnoHand {
 
 	/**
 	 * Creates a new {@link StrategicUnoHand}.
-	 *
-	 * @param name
-	 *            hand's name
 	 */
 	public StrategicUnoHand(@Nonnull String name) {
-		super(name);
 	}
 
 	private static final int DRAW_CARD_THRESHOLD = 3;

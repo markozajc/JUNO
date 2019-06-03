@@ -1,7 +1,5 @@
 package com.github.markozajc.juno.hands.impl;
 
-import javax.annotation.Nonnull;
-
 /**
  * A wrapper for the {@link StreamUnoHand} that passes {@link System#in} and
  * {@link System#out} by default (making the game console-based).
@@ -16,7 +14,7 @@ public class ConsoleUnoHand extends StreamUnoHand {
 	 * @param name hand's name
 	 */
 	@SuppressWarnings("null")
-	public ConsoleUnoHand(@Nonnull String name) {
-		super(name, System.in, System.out); // NOSONAR
+	public ConsoleUnoHand() {
+		super(System.in, System.out); // NOSONAR
 	}
 }

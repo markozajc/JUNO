@@ -31,15 +31,12 @@ public class StreamUnoHand extends UnoHand {
 	/**
 	 * Creates a new {@link StreamUnoHand}.
 	 *
-	 * @param name
-	 *            hand's name
 	 * @param is
 	 *            {@link InputStream} to read from
 	 * @param ps
 	 *            {@link PrintStream} to write to
 	 */
-	public StreamUnoHand(@Nonnull String name, @Nonnull InputStream is, @Nonnull PrintStream ps) {
-		super(name);
+	public StreamUnoHand(@Nonnull InputStream is, @Nonnull PrintStream ps) {
 		this.scanner = new Scanner(is);
 		this.ps = ps;
 	}
@@ -50,10 +47,10 @@ public class StreamUnoHand extends UnoHand {
 		UnoCard top = game.getDiscard().getTop();
 		List<UnoCard> possible = UnoRuleUtils.combinedPlacementAnalysis(top, this.cards, game.getRules(), this);
 
-		this.ps.println(
-			"Choose a card:      [" + game.playerTwoHand.getName() + "'s hand size: " + game.playerTwoHand.getSize()
-					+ " | Draw pile size: " + game.getDraw().getSize() + " | Discard pile size: "
-					+ game.getDiscard().getSize() + " | Top card: " + game.getDiscard().getTop() + "]");
+		this.ps.println("Choose a card:      [/* +  TODO game.playerTwoHand.getName() +  */'s hand size: "
+				+ game.playerTwoHand.getSize() + " | Draw pile size: " + game.getDraw().getSize()
+				+ " | Discard pile size: " + game.getDiscard().getSize() + " | Top card: " + game.getDiscard().getTop()
+				+ "]");
 
 		if (top instanceof UnoDrawCard && !((UnoDrawCard) top).isPlayed()) {
 			this.ps.println("0 - Draw " + game.getDiscard().getConsecutiveDraw() + " cards from a " + top);
