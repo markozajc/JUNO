@@ -55,20 +55,17 @@ public abstract class UnoGame {
 	public final UnoHand playerTwoHand;
 
 	private final int cardAmount;
-	/**
-	 * The draw pile. This is where cards are drawn from by hands. The discard pile is
-	 * shuffled and merged into this when this gets empty.
-	 */
+
+	private UnoDrawPile draw;
+
 	@Nonnull
-	public final UnoDrawPile draw;
-	/**
-	 * The discard pile. This is where hands place their cards.
-	 */
-	@Nonnull
-	public final UnoDiscardPile discard = new UnoDiscardPile();
+	private final UnoDiscardPile discard = new UnoDiscardPile();
 
 	@Nonnull
 	private final UnoRulePack rules;
+
+	@Nonnull
+	private final UnoDeck deck;
 
 	private UnoCard topCard;
 
@@ -108,23 +105,31 @@ public abstract class UnoGame {
 	 *            first player's hand
 	 * @param playerTwoHand
 	 *            second player's hand
-	 * @param unoDeck
+	 * @param deck
 	 *            the {@link UnoDeck} to use
 	 * @param cardAmount
 	 *            the amount of card each player gets initially
 	 * @param rules
 	 *            the {@link UnoRulePack} for this {@link UnoGame}
 	 */
-	public UnoGame(@Nonnull UnoHand playerOneHand, @Nonnull UnoHand playerTwoHand, @Nonnull UnoDeck unoDeck,
+	public UnoGame(@Nonnull UnoHand playerOneHand, @Nonnull UnoHand playerTwoHand, @Nonnull UnoDeck deck,
 			@Nonnegative int cardAmount, @Nonnull UnoRulePack rules) {
 		this.playerOneHand = playerOneHand;
 		this.playerTwoHand = playerTwoHand;
-		this.draw = new UnoDrawPile(unoDeck);
+		this.deck = deck;
 		this.cardAmount = cardAmount;
 		this.rules = rules;
 	}
 
 	private void init() {
+		this.draw = new UnoDrawPile(this.deck);
+		// Creates the draw pile
+
+		this.discard.clear();
+		this.playerOneHand.clear();
+		this.playerTwoHand.clear();
+		// Clears every other pile
+
 		this.discard.add(this.draw.drawInitalCard());
 		// Draws the initial card
 
@@ -289,5 +294,34 @@ public abstract class UnoGame {
 	 *            arguments for the format
 	 */
 	public abstract void onEvent(String format, Object... arguments);
+
+	/**
+	 * Returns the draw pile. This is where cards are drawn from by hands. The discard
+	 * pile is shuffled and merged into this when this gets empty.
+	 *
+	 * @return the {@link UnoDrawPile}
+	 */
+	public UnoDrawPile getDraw() {
+		return this.draw;
+	}
+
+	/**
+	 * Returns the discard pile. This is where hands place their cards.
+	 *
+	 * @return the {@link UnoDiscardPile}
+	 */
+	public UnoDiscardPile getDiscard() {
+		return this.discard;
+	}
+
+	/**
+	 * Returns the deck in use. The deck is only used during the draw pile initialization
+	 * and always remains the same.
+	 *
+	 * @return the {@link UnoDeck}
+	 */
+	public UnoDeck getDeck() {
+		return this.deck;
+	}
 
 }
