@@ -11,6 +11,7 @@ import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.cards.impl.UnoNumericCard;
 import com.github.markozajc.juno.cards.impl.UnoWildCard;
 import com.github.markozajc.juno.decks.UnoDeck;
+import com.github.markozajc.juno.utils.UnoDeckUtils;
 
 /**
  * An immutable class containing the standard deck of UNO cards.
@@ -76,7 +77,7 @@ public class UnoStandardDeck implements UnoDeck {
 
 	@Override
 	public List<UnoCard> getCards() {
-		return new ArrayList<>(DECK);
+		return UnoDeckUtils.cloneCards(DECK);
 		// Returns a CLONE of the deck
 	}
 
