@@ -96,4 +96,9 @@ public class UnoActionCard extends UnoCard {
 		return this.played;
 	}
 
+	@Override
+	public UnoCard cloneCard() {
+		return new UnoActionCard(getColor(), getAction());
+	}
+
 }

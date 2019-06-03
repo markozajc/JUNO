@@ -127,4 +127,12 @@ public abstract class UnoCard {
 		return true;
 	}
 
+	/**
+	 * Creates a clone of the card. The clone should not contain mutable fields (color
+	 * mask, placer, etc) but only the immutable ones (original color, etc).
+	 *
+	 * @return the cloned {@link UnoCard}
+	 */
+	public abstract UnoCard cloneCard();
+
 }

@@ -23,4 +23,9 @@ public class UnoWildCard extends UnoCard {
 		return getOriginalColor().toString();
 	}
 
+	@Override
+	public UnoCard cloneCard() {
+		return new UnoWildCard();
+	}
+
 }

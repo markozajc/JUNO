@@ -60,4 +60,9 @@ public class UnoNumericCard extends UnoCard {
 		// Doesn't have a state, nothing to reset
 	}
 
+	@Override
+	public UnoCard cloneCard() {
+		return new UnoNumericCard(getColor(), getNumber());
+	}
+
 }

@@ -113,4 +113,9 @@ public class UnoDrawCard extends UnoCard {
 		this.played = true;
 	}
 
+	@Override
+	public UnoCard cloneCard() {
+		return new UnoDrawCard(getColor(), getAmount());
+	}
+
 }
