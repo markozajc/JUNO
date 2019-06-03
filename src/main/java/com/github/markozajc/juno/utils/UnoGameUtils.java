@@ -60,14 +60,14 @@ public class UnoGameUtils {
 	@Nonnull
 	@CheckReturnValue
 	public static List<UnoCard> drawCards(@Nonnull UnoGame game, @Nonnegative int amount) {
-		if (game.draw.getSize() < amount) {
-			if (game.discard.getSize() < amount /* minimum draw requirement */ + 1 /* the top card */)
+		if (game.getDraw().getSize() < amount) {
+			if (game.getDiscard().getSize() < amount /* minimum draw requirement */ + 1 /* the top card */)
 				throw new IllegalStateException("Not enough cards in draw or discard piles.");
 
 			game.discardIntoDraw();
 		}
 
-		return game.draw.draw(amount);
+		return game.getDraw().draw(amount);
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class UnoGameUtils {
 		if (!canPlaceCard(placer, game, toPlace))
 			return false;
 
-		placer.addToDiscard(game.discard, toPlace);
+		placer.addToDiscard(game.getDiscard(), toPlace);
 		toPlace.setPlacer(placer);
 
 		return true;
