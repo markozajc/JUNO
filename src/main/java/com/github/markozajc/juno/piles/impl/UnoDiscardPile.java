@@ -179,4 +179,11 @@ public class UnoDiscardPile implements UnoPile {
 		return pile;
 	}
 
+	/**
+	 * Clears the pile, dereferencing all {@link UnoCard}s from it.
+	 */
+	public void clear() {
+		this.cards.clear();
+	}
+
 }
