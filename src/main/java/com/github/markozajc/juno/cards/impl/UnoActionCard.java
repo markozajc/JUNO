@@ -49,6 +49,7 @@ public class UnoActionCard extends UnoCard {
 
 	}
 
+	@Nonnull
 	private final UnoAction action;
 
 	/**
@@ -67,6 +68,7 @@ public class UnoActionCard extends UnoCard {
 	/**
 	 * @return card's {@link UnoAction}
 	 */
+	@Nonnull
 	public UnoAction getAction() {
 		return this.action;
 	}
