@@ -37,7 +37,8 @@ public class UnoGameUtils {
 	 */
 	@SuppressWarnings("null")
 	public static boolean canPlaceCard(@Nonnull UnoPlayer placer, @Nonnull UnoGame game, @Nonnull UnoCard card) {
-		return !UnoRuleUtils.combinedPlacementAnalysis(game.getTopCard(), Arrays.asList(card), game.getRules(), placer)
+		return !UnoRuleUtils
+				.combinedPlacementAnalysis(game.getTopCard(), Arrays.asList(card), game.getRules(), placer.getHand())
 				.isEmpty();
 	}
 
