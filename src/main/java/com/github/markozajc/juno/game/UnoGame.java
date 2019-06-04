@@ -322,4 +322,12 @@ public abstract class UnoGame {
 		}
 	}
 
+	public UnoPlayer getFirstPlayer() {
+		return this.first;
+	}
+
+	public UnoPlayer getSecondPlayer() {
+		return this.second;
+	}
+
 }
