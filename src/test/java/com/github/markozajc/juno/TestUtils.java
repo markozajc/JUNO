@@ -11,6 +11,7 @@ import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.players.UnoPlayer;
 
 /**
  * This is not actually a test class. Instead it provides shared utility methods to
@@ -23,12 +24,11 @@ public class TestUtils {
 	private static class DummyUnoHand extends UnoHand {
 
 		public DummyUnoHand(@Nonnull Collection<UnoCard> cards) {
-			super("Dummy Hand");
 			this.cards.addAll(cards);
 		}
 
 		@Override
-		public UnoCard playCard(UnoGame game) {
+		public UnoCard playCard(UnoGame game, UnoPlayer next) {
 			throw new UnsupportedOperationException("DummyUnoHand can not play cards.");
 		}
 
@@ -38,7 +38,7 @@ public class TestUtils {
 		}
 
 		@Override
-		public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard) {
+		public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard, UnoPlayer next) {
 			throw new UnsupportedOperationException(
 					"DummyUnoHand can not decide whether it should play drawn cards or not.");
 		}
@@ -88,9 +88,9 @@ public class TestUtils {
 
 	/**
 	 * Returns a dummy {@link UnoDeck} containing a preferred {@link Collection} of
-	 * cards. Calling either {@link UnoHand#playCard(UnoGame)},
+	 * cards. Calling either {@link UnoHand#playCard(UnoGame, UnoPlayer)},
 	 * {@link UnoHand#chooseColor(UnoGame)} or
-	 * {@link UnoHand#shouldPlayDrawnCard(UnoGame, UnoCard)} will throw an
+	 * {@link UnoHand#shouldPlayDrawnCard(UnoGame, UnoCard, UnoPlayer)} will throw an
 	 * {@link UnsupportedOperationException}.
 	 *
 	 * @param cards
