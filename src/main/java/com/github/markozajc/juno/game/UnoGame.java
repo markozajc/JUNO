@@ -312,7 +312,7 @@ public abstract class UnoGame {
 	 *            the {@link UnoPlayer}
 	 * @return the {@link UnoPlayer} after {@code player}
 	 */
-	protected final UnoPlayer nextPlayer(UnoPlayer player) {
+	public final UnoPlayer nextPlayer(UnoPlayer player) {
 		if (player.equals(this.first)) {
 			return this.second;
 		} else if (player.equals(this.second)) {
