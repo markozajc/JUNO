@@ -5,6 +5,7 @@ import com.github.markozajc.juno.game.UnoControlledGame;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.impl.ConsoleUnoHand;
 import com.github.markozajc.juno.hands.impl.StrategicUnoHand;
+import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
 
 /**
@@ -20,7 +21,8 @@ public class ConsoleUnoGame extends UnoControlledGame {
 	 * a {@link StrategicUnoHand} named "Billy the StrategicUnoHand".
 	 */
 	public ConsoleUnoGame() {
-		super(new ConsoleUnoHand("You"), new StrategicUnoHand("Billy the StrategicUnoHand"), new UnoStandardDeck(), 7,
+		super(new UnoPlayer(new ConsoleUnoHand(), "You"),
+				new UnoPlayer(new StrategicUnoHand(), "Billy the StrategicUnoHand"), new UnoStandardDeck(), 7,
 				UnoOfficialRules.getPack());
 	}
 
@@ -33,21 +35,12 @@ public class ConsoleUnoGame extends UnoControlledGame {
 	public static void main(String[] args) {
 		UnoGame game = new ConsoleUnoGame();
 
-		switch (game.playGame()) {
-			case PLAYER2:
-				System.out.println(game.playerTwoHand.getName() + " won!");
-				break;
+		UnoPlayer winner = game.playGame();
+		if (winner == null) {
+			System.out.println("It's a draw!");
 
-			case NOBODY:
-				System.out.println("It's a draw!");
-				break;
-
-			case PLAYER1:
-				System.out.println(game.playerOneHand.getName() + " won!");
-				break;
-
-			default:
-				break;
+		} else {
+			System.out.println(winner.getName() + " won!");
 		}
 	}
 
