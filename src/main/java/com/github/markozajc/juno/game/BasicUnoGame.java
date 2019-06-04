@@ -12,6 +12,7 @@ import com.github.markozajc.juno.cards.impl.UnoActionCard;
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.cards.impl.UnoWildCard;
 import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
 import com.github.markozajc.juno.utils.UnoRuleUtils;
 
@@ -95,13 +96,13 @@ public abstract class BasicUnoGame extends UnoGame {
 	/**
 	 * Creates a new {@link BasicUnoGame}
 	 *
-	 * @param playerOneHand
-	 *            the first player's hand
-	 * @param playerTwoHand
-	 *            the second player's hand
+	 * @param first
+	 *            the first {@link UnoPlayer}
+	 * @param second
+	 *            the second {@link UnoPlayer}
 	 */
-	public BasicUnoGame(@Nonnull UnoHand playerOneHand, @Nonnull UnoHand playerTwoHand) {
-		super(playerOneHand, playerTwoHand, new UnoStandardDeck(), 7, UnoOfficialRules.getPack());
+	public BasicUnoGame(@Nonnull UnoPlayer first, @Nonnull UnoPlayer second) {
+		super(first, second, new UnoStandardDeck(), 7, UnoOfficialRules.getPack());
 	}
 
 	private void changeColor(UnoHand hand, UnoCard card) {
@@ -120,17 +121,17 @@ public abstract class BasicUnoGame extends UnoGame {
 
 	@SuppressWarnings("null")
 	@Override
-	protected void playHand(UnoHand hand) {
+	protected void turn(UnoPlayer player) {
 		start: while (true) {
 			UnoCard topCard = this.getDiscard().getTop();
 			boolean hasToDraw = topCard instanceof UnoDrawCard && !((UnoDrawCard) topCard).isPlayed();
 
 			if (!hasToDraw)
-				changeColor(hand, topCard);
+				changeColor(player.getHand(), topCard);
 
 			boolean drawn = false;
 			while (true) {
-				UnoCard card = hand.playCard(this);
+				UnoCard card = player.getHand().playCard(this, nextPlayer(player));
 
 				if (card == null && !drawn) {
 					// In case hand throws nothing
@@ -149,11 +150,11 @@ public abstract class BasicUnoGame extends UnoGame {
 						discardIntoDraw();
 					}
 
-					List<UnoCard> drawnCards = hand.draw(this, draw);
-					onDrawCards(hand, draw);
-					if (drawnCards.size() == 1
-							&& UnoRuleUtils.combinedPlacementAnalysis(topCard, drawnCards, this.getRules(), hand)
-									.size() == 1) {
+					List<UnoCard> drawnCards = player.getHand().draw(this, draw);
+					onDrawCards(player.getHand(), draw);
+					if (drawnCards.size() == 1 && UnoRuleUtils
+							.combinedPlacementAnalysis(topCard, drawnCards, this.getRules(), player.getHand())
+							.size() == 1) {
 						drawn = true;
 						continue;
 					}
@@ -163,22 +164,23 @@ public abstract class BasicUnoGame extends UnoGame {
 					return;
 				}
 
-				if (UnoRuleUtils.combinedPlacementAnalysis(topCard, Arrays.asList(card), this.getRules(), hand)
-						.isEmpty() || !hand.getCards().remove(card)) {
+				if (UnoRuleUtils
+						.combinedPlacementAnalysis(topCard, Arrays.asList(card), this.getRules(), player.getHand())
+						.isEmpty() || !player.getHand().getCards().remove(card)) {
 					// Should be checked by Hand implementation in the first place
-					onInvalidCard(hand, card);
+					onInvalidCard(player.getHand(), card);
 					continue;
 				}
 				// Checks if the card is valid and exists
 
-				onCardPlaced(hand, card);
+				onCardPlaced(player.getHand(), card);
 
 				if (card instanceof UnoWildCard)
-					changeColor(hand, card);
+					changeColor(player.getHand(), card);
 
 				this.getDiscard().add(card);
 
-				if (card instanceof UnoActionCard && hand.getSize() > 0)
+				if (card instanceof UnoActionCard && player.getHand().getSize() > 0)
 					continue start;
 
 				break;
