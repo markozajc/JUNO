@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.players.UnoPlayer;
+import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.rules.UnoRule;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.types.UnoCardPlacementRule;
@@ -34,21 +34,21 @@ public class UnoRuleUtils {
 	 *            {@link Collection} of {@link UnoCard}s to filter through
 	 * @param pack
 	 *            the {@link UnoRulePack} to use
-	 * @param player
-	 *            the current {@link UnoPlayer}
+	 * @param hand
+	 *            the current {@link UnoHand}
 	 * @return a {@link List} of {@link UnoCard}s that can be placed atop of the
 	 *         {@code target} {@link UnoCard}
 	 */
 	@SuppressWarnings("null")
 	@Nonnull
-	public static List<UnoCard> combinedPlacementAnalysis(@Nonnull UnoCard target, @Nonnull Collection<UnoCard> cards, @Nonnull UnoRulePack pack, @Nonnull UnoPlayer player) {
+	public static List<UnoCard> combinedPlacementAnalysis(@Nonnull UnoCard target, @Nonnull Collection<UnoCard> cards, @Nonnull UnoRulePack pack, @Nonnull UnoHand hand) {
 		List<UnoCardPlacementRule> rules = filterRuleKind(pack.getRules(), UnoCardPlacementRule.class);
 		List<UnoCard> result = new ArrayList<>();
 
 		for (UnoCard card : cards) {
 			// Iterates over all cards
 			List<PlacementClearance> clearance = rules.stream()
-					.map(r -> r.canBePlaced(target, card, player))
+					.map(r -> r.canBePlaced(target, card, hand))
 					.collect(Collectors.toList());
 			// Gets the PlacementClearance-s for this card
 
