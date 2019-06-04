@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.github.markozajc.juno.cards.UnoCard;
@@ -15,6 +14,7 @@ import com.github.markozajc.juno.cards.impl.UnoNumericCard;
 import com.github.markozajc.juno.cards.impl.UnoWildCard;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.utils.UnoRuleUtils;
 import com.github.markozajc.juno.utils.UnoUtils;
 
@@ -27,16 +27,10 @@ import com.github.markozajc.juno.utils.UnoUtils;
  */
 public class StrategicUnoHand extends UnoHand {
 
-	/**
-	 * Creates a new {@link StrategicUnoHand}.
-	 */
-	public StrategicUnoHand(@Nonnull String name) {
-	}
-
 	private static final int DRAW_CARD_THRESHOLD = 3;
 
 	@Nullable
-	private static UnoDrawCard chooseDrawCard(List<UnoCard> possiblePlacements, List<Entry<Long, UnoCardColor>> colorAnalysis, UnoGame game, UnoCard topCard) {
+	private static UnoDrawCard chooseDrawCard(List<UnoCard> possiblePlacements, List<Entry<Long, UnoCardColor>> colorAnalysis, UnoCard topCard, UnoPlayer next) {
 		if (topCard instanceof UnoDrawCard && !((UnoDrawCard) topCard).isPlayed()) {
 			// In case the other hand placed a draw card
 
@@ -57,7 +51,7 @@ public class StrategicUnoHand extends UnoHand {
 		// Places an action card if possible (both action cards do the same thing in 2 player
 		// games so yeah)
 
-		if (game.playerOneHand.getSize() <= DRAW_CARD_THRESHOLD) {
+		if (next.getHand().getSize() <= DRAW_CARD_THRESHOLD) {
 			List<UnoDrawCard> drawCards = UnoUtils.filterKind(UnoDrawCard.class, possiblePlacements);
 			if (!drawCards.isEmpty())
 				return drawCards.get(0);
@@ -119,7 +113,7 @@ public class StrategicUnoHand extends UnoHand {
 
 	@SuppressWarnings("null")
 	@Override
-	public UnoCard playCard(UnoGame game) {
+	public UnoCard playCard(UnoGame game, UnoPlayer next) {
 		UnoCard top = game.getDiscard().getTop();
 		List<UnoCard> possible = UnoRuleUtils.combinedPlacementAnalysis(top, this.cards, game.getRules(), this);
 
@@ -130,7 +124,7 @@ public class StrategicUnoHand extends UnoHand {
 		List<Entry<Long, UnoCardColor>> colorAnalysis = UnoUtils.analyzeColors(getCards());
 		// Analyzes the colors
 
-		UnoDrawCard drawCard = chooseDrawCard(possible, colorAnalysis, game, top);
+		UnoDrawCard drawCard = chooseDrawCard(possible, colorAnalysis, top, next);
 		if (drawCard != null)
 			return drawCard;
 		// Places an action card if possible
@@ -166,8 +160,8 @@ public class StrategicUnoHand extends UnoHand {
 	}
 
 	@Override
-	public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard) {
-		return Objects.equals(playCard(game), drawnCard);
+	public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard, UnoPlayer next) {
+		return Objects.equals(playCard(game, next), drawnCard);
 	}
 
 }

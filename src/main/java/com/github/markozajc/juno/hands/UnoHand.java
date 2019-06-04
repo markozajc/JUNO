@@ -10,20 +10,20 @@ import javax.annotation.Nullable;
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.game.UnoGame;
-import com.github.markozajc.juno.game.UnoGame.UnoPlayerIdentification;
 import com.github.markozajc.juno.piles.UnoPile;
 import com.github.markozajc.juno.piles.impl.UnoDiscardPile;
+import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.utils.UnoGameUtils;
 
 /**
  * A representation of a hand - the thing that holds and places cards to the discard
- * pile. Each {@link UnoPlayerIdentification} has a hand. Hands can either be
- * automated (meaning they decide for themselves) or human-driven (meaning they're an
- * interface that lets a human decide). A hand must do two essential things; choose
- * colors and cards. It is requested to choose a color each time it places a
- * wild-colored card. It is requested to choose (play) a card each time it gets a
- * turn. It may not choose invalid cards (cards that it either doesn't possess or
- * that can't be placed on the discard pile) or invalid colors (the wild color).
+ * pile. Each {@link UnoPlayer} has a hand. Hands can either be automated (meaning
+ * they decide for themselves) or human-driven (meaning they're an interface that
+ * lets a human decide). A hand must do two essential things; choose colors and
+ * cards. It is requested to choose a color each time it places a wild-colored card.
+ * It is requested to choose (play) a card each time it gets a turn. It may not
+ * choose invalid cards (cards that it either doesn't possess or that can't be placed
+ * on the discard pile) or invalid colors (the wild color).
  *
  * @author Marko Zajc
  */
@@ -71,11 +71,13 @@ public abstract class UnoHand implements UnoPile {
 	 *
 	 * @param game
 	 *            the ongoing {@link UnoGame}
+	 * @param next
+	 *            the next {@link UnoPlayer}
 	 * @return the {@link UnoCard} to play or {@code null} if the hand wants to draw a
 	 *         card
 	 */
 	@Nullable
-	public abstract UnoCard playCard(UnoGame game);
+	public abstract UnoCard playCard(UnoGame game, UnoPlayer next);
 
 	/**
 	 * Chooses the {@link UnoCardColor} to set for a wild card.
@@ -96,9 +98,11 @@ public abstract class UnoHand implements UnoPile {
 	 *            the ongoing {@link UnoGame}
 	 * @param drawnCard
 	 *            the just-drawn {@link UnoCard}
+	 * @param next
+	 *            the next {@link UnoPlayer}
 	 * @return whether the card should be placed
 	 */
-	public abstract boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard);
+	public abstract boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard, UnoPlayer next);
 
 	/**
 	 * Adds a {@link UnoCard} from this {@link UnoHand} to a {@link UnoDiscardPile} and
