@@ -2,7 +2,7 @@ package com.github.markozajc.juno.rules.impl.placement;
 
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
-import com.github.markozajc.juno.players.UnoPlayer;
+import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.types.UnoCardPlacementRule;
 
@@ -30,7 +30,7 @@ public class ColorPlacementRules {
 	public static class ColorPlacementRule implements UnoCardPlacementRule {
 
 		@Override
-		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoPlayer player) {
+		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
 			if (target.getColor().equals(card.getColor()))
 				return PlacementClearance.ALLOWED;
 
@@ -48,7 +48,7 @@ public class ColorPlacementRules {
 	public static class WildColorPlacementRule implements UnoCardPlacementRule {
 
 		@Override
-		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoPlayer player) {
+		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
 			if (card.getOriginalColor().equals(UnoCardColor.WILD))
 				return PlacementClearance.ALLOWED;
 
