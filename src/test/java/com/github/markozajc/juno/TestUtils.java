@@ -99,7 +99,7 @@ public class TestUtils {
 	 * @return the created {@link UnoHand}
 	 */
 	@Nonnull
-	public static UnoHand getDummyHand(@Nonnull Collection<UnoCard> cards) {
+	public static DummyUnoHand getDummyHand(@Nonnull Collection<UnoCard> cards) {
 		return new DummyUnoHand(cards);
 	}
 
@@ -113,8 +113,12 @@ public class TestUtils {
 	 * @return the built {@link UnoDeck}
 	 */
 	@Nonnull
-	public static UnoDeck getDummyDeck(@Nonnull List<UnoCard> cards) {
+	public static DummyUnoDeck getDummyDeck(@Nonnull List<UnoCard> cards) {
 		return new DummyUnoDeck(cards);
+	}
+
+	public static UnoPlayer getDummyPlayer(@Nonnull DummyUnoHand hand) {
+		return new UnoPlayer(hand, "DummyPlayer" + System.currentTimeMillis());
 	}
 
 }
