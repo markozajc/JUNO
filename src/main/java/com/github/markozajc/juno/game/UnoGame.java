@@ -119,11 +119,13 @@ public abstract class UnoGame {
 	}
 
 	/**
-	 * Plays a hand. This method should get a card to place from a hand
+	 * Gives a {@link UnoPlayer} a turn. This method should get a card to place from a
+	 * hand and then place it (if possible).
 	 *
-	 * @param hand
+	 * @param player
+	 *            the {@link UnoPlayer} to give a turn to
 	 */
-	protected abstract void playHand(@Nonnull UnoHand hand);
+	protected abstract void turn(@Nonnull UnoPlayer player);
 
 	/**
 	 * Checks whether a {@link UnoPlayer} has won. Criteria for winning in UNO is
@@ -216,7 +218,7 @@ public abstract class UnoGame {
 		updateTopCard();
 		// Updates the top card
 
-		playHand(player.getHand());
+		turn(player);
 		// Plays player's hand
 
 		if (checkVictory(player, this.discard))
