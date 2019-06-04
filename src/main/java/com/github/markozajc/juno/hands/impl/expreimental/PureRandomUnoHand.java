@@ -7,6 +7,7 @@ import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.utils.UnoRuleUtils;
 
 /**
@@ -22,7 +23,7 @@ public class PureRandomUnoHand extends UnoHand {
 
 	@SuppressWarnings("null")
 	@Override
-	public UnoCard playCard(UnoGame game) {
+	public UnoCard playCard(UnoGame game, UnoPlayer next) {
 		List<UnoCard> possibilities = UnoRuleUtils.combinedPlacementAnalysis(game.getDiscard().getTop(), this.cards,
 			game.getRules(), this);
 		if (possibilities.isEmpty())
@@ -37,7 +38,7 @@ public class PureRandomUnoHand extends UnoHand {
 	}
 
 	@Override
-	public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard) {
+	public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard, UnoPlayer next) {
 		return RANDOM.nextBoolean();
 	}
 
