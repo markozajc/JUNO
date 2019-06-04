@@ -7,6 +7,7 @@ import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.game.UnoControlledGame;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.UnoRule;
 import com.github.markozajc.juno.rules.types.flow.UnoInitializationConclusion;
 import com.github.markozajc.juno.rules.types.flow.UnoPhaseConclusion;
@@ -21,22 +22,22 @@ public interface UnoGameFlowRule extends UnoRule {
 	/**
 	 * The method that is called at the beginning of a turn.
 	 *
-	 * @param hand
-	 *            {@link UnoHand} of this turn
+	 * @param player
+	 *            {@link UnoPlayer} of this turn
 	 * @param game
 	 *            the ongoing {@link UnoGame}
 	 * @return a {@link UnoInitializationConclusion}
 	 */
 	@SuppressWarnings("unused")
-	public default UnoInitializationConclusion initializationPhase(@Nonnull UnoHand hand, @Nonnull UnoGame game) {
+	public default UnoInitializationConclusion initializationPhase(@Nonnull UnoPlayer player, @Nonnull UnoGame game) {
 		return UnoInitializationConclusion.NOTHING;
 	}
 
 	/**
 	 * The method that is called after the {@link UnoHand} decides a card.
 	 *
-	 * @param hand
-	 *            {@link UnoHand} of this turn
+	 * @param player
+	 *            {@link UnoPlayer} of this turn
 	 * @param game
 	 *            the ongoing {@link UnoGame}
 	 * @param decidedCard
@@ -45,7 +46,7 @@ public interface UnoGameFlowRule extends UnoRule {
 	 * @return a {@link UnoPhaseConclusion}
 	 */
 	@SuppressWarnings("unused")
-	public default UnoPhaseConclusion decisionPhase(@Nonnull UnoHand hand, @Nonnull UnoGame game, @Nullable UnoCard decidedCard) {
+	public default UnoPhaseConclusion decisionPhase(@Nonnull UnoPlayer player, @Nonnull UnoGame game, @Nullable UnoCard decidedCard) {
 		return UnoPhaseConclusion.NOTHING;
 	}
 
