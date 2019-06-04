@@ -7,6 +7,7 @@ import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.players.UnoPlayer;
 
 /**
  * A card that makes the other player draw two or four cards, depending on the
@@ -100,16 +101,16 @@ public class UnoDrawCard extends UnoCard {
 	 *
 	 * @param game
 	 *            the ongoing {@link UnoGame}
-	 * @param hand
-	 *            the {@link UnoHand} to add the drawn cards to
+	 * @param player
+	 *            the owner of the {@link UnoHand} to add the drawn cards to
 	 * @throws IllegalStateException
 	 *             in case this card is already marked as played
 	 */
-	public void drawTo(@Nonnull UnoGame game, @Nonnull UnoHand hand) {
+	public void drawTo(@Nonnull UnoGame game, @Nonnull UnoPlayer player) {
 		if (isPlayed())
 			throw new IllegalStateException("This card has already been played.");
 
-		hand.draw(game, getAmount());
+		player.getHand().draw(game, getAmount());
 		this.played = true;
 	}
 
