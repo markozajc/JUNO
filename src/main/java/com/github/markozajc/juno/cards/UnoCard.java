@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.players.UnoPlayer;
 
 /**
  * A class representing a card in UNO. The only mandatory thing for a card is a
@@ -18,7 +19,7 @@ public abstract class UnoCard {
 	@Nullable
 	private UnoCardColor mask;
 	@Nullable
-	private UnoHand placer;
+	private UnoPlayer placer;
 
 	/**
 	 * Creates a new {@link UnoCard}.
@@ -78,7 +79,7 @@ public abstract class UnoCard {
 	 * @throws IllegalStateException
 	 *             in case the placer has already been set.
 	 */
-	public final void setPlacer(@Nonnull UnoHand placer) {
+	public final void setPlacer(@Nonnull UnoPlayer placer) {
 		if (this.placer != null)
 			throw new IllegalStateException("This card's placer has already been set.");
 
@@ -97,8 +98,8 @@ public abstract class UnoCard {
 	 *             in case this card's placer hasn't been set yet
 	 */
 	@Nonnull
-	public UnoHand getPlacer() {
-		UnoHand cardPlacer = this.placer;
+	public UnoPlayer getPlacer() {
+		UnoPlayer cardPlacer = this.placer;
 		if (cardPlacer == null)
 			throw new IllegalStateException("This card's placer hasn't been set yet.");
 
