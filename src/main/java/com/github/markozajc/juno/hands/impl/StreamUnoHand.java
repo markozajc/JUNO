@@ -12,6 +12,7 @@ import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.utils.UnoRuleUtils;
 
 /**
@@ -43,14 +44,13 @@ public class StreamUnoHand extends UnoHand {
 
 	@SuppressWarnings("null")
 	@Override
-	public UnoCard playCard(UnoGame game) {
+	public UnoCard playCard(UnoGame game, UnoPlayer next) {
 		UnoCard top = game.getDiscard().getTop();
 		List<UnoCard> possible = UnoRuleUtils.combinedPlacementAnalysis(top, this.cards, game.getRules(), this);
 
 		this.ps.println("Choose a card:      [/* +  TODO game.playerTwoHand.getName() +  */'s hand size: "
-				+ game.playerTwoHand.getSize() + " | Draw pile size: " + game.getDraw().getSize()
-				+ " | Discard pile size: " + game.getDiscard().getSize() + " | Top card: " + game.getDiscard().getTop()
-				+ "]");
+				+ next.getHand().getSize() + " | Draw pile size: " + game.getDraw().getSize() + " | Discard pile size: "
+				+ game.getDiscard().getSize() + " | Top card: " + game.getDiscard().getTop() + "]");
 
 		if (top instanceof UnoDrawCard && !((UnoDrawCard) top).isPlayed()) {
 			this.ps.println("0 - Draw " + game.getDiscard().getConsecutiveDraw() + " cards from a " + top);
@@ -140,7 +140,7 @@ public class StreamUnoHand extends UnoHand {
 	}
 
 	@Override
-	public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard) {
+	public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard, UnoPlayer next) {
 		this.ps.println("You have drawn a " + drawnCard.toString() + ". Do you want to place it? [y/n]");
 		return this.scanner.nextLine().equals("y");
 	}
