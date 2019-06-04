@@ -2,7 +2,7 @@ package com.github.markozajc.juno.rules.impl.placement;
 
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.impl.UnoWildCard;
-import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.types.UnoCardPlacementRule;
 
@@ -32,7 +32,7 @@ public class WildPlacementRules {
 	public static class WildPlacementRule implements UnoCardPlacementRule {
 
 		@Override
-		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
+		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoPlayer player) {
 			if (card instanceof UnoWildCard)
 				return PlacementClearance.ALLOWED;
 			// Checks whether card is a wild card

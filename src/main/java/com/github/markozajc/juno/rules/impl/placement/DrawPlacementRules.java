@@ -3,7 +3,7 @@ package com.github.markozajc.juno.rules.impl.placement;
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
-import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.types.UnoCardPlacementRule;
 import com.github.markozajc.juno.utils.UnoUtils;
@@ -33,7 +33,7 @@ public class DrawPlacementRules {
 	public static class DrawAmountPlacementRule implements UnoCardPlacementRule {
 
 		@Override
-		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
+		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoPlayer player) {
 			if (target instanceof UnoDrawCard && card instanceof UnoDrawCard
 					&& ((UnoDrawCard) target).getAmount() == ((UnoDrawCard) card).getAmount())
 				return PlacementClearance.ALLOWED;
@@ -53,10 +53,10 @@ public class DrawPlacementRules {
 	public static class DrawFourHitchPlacementRule implements UnoCardPlacementRule {
 
 		@Override
-		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
+		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoPlayer player) {
 			if (card instanceof UnoDrawCard && !target.getOriginalColor().equals(UnoCardColor.WILD)
 					&& ((UnoDrawCard) card).getAmount() == 4
-					&& !UnoUtils.getColorCards(target.getOriginalColor(), hand.getCards()).isEmpty())
+					&& !UnoUtils.getColorCards(target.getOriginalColor(), player.getHand().getCards()).isEmpty())
 				return PlacementClearance.PROHIBITED;
 			// Prohibits the placement of the wild draw four if the hand possesses a card that
 			// has the same color as the target (assumed to be the top of the discard pile) card.
@@ -74,7 +74,7 @@ public class DrawPlacementRules {
 	public static class UnplayedCardPlacementRule implements UnoCardPlacementRule {
 
 		@Override
-		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
+		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoPlayer player) {
 			if (target instanceof UnoDrawCard && !((UnoDrawCard) target).isPlayed())
 				return PlacementClearance.PROHIBITED;
 

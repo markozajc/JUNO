@@ -2,7 +2,7 @@ package com.github.markozajc.juno.rules.impl.placement;
 
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.impl.UnoActionCard;
-import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.types.UnoCardPlacementRule;
 
@@ -30,7 +30,7 @@ public class ActionPlacementRules {
 	public static class ActionPlacementRule implements UnoCardPlacementRule {
 
 		@Override
-		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
+		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoPlayer player) {
 			if (target instanceof UnoActionCard && card instanceof UnoActionCard
 					&& ((UnoActionCard) target).getAction().equals(((UnoActionCard) card).getAction()))
 				return PlacementClearance.ALLOWED;
