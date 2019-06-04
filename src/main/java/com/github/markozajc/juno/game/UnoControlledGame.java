@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.decks.UnoDeck;
-import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.UnoRule;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
@@ -47,21 +46,21 @@ public abstract class UnoControlledGame extends UnoGame {
 	protected void turn(UnoPlayer player) {
 		List<UnoGameFlowRule> rules = UnoRuleUtils.filterRuleKind(this.getRules().getRules(), UnoGameFlowRule.class);
 
-		boolean skip = initializationPhase(player.getHand(), this, rules);
+		boolean skip = initializationPhase(player, this, rules);
 
 		if (!skip)
 			decisionPhase(player, this, rules);
 
 	}
 
-	private static boolean initializationPhase(@Nonnull UnoHand hand, @Nonnull UnoGame game, @Nonnull List<UnoGameFlowRule> rules) {
+	private static boolean initializationPhase(@Nonnull UnoPlayer player, @Nonnull UnoGame game, @Nonnull List<UnoGameFlowRule> rules) {
 		boolean repeat = true;
 		boolean loseATurn = false;
 		while (repeat) {
 			repeat = false;
 
 			for (UnoGameFlowRule rule : rules) {
-				UnoInitializationConclusion tic = rule.initializationPhase(hand, game);
+				UnoInitializationConclusion tic = rule.initializationPhase(player, game);
 				if (tic.shouldRepeat())
 					repeat = true;
 
@@ -81,7 +80,7 @@ public abstract class UnoControlledGame extends UnoGame {
 			UnoCard decision = player.getHand().playCard(game, game.nextPlayer(player));
 
 			for (UnoGameFlowRule rule : rules) {
-				UnoPhaseConclusion fpc = rule.decisionPhase(player.getHand(), game, decision);
+				UnoPhaseConclusion fpc = rule.decisionPhase(player, game, decision);
 				if (fpc.shouldRepeat())
 					repeatDecision = true;
 			}
