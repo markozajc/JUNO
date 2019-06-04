@@ -302,4 +302,21 @@ public abstract class UnoGame {
 		return this.deck;
 	}
 
+	/**
+	 * Returns the {@link UnoPlayer} to get the turn after the provided {@link UnoPlayer}
+	 *
+	 * @param player
+	 *            the {@link UnoPlayer}
+	 * @return the {@link UnoPlayer} after {@code player}
+	 */
+	protected final UnoPlayer nextPlayer(UnoPlayer player) {
+		if (player.equals(this.first)) {
+			return this.second;
+		} else if (player.equals(this.second)) {
+			return this.first;
+		} else {
+			throw new IllegalArgumentException("The provided UnoPlayer is not a part of this UnoGame.");
+		}
+	}
+
 }
