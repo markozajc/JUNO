@@ -3,7 +3,7 @@ package com.github.markozajc.juno.rules.impl.flow;
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.game.UnoGame;
-import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
 import com.github.markozajc.juno.rules.types.flow.UnoInitializationConclusion;
 
@@ -19,9 +19,9 @@ public class ColorChoosingRule implements UnoGameFlowRule {
 	private static final String COLOR_CHANGED = "%s set the color to %s.";
 
 	@Override
-	public UnoInitializationConclusion initializationPhase(UnoHand hand, UnoGame game) {
+	public UnoInitializationConclusion initializationPhase(UnoPlayer player, UnoGame game) {
 		if (game.getTopCard() != null && game.getTopCard().getColor().equals(UnoCardColor.WILD) && game.getTopCard().isPlayed()) {
-			UnoCardColor color = game.getTopCard().getPlacer().chooseColor(game);
+			UnoCardColor color = game.getTopCard().getPlacer().getHand().chooseColor(game);
 
 			if (color.equals(UnoCardColor.WILD)) {
 				game.onEvent(INVALID_COLOR, game.getTopCard().getPlacer().getName());
