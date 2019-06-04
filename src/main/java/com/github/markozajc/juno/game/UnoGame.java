@@ -173,10 +173,11 @@ public abstract class UnoGame {
 	/**
 	 * Plays a game of UNO.
 	 *
-	 * @return the victorious {@link UnoPlayer}
+	 * @return the victorious {@link UnoPlayer} or {@code null} if it's a tie (very, very
+	 *         unlikely, but still worth mentioning)
 	 */
 	@SuppressWarnings("null")
-	@Nonnull
+	@Nullable
 	public UnoPlayer playGame() {
 		init();
 		// Initiates game
