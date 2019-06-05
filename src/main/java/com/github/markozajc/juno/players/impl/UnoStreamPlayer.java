@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -15,8 +16,8 @@ import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.utils.UnoRuleUtils;
 
 /**
- * A human-driven player that uses a {@link Scanner} to read input and sends the output
- * to the given {@link PrintStream}. Blocks invalid card and color placements
+ * A human-driven player that uses a {@link Scanner} to read input and sends the
+ * output to the given {@link PrintStream}. Blocks invalid card and color placements
  * automatically. This is meant as an example hand.
  *
  * @author Marko Zajc
@@ -46,7 +47,8 @@ public class UnoStreamPlayer extends UnoPlayer {
 	@Override
 	public UnoCard playCard(UnoGame game, UnoPlayer next) {
 		UnoCard top = game.getDiscard().getTop();
-		List<UnoCard> possible = UnoRuleUtils.combinedPlacementAnalysis(top, this.getHand().getCards(), game.getRules(), this.getHand());
+		List<UnoCard> possible = UnoRuleUtils.combinedPlacementAnalysis(top, this.getHand().getCards(), game.getRules(),
+			this.getHand());
 
 		this.ps.println("Choose a card:      [/* +  TODO game.playerTwoHand.getName() +  */'s hand size: "
 				+ next.getHand().getSize() + " | Draw pile size: " + game.getDraw().getSize() + " | Discard pile size: "
@@ -77,9 +79,19 @@ public class UnoStreamPlayer extends UnoPlayer {
 		}
 
 		while (true) {
+			String nextLine = this.scanner.nextLine();
+			if (nextLine.equalsIgnoreCase("rules")) {
+				this.ps.println("Active rules: " + game.getRules()
+						.getRules()
+						.stream()
+						.map(r -> r.getClass().getSimpleName())
+						.collect(Collectors.joining(", ")));
+				continue;
+			}
+
 			int choice;
 			try {
-				choice = Integer.parseInt(this.scanner.nextLine());
+				choice = Integer.parseInt(nextLine);
 			} catch (NumberFormatException e) {
 				this.ps.println(INVALID_CHOICE_STRING);
 				continue;
