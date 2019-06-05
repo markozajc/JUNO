@@ -1,5 +1,8 @@
 package com.github.markozajc.juno.rules.pack.impl;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
@@ -12,6 +15,7 @@ import com.github.markozajc.juno.rules.impl.placement.ColorPlacementRules;
 import com.github.markozajc.juno.rules.impl.placement.DrawPlacementRules;
 import com.github.markozajc.juno.rules.impl.placement.NumericPlacementRules;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
+import com.github.markozajc.juno.rules.pack.impl.house.SevenORulePack;
 
 /**
  * Placement rules for {@link UnoDrawCard}.
@@ -19,6 +23,22 @@ import com.github.markozajc.juno.rules.pack.UnoRulePack;
  * @author Marko Zajc
  */
 public class UnoOfficialRules {
+
+	public enum UnoHouseRules {
+
+		SEVENO(SevenORulePack.getPack());
+
+		private final UnoRulePack pack;
+
+		private UnoHouseRules(UnoRulePack pack) {
+			this.pack = pack;
+		}
+
+		public UnoRulePack getPack() {
+			return this.pack;
+		}
+
+	}
 
 	private UnoOfficialRules() {}
 
@@ -40,6 +60,13 @@ public class UnoOfficialRules {
 			createPack();
 
 		return pack;
+	}
+
+	@SuppressWarnings("null")
+	@Nonnull
+	public static UnoRulePack getPack(UnoHouseRules... houseRules) {
+		return UnoRulePack
+				.ofPacks(Arrays.asList(houseRules).stream().map(UnoHouseRules::getPack).collect(Collectors.toList()));
 	}
 
 }
