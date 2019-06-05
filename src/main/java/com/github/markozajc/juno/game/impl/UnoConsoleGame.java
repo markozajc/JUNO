@@ -5,7 +5,7 @@ import com.github.markozajc.juno.game.UnoControlledGame;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.players.impl.UnoConsolePlayer;
-import com.github.markozajc.juno.players.impl.StrategicUnoPlayer;
+import com.github.markozajc.juno.players.impl.UnoStrategicPlayer;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
 
 /**
@@ -18,10 +18,10 @@ public class UnoConsoleGame extends UnoControlledGame {
 
 	/**
 	 * Creates a new {@link UnoConsoleGame} with a {@link UnoConsolePlayer} named "You"
-	 * and a {@link StrategicUnoPlayer} named "Billy the StrategicUnoHand".
+	 * and a {@link UnoStrategicPlayer} named "Billy the StrategicUnoHand".
 	 */
 	public UnoConsoleGame() {
-		super(new UnoConsolePlayer("You"), new StrategicUnoPlayer("Billy the StrategicUnoHand"), new UnoStandardDeck(),
+		super(new UnoConsolePlayer("You"), new UnoStrategicPlayer("Billy the StrategicUnoHand"), new UnoStandardDeck(),
 				7, UnoOfficialRules.getPack());
 	}
 

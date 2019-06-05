@@ -25,9 +25,9 @@ import com.github.markozajc.juno.utils.UnoUtils;
  *
  * @author Marko Zajc
  */
-public class StrategicUnoPlayer extends UnoPlayer {
+public class UnoStrategicPlayer extends UnoPlayer {
 
-	public StrategicUnoPlayer(@Nonnull String name) {
+	public UnoStrategicPlayer(@Nonnull String name) {
 		super(name);
 	}
 
