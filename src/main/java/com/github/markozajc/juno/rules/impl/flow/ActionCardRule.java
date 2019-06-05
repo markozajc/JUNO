@@ -18,7 +18,7 @@ public class ActionCardRule implements UnoGameFlowRule {
 	@Override
 	public UnoInitializationConclusion initializationPhase(UnoPlayer player, UnoGame game) {
 		if (game.getTopCard() instanceof UnoActionCard && !game.getTopCard().isPlayed()) {
-			((UnoActionCard) game.getTopCard()).setPlayed();
+			game.getTopCard().markPlayed();
 			game.onEvent(LOST_A_TURN, player.getName());
 			return new UnoInitializationConclusion(false, true);
 		}
