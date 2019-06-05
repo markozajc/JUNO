@@ -24,7 +24,7 @@ public class SevenORulePack {
 
 		@Override
 		public UnoInitializationConclusion initializationPhase(UnoPlayer player, UnoGame game) {
-			if (game.getTopCard() instanceof UnoNumericCard && game.getTopCard().isPlayed()
+			if (game.getTopCard() instanceof UnoNumericCard && !game.getTopCard().isPlayed()
 					&& (((UnoNumericCard) game.getTopCard()).getNumber() == 0
 							|| ((UnoNumericCard) game.getTopCard()).getNumber() == 7)) {
 				// If the top card is a numeric card with a seven or a zero
