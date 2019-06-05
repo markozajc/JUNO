@@ -26,7 +26,6 @@ import com.github.markozajc.juno.players.UnoPlayer;
 public class UnoDrawCard extends UnoCard {
 
 	private final int amount;
-	private boolean played = false;
 
 	/**
 	 * Creates a new draw two card.
@@ -55,21 +54,16 @@ public class UnoDrawCard extends UnoCard {
 		this.amount = amount;
 	}
 
-	@Override
-	public boolean isPlayed() {
-		return this.played;
-	}
-
 	/**
 	 * Marks this card as "played". This means that a player has already drawn because of
 	 * it.
 	 *
 	 * @deprecated You shouldn't be using this directly as
-	 *             {@link #drawTo(UnoGame, UnoHand)} already does it for you.
+	 *             {@link #drawTo(UnoGame, UnoPlayer)} already does it for you.
 	 */
 	@Deprecated
 	public void setPlayed() {
-		this.played = true;
+		markPlayed();
 	}
 
 	/**
@@ -87,13 +81,6 @@ public class UnoDrawCard extends UnoCard {
 		return getOriginalColor().toString() + " draw " + this.getAmount();
 	}
 
-	@Override
-	public void reset() {
-		super.reset();
-
-		this.played = false;
-	}
-
 	/**
 	 * Draws the set amount of {@link UnoCard}s from the draw pile of the given
 	 * {@link UnoGame} and adds them to a {@link UnoHand}. This method is safe as it uses
@@ -107,11 +94,8 @@ public class UnoDrawCard extends UnoCard {
 	 *             in case this card is already marked as played
 	 */
 	public void drawTo(@Nonnull UnoGame game, @Nonnull UnoPlayer player) {
-		if (isPlayed())
-			throw new IllegalStateException("This card has already been played.");
-
+		markPlayed();
 		player.getHand().draw(game, getAmount());
-		this.played = true;
 	}
 
 	@Override

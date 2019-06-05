@@ -20,6 +20,7 @@ public abstract class UnoCard {
 	private UnoCardColor mask;
 	@Nullable
 	private UnoPlayer placer;
+	private boolean played;
 
 	/**
 	 * Creates a new {@link UnoCard}.
@@ -116,6 +117,9 @@ public abstract class UnoCard {
 
 		this.placer = null;
 		// Unsets the placer
+
+		this.played = true;
+		// Unmark as played
 	}
 
 	/**
@@ -125,7 +129,14 @@ public abstract class UnoCard {
 	 * @return this card's state
 	 */
 	public boolean isPlayed() {
-		return true;
+		return this.played;
+	}
+
+	public void markPlayed() {
+		if (isPlayed())
+			throw new IllegalStateException("This card has already been played.");
+
+		this.played = true;
 	}
 
 	/**
