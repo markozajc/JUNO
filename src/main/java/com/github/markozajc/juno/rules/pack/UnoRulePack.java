@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.rules.UnoRule;
@@ -78,13 +79,20 @@ public class UnoRulePack {
 		return this.rules;
 	}
 
-	public void addPacks(@Nonnull Collection<UnoRulePack> packs) {
-		this.rules.addAll(packs.stream().flatMap(p -> p.getRules().stream()).collect(Collectors.toList()));
+	@CheckReturnValue
+	@Nonnull
+	public UnoRulePack addPacks(@Nonnull Collection<UnoRulePack> packs) {
+		List<UnoRulePack> newPack = new ArrayList<>(packs.size() + 1);
+		newPack.add(this);
+		newPack.addAll(packs);
+		return UnoRulePack.ofPacks(packs);
 	}
 
+	@CheckReturnValue
+	@Nonnull
 	@SuppressWarnings("null")
-	public void addPacks(@Nonnull UnoRulePack... packs) {
-		this.addPacks(Arrays.asList(packs));
+	public UnoRulePack addPacks(@Nonnull UnoRulePack... packs) {
+		return this.addPacks(Arrays.asList(packs));
 	}
 
 }
