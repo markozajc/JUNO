@@ -43,7 +43,7 @@ public class CardDrawingRule implements UnoGameFlowRule {
 			game.onEvent(DRAW_CARD, player.getName());
 
 			if (UnoGameUtils.canPlaceCard(player, game, drawn)
-					&& player.getHand().shouldPlayDrawnCard(game, drawn, game.nextPlayer(player))
+					&& player.shouldPlayDrawnCard(game, drawn, game.nextPlayer(player))
 					&& UnoGameUtils.placeCard(game, player, drawn)) {
 				game.onEvent(PLACED_DRAWN, drawn.getPlacer().getName(), drawn.toString());
 			}
