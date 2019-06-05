@@ -1,12 +1,20 @@
 package com.github.markozajc.juno.game.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+import javax.annotation.Nonnull;
+
 import com.github.markozajc.juno.cards.UnoStandardDeck;
 import com.github.markozajc.juno.game.UnoControlledGame;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.players.impl.UnoConsolePlayer;
 import com.github.markozajc.juno.players.impl.UnoStrategicPlayer;
+import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
+import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule;
 
 /**
  * A console-based {@link UnoControlledGame} implementation. This is not meant to be
@@ -16,13 +24,27 @@ import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
  */
 public class UnoConsoleGame extends UnoControlledGame {
 
+	@SuppressWarnings("resource")
+	@Nonnull
+	private static UnoRulePack getRulePack() {
+		List<UnoHouseRule> rules = new ArrayList<>();
+		Scanner s = new Scanner(System.in);
+		for (UnoHouseRule rule : UnoHouseRule.values()) {
+			System.out.print("Activate the " + rule.getName() + " house rule? [y/n] ");
+			if (s.nextLine().equalsIgnoreCase("y"))
+				rules.add(rule);
+		}
+
+		return UnoOfficialRules.getPack(rules.toArray(new UnoHouseRule[0]));
+	}
+
 	/**
 	 * Creates a new {@link UnoConsoleGame} with a {@link UnoConsolePlayer} named "You"
 	 * and a {@link UnoStrategicPlayer} named "Billy the StrategicUnoHand".
 	 */
 	public UnoConsoleGame() {
 		super(new UnoConsolePlayer("You"), new UnoStrategicPlayer("Billy the StrategicUnoHand"), new UnoStandardDeck(),
-				7, UnoOfficialRules.getPack());
+				7, getRulePack());
 	}
 
 	/**
