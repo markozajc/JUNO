@@ -78,4 +78,13 @@ public class UnoRulePack {
 		return this.rules;
 	}
 
+	public void addPacks(@Nonnull Collection<UnoRulePack> packs) {
+		this.rules.addAll(packs.stream().flatMap(p -> p.getRules().stream()).collect(Collectors.toList()));
+	}
+
+	@SuppressWarnings("null")
+	public void addPacks(@Nonnull UnoRulePack... packs) {
+		this.addPacks(Arrays.asList(packs));
+	}
+
 }
