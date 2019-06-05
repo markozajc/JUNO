@@ -5,10 +5,8 @@ import java.util.List;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.piles.UnoPile;
 import com.github.markozajc.juno.piles.impl.UnoDiscardPile;
@@ -27,7 +25,7 @@ import com.github.markozajc.juno.utils.UnoGameUtils;
  *
  * @author Marko Zajc
  */
-public abstract class UnoHand implements UnoPile {
+public class UnoHand implements UnoPile {
 
 	/**
 	 * Hand's cards
@@ -61,48 +59,6 @@ public abstract class UnoHand implements UnoPile {
 		this.cards.addAll(drawnCards);
 		return drawnCards;
 	}
-
-	/**
-	 * Chooses a card to place on top of the discard pile. Just calling this shouldn't
-	 * actually change anything (it shouldn't add the card to the discard pile and/or
-	 * remove the card from the hand) but should only return a valid {@link UnoCard} that
-	 * this hand possesses. Everything else is done by the {@link UnoGame}. Returning
-	 * {@code null} here means that the hand wants to draw a card.
-	 *
-	 * @param game
-	 *            the ongoing {@link UnoGame}
-	 * @param next
-	 *            the next {@link UnoPlayer}
-	 * @return the {@link UnoCard} to play or {@code null} if the hand wants to draw a
-	 *         card
-	 */
-	@Nullable
-	public abstract UnoCard playCard(UnoGame game, UnoPlayer next);
-
-	/**
-	 * Chooses the {@link UnoCardColor} to set for a wild card.
-	 *
-	 * @param game
-	 *            the ongoing {@link UnoGame}
-	 * @return a {@link UnoCardColor}
-	 */
-	@Nonnull
-	public abstract UnoCardColor chooseColor(UnoGame game);
-
-	/**
-	 * Lets the hand decide whether to place the just-drawn {@link UnoCard} or not. This
-	 * method will only be called if the card can actually be placed so there's no need
-	 * to check that.
-	 *
-	 * @param game
-	 *            the ongoing {@link UnoGame}
-	 * @param drawnCard
-	 *            the just-drawn {@link UnoCard}
-	 * @param next
-	 *            the next {@link UnoPlayer}
-	 * @return whether the card should be placed
-	 */
-	public abstract boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard, UnoPlayer next);
 
 	/**
 	 * Adds a {@link UnoCard} from this {@link UnoHand} to a {@link UnoDiscardPile} and
