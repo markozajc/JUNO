@@ -28,4 +28,11 @@ public class UnoWildCard extends UnoCard {
 		return new UnoWildCard();
 	}
 
+	@Override
+	public boolean isPlayed() {
+		return true;
+	}
+
+
+
 }
