@@ -14,13 +14,13 @@ import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
  *
  * @author Marko Zajc
  */
-public class ConsoleUnoGame extends UnoControlledGame {
+public class UnoConsoleGame extends UnoControlledGame {
 
 	/**
-	 * Creates a new {@link ConsoleUnoGame} with a {@link ConsoleUnoPlayer} named "You"
+	 * Creates a new {@link UnoConsoleGame} with a {@link ConsoleUnoPlayer} named "You"
 	 * and a {@link StrategicUnoPlayer} named "Billy the StrategicUnoHand".
 	 */
-	public ConsoleUnoGame() {
+	public UnoConsoleGame() {
 		super(new ConsoleUnoPlayer("You"), new StrategicUnoPlayer("Billy the StrategicUnoHand"), new UnoStandardDeck(),
 				7, UnoOfficialRules.getPack());
 	}
@@ -32,7 +32,7 @@ public class ConsoleUnoGame extends UnoControlledGame {
 	 *            arguments (will be ignored)
 	 */
 	public static void main(String[] args) {
-		UnoGame game = new ConsoleUnoGame();
+		UnoGame game = new UnoConsoleGame();
 
 		UnoPlayer winner = game.playGame();
 		if (winner == null) {
