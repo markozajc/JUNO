@@ -24,18 +24,24 @@ import com.github.markozajc.juno.rules.pack.impl.house.SevenORulePack;
  */
 public class UnoOfficialRules {
 
-	public enum UnoHouseRules {
+	public enum UnoHouseRule {
 
-		SEVENO(SevenORulePack.getPack());
+		SEVENO(SevenORulePack.getPack(), "SevenO");
 
 		private final UnoRulePack pack;
+		private final String name;
 
-		private UnoHouseRules(UnoRulePack pack) {
+		private UnoHouseRule(UnoRulePack pack, String name) {
 			this.pack = pack;
+			this.name = name;
 		}
 
 		public UnoRulePack getPack() {
 			return this.pack;
+		}
+
+		public String getName() {
+			return this.name;
 		}
 
 	}
@@ -64,9 +70,9 @@ public class UnoOfficialRules {
 
 	@SuppressWarnings("null")
 	@Nonnull
-	public static UnoRulePack getPack(UnoHouseRules... houseRules) {
+	public static UnoRulePack getPack(UnoHouseRule... houseRules) {
 		return getPack()
-				.addPacks(Arrays.asList(houseRules).stream().map(UnoHouseRules::getPack).collect(Collectors.toList()));
+				.addPacks(Arrays.asList(houseRules).stream().map(UnoHouseRule::getPack).collect(Collectors.toList()));
 	}
 
 }
