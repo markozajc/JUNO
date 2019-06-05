@@ -50,8 +50,8 @@ public class UnoStreamPlayer extends UnoPlayer {
 		List<UnoCard> possible = UnoRuleUtils.combinedPlacementAnalysis(top, this.getHand().getCards(), game.getRules(),
 			this.getHand());
 
-		this.ps.println("Choose a card:      [/* +  TODO game.playerTwoHand.getName() +  */'s hand size: "
-				+ next.getHand().getSize() + " | Draw pile size: " + game.getDraw().getSize() + " | Discard pile size: "
+		this.ps.println("Choose a card: [" + next.getName() + " hand size: " + next.getHand().getSize()
+				+ " | Draw pile size: " + game.getDraw().getSize() + " | Discard pile size: "
 				+ game.getDiscard().getSize() + " | Top card: " + game.getDiscard().getTop() + "]");
 
 		if (top instanceof UnoDrawCard && !((UnoDrawCard) top).isPlayed()) {
