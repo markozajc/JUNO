@@ -15,8 +15,8 @@ public abstract class UnoPlayer {
 	@Nonnull
 	private final String name;
 
-	public UnoPlayer(@Nonnull UnoHand hand, @Nonnull String name) {
-		this.hand = hand;
+	public UnoPlayer(@Nonnull String name) {
+		this.hand = new UnoHand();
 		this.name = name;
 	}
 
