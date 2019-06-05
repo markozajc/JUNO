@@ -6,7 +6,7 @@ package com.github.markozajc.juno.players.impl;
  *
  * @author Marko Zajc
  */
-public class ConsoleUnoPlayer extends UnoStreamPlayer {
+public class UnoConsolePlayer extends UnoStreamPlayer {
 
 	/**
 	 * Creates a new {@link UnoStreamPlayer}.
@@ -14,7 +14,7 @@ public class ConsoleUnoPlayer extends UnoStreamPlayer {
 	 * @param name hand's name
 	 */
 	@SuppressWarnings("null")
-	public ConsoleUnoPlayer(String name) {
+	public UnoConsolePlayer(String name) {
 		super(name, System.in, System.out); // NOSONAR
 	}
 }
