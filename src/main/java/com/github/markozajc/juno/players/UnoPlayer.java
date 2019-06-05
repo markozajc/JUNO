@@ -1,5 +1,7 @@
 package com.github.markozajc.juno.players;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -21,17 +23,21 @@ public abstract class UnoPlayer {
 	}
 
 	@Nonnull
-	public UnoHand getHand() {
+	public final UnoHand getHand() {
 		return this.hand;
 	}
 
 	@Nonnull
-	public String getName() {
+	public final String getName() {
 		return this.name;
 	}
 
-	public void setHand(@Nonnull UnoHand hand) {
+	public final void setHand(@Nonnull UnoHand hand) {
 		this.hand = hand;
+	}
+
+	public final List<UnoCard> getCards() {
+		return getHand().getCards();
 	}
 
 	/**
