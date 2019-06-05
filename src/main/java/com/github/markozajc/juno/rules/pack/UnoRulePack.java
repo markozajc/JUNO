@@ -85,7 +85,7 @@ public class UnoRulePack {
 		List<UnoRulePack> newPack = new ArrayList<>(packs.size() + 1);
 		newPack.add(this);
 		newPack.addAll(packs);
-		return UnoRulePack.ofPacks(packs);
+		return UnoRulePack.ofPacks(newPack);
 	}
 
 	@CheckReturnValue
