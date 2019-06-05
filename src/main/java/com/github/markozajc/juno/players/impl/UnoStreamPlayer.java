@@ -21,7 +21,7 @@ import com.github.markozajc.juno.utils.UnoRuleUtils;
  *
  * @author Marko Zajc
  */
-public class StreamUnoPlayer extends UnoPlayer {
+public class UnoStreamPlayer extends UnoPlayer {
 
 	private static final String INVALID_CHOICE_STRING = "Invalid choice!";
 
@@ -29,14 +29,14 @@ public class StreamUnoPlayer extends UnoPlayer {
 	private final PrintStream ps;
 
 	/**
-	 * Creates a new {@link StreamUnoPlayer}.
+	 * Creates a new {@link UnoStreamPlayer}.
 	 *
 	 * @param is
 	 *            {@link InputStream} to read from
 	 * @param ps
 	 *            {@link PrintStream} to write to
 	 */
-	public StreamUnoPlayer(@Nonnull String name, @Nonnull InputStream is, @Nonnull PrintStream ps) {
+	public UnoStreamPlayer(@Nonnull String name, @Nonnull InputStream is, @Nonnull PrintStream ps) {
 		super(name);
 		this.scanner = new Scanner(is);
 		this.ps = ps;
