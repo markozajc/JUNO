@@ -1,15 +1,26 @@
 package com.github.markozajc.juno.rules.pack.impl.house;
 
+import javax.annotation.Nonnull;
+
 import com.github.markozajc.juno.cards.impl.UnoNumericCard;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.players.UnoPlayer;
+import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
 import com.github.markozajc.juno.rules.types.flow.UnoInitializationConclusion;
 
 public class SevenORulePack {
 
-	public class HandSwappingRule implements UnoGameFlowRule {
+	private SevenORulePack() {}
+
+	private static UnoRulePack pack;
+
+	private static void createPack() {
+		pack = new UnoRulePack(new HandSwappingRule());
+	}
+
+	public static class HandSwappingRule implements UnoGameFlowRule {
 
 		@Override
 		public UnoInitializationConclusion initializationPhase(UnoPlayer player, UnoGame game) {
@@ -30,6 +41,15 @@ public class SevenORulePack {
 			return UnoInitializationConclusion.NOTHING;
 		}
 
+	}
+
+	@SuppressWarnings("null")
+	@Nonnull
+	public static UnoRulePack getPack() {
+		if (pack == null)
+			createPack();
+
+		return pack;
 	}
 
 }
