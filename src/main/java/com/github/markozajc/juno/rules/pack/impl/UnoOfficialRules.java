@@ -65,8 +65,8 @@ public class UnoOfficialRules {
 	@SuppressWarnings("null")
 	@Nonnull
 	public static UnoRulePack getPack(UnoHouseRules... houseRules) {
-		return UnoRulePack
-				.ofPacks(Arrays.asList(houseRules).stream().map(UnoHouseRules::getPack).collect(Collectors.toList()));
+		return getPack()
+				.addPacks(Arrays.asList(houseRules).stream().map(UnoHouseRules::getPack).collect(Collectors.toList()));
 	}
 
 }
