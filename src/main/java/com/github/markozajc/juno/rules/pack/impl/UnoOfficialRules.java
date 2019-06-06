@@ -16,7 +16,7 @@ import com.github.markozajc.juno.rules.impl.placement.ColorPlacementRules;
 import com.github.markozajc.juno.rules.impl.placement.DrawPlacementRules;
 import com.github.markozajc.juno.rules.impl.placement.NumericPlacementRules;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
-import com.github.markozajc.juno.rules.pack.impl.house.SevenORulePack;
+import com.github.markozajc.juno.rules.pack.impl.house.UnoSevenORulePack;
 
 /**
  * Placement rules for {@link UnoDrawCard}.
@@ -27,7 +27,7 @@ public class UnoOfficialRules {
 
 	public enum UnoHouseRule {
 
-		SEVENO(SevenORulePack.getPack(), "SevenO");
+		SEVENO(UnoSevenORulePack.getPack(), "SevenO");
 
 		private final UnoRulePack pack;
 		private final String name;

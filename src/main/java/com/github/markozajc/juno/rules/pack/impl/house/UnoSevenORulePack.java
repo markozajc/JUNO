@@ -8,13 +8,27 @@ import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
+import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
+import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule;
 import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
 import com.github.markozajc.juno.rules.types.flow.UnoInitializationConclusion;
 import com.github.markozajc.juno.rules.types.flow.UnoPhaseConclusion;
 
-public class SevenORulePack {
+/**
+ * A house {@link UnoRulePack} that implements the official SevenO house rule. The
+ * rule adds the mechanic of swapping hands whenever a {@link UnoNumericCard} with
+ * the number seven (7) or zero (0) is placed. As JUNO only supports two-player
+ * games, both of the numbers act the same (instead of seven allowing you to choose
+ * the player to swap hands with and zero forcing you to swap cards with the player
+ * next to you). This {@link UnoRulePack} is also referenced by
+ * {@link UnoHouseRule#SEVENO}, which is makes it easy to install into
+ * {@link UnoOfficialRules}.
+ *
+ * @author Marko Zajc
+ */
+public class UnoSevenORulePack {
 
-	private SevenORulePack() {}
+	private UnoSevenORulePack() {}
 
 	private static UnoRulePack pack;
 
@@ -22,6 +36,11 @@ public class SevenORulePack {
 		pack = new UnoRulePack(new HandSwappingRule());
 	}
 
+	/**
+	 * The hand swapping flow rule that implements the core SevenO idea.
+	 *
+	 * @author Marko Zajc
+	 */
 	public static class HandSwappingRule implements UnoGameFlowRule {
 
 		@Override
@@ -59,6 +78,9 @@ public class SevenORulePack {
 
 	}
 
+	/**
+	 * @return the SevenO house {@link UnoRulePack}
+	 */
 	@SuppressWarnings("null")
 	@Nonnull
 	public static UnoRulePack getPack() {
