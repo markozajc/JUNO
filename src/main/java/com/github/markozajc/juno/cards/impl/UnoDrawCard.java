@@ -63,7 +63,7 @@ public class UnoDrawCard extends UnoCard {
 	 */
 	@Deprecated
 	public void setPlayed() {
-		markPlayed();
+		markClosed();
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class UnoDrawCard extends UnoCard {
 	 *             in case this card is already marked as played
 	 */
 	public void drawTo(@Nonnull UnoGame game, @Nonnull UnoPlayer player) {
-		markPlayed();
+		markClosed();
 		player.getHand().draw(game, getAmount());
 	}
 
