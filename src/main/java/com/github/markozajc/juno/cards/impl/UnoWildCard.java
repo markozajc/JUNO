@@ -28,7 +28,7 @@ public class UnoWildCard extends UnoCard {
 		return new UnoWildCard();
 	}
 
-	@Override
+	@Deprecated
 	public boolean isPlayed() {
 		return true;
 	}
