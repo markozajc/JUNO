@@ -20,7 +20,7 @@ public abstract class UnoCard {
 	private UnoCardColor mask;
 	@Nullable
 	private UnoPlayer placer;
-	private boolean played;
+	private boolean open;
 
 	/**
 	 * Creates a new {@link UnoCard}.
@@ -118,25 +118,20 @@ public abstract class UnoCard {
 		this.placer = null;
 		// Unsets the placer
 
-		this.played = true;
-		// Unmark as played
+		this.open = false;
+		// Mark as closed
 	}
 
-	/**
-	 * Whether this card has been "played" yet. A played card means that its action has
-	 * been executed.
-	 *
-	 * @return this card's state
-	 */
-	public boolean isPlayed() {
-		return this.played;
+	public boolean isOpen() {
+		return this.open;
 	}
 
-	public void markPlayed() {
-		if (isPlayed())
-			throw new IllegalStateException("This card has already been played.");
+	public void markOpen() {
+		this.open = true;
+	}
 
-		this.played = true;
+	public void markClosed() {
+		this.open = false;
 	}
 
 	/**
