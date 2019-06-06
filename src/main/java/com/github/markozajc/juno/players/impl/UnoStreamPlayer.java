@@ -54,7 +54,7 @@ public class UnoStreamPlayer extends UnoPlayer {
 				+ " | Draw pile size: " + game.getDraw().getSize() + " | Discard pile size: "
 				+ game.getDiscard().getSize() + " | Top card: " + game.getDiscard().getTop() + "]");
 
-		if (top instanceof UnoDrawCard && !((UnoDrawCard) top).isPlayed()) {
+		if (top instanceof UnoDrawCard && ((UnoDrawCard) top).isOpen()) {
 			this.ps.println("0 - Draw " + game.getDiscard().getConsecutiveDraw() + " cards from a " + top);
 
 		} else {
