@@ -1,9 +1,10 @@
-package com.github.markozajc.juno.hands.impl;
+package com.github.markozajc.juno.players.impl;
 
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -11,17 +12,17 @@ import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.game.UnoGame;
-import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.utils.UnoRuleUtils;
 
 /**
- * A human-driven hand that uses a {@link Scanner} to read input and sends the output
- * to the given {@link PrintStream}. Blocks invalid card and color placements
+ * A human-driven player that uses a {@link Scanner} to read input and sends the
+ * output to the given {@link PrintStream}. Blocks invalid card and color placements
  * automatically. This is meant as an example hand.
  *
  * @author Marko Zajc
  */
-public class StreamUnoHand extends UnoHand {
+public class UnoStreamPlayer extends UnoPlayer {
 
 	private static final String INVALID_CHOICE_STRING = "Invalid choice!";
 
@@ -29,16 +30,16 @@ public class StreamUnoHand extends UnoHand {
 	private final PrintStream ps;
 
 	/**
-	 * Creates a new {@link StreamUnoHand}.
+	 * Creates a new {@link UnoStreamPlayer}.
 	 *
 	 * @param name
-	 *            hand's name
+	 *            this player's name
 	 * @param is
 	 *            {@link InputStream} to read from
 	 * @param ps
 	 *            {@link PrintStream} to write to
 	 */
-	public StreamUnoHand(@Nonnull String name, @Nonnull InputStream is, @Nonnull PrintStream ps) {
+	public UnoStreamPlayer(@Nonnull String name, @Nonnull InputStream is, @Nonnull PrintStream ps) {
 		super(name);
 		this.scanner = new Scanner(is);
 		this.ps = ps;
@@ -46,16 +47,16 @@ public class StreamUnoHand extends UnoHand {
 
 	@SuppressWarnings("null")
 	@Override
-	public UnoCard playCard(UnoGame game) {
+	public UnoCard playCard(UnoGame game, UnoPlayer next) {
 		UnoCard top = game.getDiscard().getTop();
-		List<UnoCard> possible = UnoRuleUtils.combinedPlacementAnalysis(top, this.cards, game.getRules(), this);
+		List<UnoCard> possible = UnoRuleUtils.combinedPlacementAnalysis(top, this.getHand().getCards(), game.getRules(),
+			this.getHand());
 
-		this.ps.println(
-			"Choose a card:      [" + game.playerTwoHand.getName() + "'s hand size: " + game.playerTwoHand.getSize()
-					+ " | Draw pile size: " + game.getDraw().getSize() + " | Discard pile size: "
-					+ game.getDiscard().getSize() + " | Top card: " + game.getDiscard().getTop() + "]");
+		this.ps.println("Choose a card: [" + next.getName() + " hand size: " + next.getHand().getSize()
+				+ " | Draw pile size: " + game.getDraw().getSize() + " | Discard pile size: "
+				+ game.getDiscard().getSize() + " | Top card: " + game.getDiscard().getTop() + "]");
 
-		if (top instanceof UnoDrawCard && !((UnoDrawCard) top).isPlayed()) {
+		if (top instanceof UnoDrawCard && ((UnoDrawCard) top).isOpen()) {
 			this.ps.println("0 - Draw " + game.getDiscard().getConsecutiveDraw() + " cards from a " + top);
 
 		} else {
@@ -63,7 +64,7 @@ public class StreamUnoHand extends UnoHand {
 		}
 
 		int i = 1;
-		for (UnoCard card : this.cards) {
+		for (UnoCard card : this.getHand().getCards()) {
 			if (possible.contains(card)) {
 				this.ps.println(i + " - " + card + "");
 			} else {
@@ -80,9 +81,19 @@ public class StreamUnoHand extends UnoHand {
 		}
 
 		while (true) {
+			String nextLine = this.scanner.nextLine();
+			if (nextLine.equalsIgnoreCase("rules")) {
+				this.ps.println("Active rules: " + game.getRules()
+						.getRules()
+						.stream()
+						.map(r -> r.getClass().getSimpleName())
+						.collect(Collectors.joining(", ")));
+				continue;
+			}
+
 			int choice;
 			try {
-				choice = Integer.parseInt(this.scanner.nextLine());
+				choice = Integer.parseInt(nextLine);
 			} catch (NumberFormatException e) {
 				this.ps.println(INVALID_CHOICE_STRING);
 				continue;
@@ -91,12 +102,12 @@ public class StreamUnoHand extends UnoHand {
 			if (choice == 0)
 				return null;
 
-			if (choice > this.cards.size()) {
+			if (choice > this.getCards().size()) {
 				this.ps.println(INVALID_CHOICE_STRING);
 				continue;
 			}
 
-			UnoCard card = this.cards.get(choice - 1);
+			UnoCard card = this.getCards().get(choice - 1);
 
 			if (!possible.contains(card)) {
 				this.ps.println(INVALID_CHOICE_STRING);
@@ -143,7 +154,7 @@ public class StreamUnoHand extends UnoHand {
 	}
 
 	@Override
-	public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard) {
+	public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard, UnoPlayer next) {
 		this.ps.println("You have drawn a " + drawnCard.toString() + ". Do you want to place it? [y/n]");
 		return this.scanner.nextLine().equals("y");
 	}

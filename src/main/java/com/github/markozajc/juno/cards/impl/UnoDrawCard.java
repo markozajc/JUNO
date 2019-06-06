@@ -7,6 +7,7 @@ import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.players.UnoPlayer;
 
 /**
  * A card that makes the other player draw two or four cards, depending on the
@@ -25,7 +26,6 @@ import com.github.markozajc.juno.hands.UnoHand;
 public class UnoDrawCard extends UnoCard {
 
 	private final int amount;
-	private boolean played = false;
 
 	/**
 	 * Creates a new draw two card.
@@ -54,21 +54,16 @@ public class UnoDrawCard extends UnoCard {
 		this.amount = amount;
 	}
 
-	@Override
-	public boolean isPlayed() {
-		return this.played;
-	}
-
 	/**
-	 * Marks this card as "played". This means that a player has already drawn because of
+	 * Marks this card as "closed" ("played"). This means that a player has already drawn because of
 	 * it.
 	 *
 	 * @deprecated You shouldn't be using this directly as
-	 *             {@link #drawTo(UnoGame, UnoHand)} already does it for you.
+	 *             {@link #drawTo(UnoGame, UnoPlayer)} already does it for you.
 	 */
 	@Deprecated
 	public void setPlayed() {
-		this.played = true;
+		markClosed();
 	}
 
 	/**
@@ -86,13 +81,6 @@ public class UnoDrawCard extends UnoCard {
 		return getOriginalColor().toString() + " draw " + this.getAmount();
 	}
 
-	@Override
-	public void reset() {
-		super.reset();
-
-		this.played = false;
-	}
-
 	/**
 	 * Draws the set amount of {@link UnoCard}s from the draw pile of the given
 	 * {@link UnoGame} and adds them to a {@link UnoHand}. This method is safe as it uses
@@ -100,17 +88,14 @@ public class UnoDrawCard extends UnoCard {
 	 *
 	 * @param game
 	 *            the ongoing {@link UnoGame}
-	 * @param hand
-	 *            the {@link UnoHand} to add the drawn cards to
+	 * @param player
+	 *            the owner of the {@link UnoHand} to add the drawn cards to
 	 * @throws IllegalStateException
-	 *             in case this card is already marked as played
+	 *             in case this card is already marked as closed
 	 */
-	public void drawTo(@Nonnull UnoGame game, @Nonnull UnoHand hand) {
-		if (isPlayed())
-			throw new IllegalStateException("This card has already been played.");
-
-		hand.draw(game, getAmount());
-		this.played = true;
+	public void drawTo(@Nonnull UnoGame game, @Nonnull UnoPlayer player) {
+		markClosed();
+		player.getHand().draw(game, getAmount());
 	}
 
 	@Override

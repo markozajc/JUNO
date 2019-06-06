@@ -3,7 +3,9 @@ package com.github.markozajc.juno.cards;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.players.UnoPlayer;
 
 /**
  * A class representing a card in UNO. The only mandatory thing for a card is a
@@ -18,7 +20,8 @@ public abstract class UnoCard {
 	@Nullable
 	private UnoCardColor mask;
 	@Nullable
-	private UnoHand placer;
+	private UnoPlayer placer;
+	private boolean open;
 
 	/**
 	 * Creates a new {@link UnoCard}.
@@ -78,7 +81,7 @@ public abstract class UnoCard {
 	 * @throws IllegalStateException
 	 *             in case the placer has already been set.
 	 */
-	public final void setPlacer(@Nonnull UnoHand placer) {
+	public final void setPlacer(@Nonnull UnoPlayer placer) {
 		if (this.placer != null)
 			throw new IllegalStateException("This card's placer has already been set.");
 
@@ -97,8 +100,8 @@ public abstract class UnoCard {
 	 *             in case this card's placer hasn't been set yet
 	 */
 	@Nonnull
-	public UnoHand getPlacer() {
-		UnoHand cardPlacer = this.placer;
+	public UnoPlayer getPlacer() {
+		UnoPlayer cardPlacer = this.placer;
 		if (cardPlacer == null)
 			throw new IllegalStateException("This card's placer hasn't been set yet.");
 
@@ -115,16 +118,52 @@ public abstract class UnoCard {
 
 		this.placer = null;
 		// Unsets the placer
+
+		this.open = false;
+		// Mark as closed
 	}
 
 	/**
-	 * Whether this card has been "played" yet. A played card means that its action has
-	 * been executed.
+	 * Whether the card is "open" or not. A {@link UnoCard} being open can mean multiple
+	 * different card-specific things, but it always means that the card has not been
+	 * "activated" yet (eg. {@link UnoDrawCard} has been just placed and no cards have
+	 * been drawn because of it yet). Cards are usually marked as open
+	 * ({@link #markOpen()}) at decision phase and marked as closed
+	 * ({@link #markClosed()}) at initialization phase of the next turn.
 	 *
-	 * @return this card's state
+	 * @return whether the card is "open" or not
 	 */
-	public boolean isPlayed() {
-		return true;
+	public boolean isOpen() {
+		return this.open;
+	}
+
+	/**
+	 * Marks the card as "open" - see {@link #isOpen()} for more details.
+	 *
+	 * @throws IllegalStateException
+	 *             if the {@link UnoCard} is already open
+	 *
+	 * @see #isOpen()
+	 */
+	public void markOpen() {
+		if (isOpen())
+			throw new IllegalStateException("Card is already marked as open");
+
+		this.open = true;
+	}
+
+	/**
+	 * Marks the {@link UnoCard} as "closed" - see {@link #isOpen()} for more details.
+	 *
+	 * @throws IllegalStateException
+	 *             if the {@link UnoCard} is already closed
+	 * @see #isOpen()
+	 */
+	public void markClosed() {
+		if (!isOpen())
+			throw new IllegalStateException("Card is already marked as closed");
+
+		this.open = false;
 	}
 
 	/**

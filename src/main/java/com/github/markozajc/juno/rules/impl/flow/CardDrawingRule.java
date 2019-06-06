@@ -4,10 +4,12 @@ import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
 import com.github.markozajc.juno.rules.types.flow.UnoInitializationConclusion;
 import com.github.markozajc.juno.rules.types.flow.UnoPhaseConclusion;
 import com.github.markozajc.juno.utils.UnoGameUtils;
+import com.github.markozajc.juno.utils.UnoRuleUtils;
 
 /**
  * The game flow rule responsible for drawing {@link UnoCard}s from the discard pile
@@ -17,15 +19,14 @@ import com.github.markozajc.juno.utils.UnoGameUtils;
  */
 public class CardDrawingRule implements UnoGameFlowRule {
 
-	private static final String PLACED_DRAWN = "%s has placed the drawn %s.";
 	private static final String DRAW_CARDS = "%s drew %s cards from a %s.";
 	private static final String DRAW_CARD = "%s drew a card.";
 
 	@Override
-	public UnoInitializationConclusion initializationPhase(UnoHand hand, UnoGame game) {
-		if (game.getTopCard() instanceof UnoDrawCard && !game.getTopCard().isPlayed()) {
-			((UnoDrawCard) game.getTopCard()).drawTo(game, hand);
-			game.onEvent(DRAW_CARDS, hand.getName(), ((UnoDrawCard) game.getTopCard()).getAmount(),
+	public UnoInitializationConclusion initializationPhase(UnoPlayer player, UnoGame game) {
+		if (game.getTopCard() instanceof UnoDrawCard && game.getTopCard().isOpen()) {
+			((UnoDrawCard) game.getTopCard()).drawTo(game, player);
+			game.onEvent(DRAW_CARDS, player.getName(), ((UnoDrawCard) game.getTopCard()).getAmount(),
 				game.getTopCard().toString());
 
 			return new UnoInitializationConclusion(false, true);
@@ -36,16 +37,20 @@ public class CardDrawingRule implements UnoGameFlowRule {
 
 	@SuppressWarnings("null")
 	@Override
-	public UnoPhaseConclusion decisionPhase(UnoHand hand, UnoGame game, UnoCard decidedCard) {
+	public UnoPhaseConclusion decisionPhase(UnoPlayer player, UnoGame game, UnoCard decidedCard) {
 		if (decidedCard == null) {
-			UnoCard drawn = hand.draw(game, 1).get(0);
-			game.onEvent(DRAW_CARD, hand.getName());
+			UnoCard drawn = player.getHand().draw(game, 1).get(0);
+			game.onEvent(DRAW_CARD, player.getName());
 
-			if (UnoGameUtils.canPlaceCard(hand, game, drawn) && hand.shouldPlayDrawnCard(game, drawn)
-					&& UnoGameUtils.placeCard(game, hand, drawn)) {
-				game.onEvent(PLACED_DRAWN, drawn.getPlacer().getName(), drawn.toString());
+			if (UnoGameUtils.canPlaceCard(player, game, drawn)
+					&& player.shouldPlayDrawnCard(game, drawn, game.nextPlayer(player))) {
+				UnoRuleUtils.filterRuleKind(game.getRules().getRules(), UnoGameFlowRule.class)
+						.forEach(gfr -> gfr.decisionPhase(player, game, drawn));
 			}
 		}
+
+		if (decidedCard instanceof UnoDrawCard && !decidedCard.isOpen())
+			decidedCard.markOpen();
 
 		return UnoPhaseConclusion.NOTHING;
 	}

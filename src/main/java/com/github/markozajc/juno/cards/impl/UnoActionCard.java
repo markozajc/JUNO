@@ -18,8 +18,6 @@ import com.github.markozajc.juno.cards.UnoCardColor;
  */
 public class UnoActionCard extends UnoCard {
 
-	boolean played = false;
-
 	/**
 	 * The two variations of the action card.
 	 *
@@ -76,24 +74,6 @@ public class UnoActionCard extends UnoCard {
 	@Override
 	public String toString() {
 		return this.getColor().toString() + " " + this.action.toString();
-	}
-
-	/**
-	 * Marks the card as played.
-	 *
-	 * @throws IllegalStateException
-	 *             in case this card is already marked as played
-	 */
-	public void setPlayed() {
-		if (isPlayed())
-			throw new IllegalStateException("This card has already been played.");
-
-		this.played = true;
-	}
-
-	@Override
-	public boolean isPlayed() {
-		return this.played;
 	}
 
 	@Override

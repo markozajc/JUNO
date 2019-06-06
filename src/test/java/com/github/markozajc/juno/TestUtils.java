@@ -11,6 +11,7 @@ import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.players.UnoPlayer;
 
 /**
  * This is not actually a test class. Instead it provides shared utility methods to
@@ -20,15 +21,15 @@ import com.github.markozajc.juno.hands.UnoHand;
  */
 public class TestUtils {
 
-	private static class DummyUnoHand extends UnoHand {
+	private static class DummyUnoPlayer extends UnoPlayer {
 
-		public DummyUnoHand(@Nonnull Collection<UnoCard> cards) {
-			super("Dummy Hand");
-			this.cards.addAll(cards);
+		public DummyUnoPlayer(@Nonnull Collection<UnoCard> cards) {
+			super("DummyUnoPlayer-" + System.currentTimeMillis());
+			this.getHand().getCards().addAll(cards);
 		}
 
 		@Override
-		public UnoCard playCard(UnoGame game) {
+		public UnoCard playCard(UnoGame game, UnoPlayer next) {
 			throw new UnsupportedOperationException("DummyUnoHand can not play cards.");
 		}
 
@@ -38,7 +39,7 @@ public class TestUtils {
 		}
 
 		@Override
-		public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard) {
+		public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard, UnoPlayer next) {
 			throw new UnsupportedOperationException(
 					"DummyUnoHand can not decide whether it should play drawn cards or not.");
 		}
@@ -87,20 +88,20 @@ public class TestUtils {
 	}
 
 	/**
-	 * Returns a dummy {@link UnoDeck} containing a preferred {@link Collection} of
-	 * cards. Calling either {@link UnoHand#playCard(UnoGame)},
-	 * {@link UnoHand#chooseColor(UnoGame)} or
-	 * {@link UnoHand#shouldPlayDrawnCard(UnoGame, UnoCard)} will throw an
+	 * Returns a dummy {@link UnoPlayer} containing a preferred {@link Collection} of
+	 * {@link UnoCard}s. Calling either {@link UnoPlayer#playCard(UnoGame, UnoPlayer)},
+	 * {@link UnoPlayer#chooseColor(UnoGame)} or
+	 * {@link UnoPlayer#shouldPlayDrawnCard(UnoGame, UnoCard, UnoPlayer)} will throw an
 	 * {@link UnsupportedOperationException}.
 	 *
 	 * @param cards
 	 *            {@link Collection} of {@link UnoCard}s the {@link UnoHand} should
 	 *            contain
-	 * @return the created {@link UnoHand}
+	 * @return the created {@link UnoPlayer}
 	 */
 	@Nonnull
-	public static UnoHand getDummyHand(@Nonnull Collection<UnoCard> cards) {
-		return new DummyUnoHand(cards);
+	public static DummyUnoPlayer getDummyPlayer(@Nonnull Collection<UnoCard> cards) {
+		return new DummyUnoPlayer(cards);
 	}
 
 	/**
@@ -113,7 +114,7 @@ public class TestUtils {
 	 * @return the built {@link UnoDeck}
 	 */
 	@Nonnull
-	public static UnoDeck getDummyDeck(@Nonnull List<UnoCard> cards) {
+	public static DummyUnoDeck getDummyDeck(@Nonnull List<UnoCard> cards) {
 		return new DummyUnoDeck(cards);
 	}
 
