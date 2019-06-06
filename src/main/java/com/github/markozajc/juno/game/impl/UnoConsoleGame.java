@@ -37,7 +37,7 @@ public class UnoConsoleGame extends UnoControlledGame {
 				rules.add(rule);
 		}
 
-		return UnoOfficialRules.getPack(rules.toArray(new UnoHouseRule[0]));
+		return UnoOfficialRules.getPack(rules.toArray(new UnoHouseRule[rules.size()]));
 	}
 
 	/**

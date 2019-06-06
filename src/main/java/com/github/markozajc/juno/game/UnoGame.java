@@ -182,15 +182,18 @@ public abstract class UnoGame {
 				this.first, this.second
 		};
 
-		for (UnoPlayer player = players[0]; winner == null; player = reversePlayer(player)) {
+		boolean fallback = false;
+		for (UnoPlayer player = players[0]; winner == null && !fallback; player = reversePlayer(player)) {
 			UnoPlayer reversePlayer = reversePlayer(player);
 			// Gets the other player
 
 			winner = playAndCheckPlayer(player, reversePlayer);
 			// Gives the players a turn and checks both
 
-			if (this.discard.getSize() <= 1 && this.draw.getSize() == 0)
+			if (this.discard.getSize() <= 1 && this.draw.getSize() == 0) {
 				winner = fallbackVictory();
+				fallback = true;
+			}
 			// Fallback method used in the case of both piles getting empty. Do note that the
 			// game can not continue at this point so a winner
 			// must be chosen.
