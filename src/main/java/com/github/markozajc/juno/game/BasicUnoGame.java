@@ -83,7 +83,7 @@ public abstract class BasicUnoGame extends UnoGame {
 	/**
 	 * Called when an invalid {@link UnoCardColor} request has been made. This means that
 	 * a hand has returned {@link UnoCardColor#WILD} on
-	 * {@link UnoHand#chooseColor(UnoGame)}. {@link UnoHand#chooseColor(UnoGame)}.
+	 * {@link UnoPlayer#chooseColor(UnoGame)}. {@link UnoPlayer#chooseColor(UnoGame)}.
 	 *
 	 * @param player
 	 *            the offending {@link UnoPlayer}
