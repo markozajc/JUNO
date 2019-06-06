@@ -1,6 +1,7 @@
 package com.github.markozajc.juno.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,6 +12,7 @@ import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.rules.UnoRule;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
+import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule;
 import com.github.markozajc.juno.rules.types.UnoCardPlacementRule;
 import com.github.markozajc.juno.rules.types.UnoCardPlacementRule.PlacementClearance;
 
@@ -76,6 +78,13 @@ public class UnoRuleUtils {
 	@Nonnull
 	public static <T extends UnoRule> List<T> filterRuleKind(@Nonnull Collection<UnoRule> rules, @Nonnull Class<T> kind) {
 		return rules.stream().filter(kind::isInstance).map(kind::cast).collect(Collectors.toList());
+	}
+
+	public static List<UnoHouseRule> getHouseRules(UnoRulePack pack) {
+		return Arrays.asList(UnoHouseRule.values())
+				.stream()
+				.filter(hr -> pack.getRules().containsAll(hr.getPack().getRules()))
+				.collect(Collectors.toList());
 	}
 
 }
