@@ -54,7 +54,7 @@ public class UnoUtils {
 	public static List<UnoCard> analyzePossibleCards(UnoCard targetCard, Collection<UnoCard> cards) {
 		List<UnoCard> result = new ArrayList<>();
 
-		if (targetCard instanceof UnoDrawCard && !((UnoDrawCard) targetCard).isPlayed()) {
+		if (targetCard instanceof UnoDrawCard && ((UnoDrawCard) targetCard).isOpen()) {
 			UnoDrawCard castTop = (UnoDrawCard) targetCard;
 
 			result.addAll(UnoUtils.filterKind(UnoDrawCard.class, cards)
@@ -92,7 +92,7 @@ public class UnoUtils {
 		}
 		// Adds all allowed action cards
 
-		else if (targetCard instanceof UnoDrawCard && ((UnoDrawCard) targetCard).isPlayed()) {
+		else if (targetCard instanceof UnoDrawCard && !((UnoDrawCard) targetCard).isOpen()) {
 			UnoDrawCard castTop = (UnoDrawCard) targetCard;
 
 			result.addAll(UnoUtils.filterKind(UnoDrawCard.class, cards)
