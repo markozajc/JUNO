@@ -35,22 +35,23 @@ public class UnoStrategicPlayer extends UnoPlayer {
 
 	@Nullable
 	private static UnoDrawCard chooseDrawCard(List<UnoCard> possiblePlacements, List<Entry<Long, UnoCardColor>> colorAnalysis, UnoCard topCard, UnoPlayer next) {
-		if (topCard instanceof UnoDrawCard && !((UnoDrawCard) topCard).isPlayed()) {
-			// In case the other hand placed a draw card
 
-			if (!((UnoDrawCard) topCard).getOriginalColor().equals(UnoCardColor.WILD)) {
-				// If the card is NOT a draw four card (or any other custom wild draw card)
-
-				UnoDrawCard result = chooseBestCard(possiblePlacements, colorAnalysis, UnoDrawCard.class);
-				if (result != null)
-					return result;
-
-			} else {
-				return UnoUtils.filterKind(UnoDrawCard.class, possiblePlacements).get(0);
-			}
-
-		}
-		// Defends self if "attacked" with a Draw X card
+		/*
+		 * if (topCard instanceof UnoDrawCard && !((UnoDrawCard) topCard).isPlayed()) { // In
+		 * case the other hand placed a draw card
+		 *
+		 * if (!((UnoDrawCard) topCard).getOriginalColor().equals(UnoCardColor.WILD)) { // If
+		 * the card is NOT a draw four card (or any other custom wild draw card)
+		 *
+		 * UnoDrawCard result = chooseBestCard(possiblePlacements, colorAnalysis,
+		 * UnoDrawCard.class); if (result != null) return result;
+		 *
+		 * } else { return UnoUtils.filterKind(UnoDrawCard.class, possiblePlacements).get(0);
+		 * }
+		 *
+		 * } // Defends self if "attacked" with a Draw X card
+		 */
+		// TODO reimplement when progressive uno rule is added
 
 		// Places an action card if possible (both action cards do the same thing in 2 player
 		// games so yeah)
