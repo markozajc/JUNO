@@ -25,7 +25,7 @@ class UnoStandardDeckTest {
 	@Test
 	void testCloning() {
 		UnoDeck deck = new UnoStandardDeck();
-		UnoPlayer hand = TestUtils.getDummyPlayer(TestUtils.getDummyHand(Collections.emptyList()));
+		UnoPlayer hand = TestUtils.getDummyPlayer(Collections.emptyList());
 		deck.getCards().get(0).setPlacer(hand);
 
 		assertThrows(IllegalStateException.class, () -> deck.getCards().get(0).getPlacer());
