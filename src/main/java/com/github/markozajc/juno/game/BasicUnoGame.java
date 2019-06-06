@@ -124,7 +124,7 @@ public abstract class BasicUnoGame extends UnoGame {
 	protected void turn(UnoPlayer player) {
 		start: while (true) {
 			UnoCard topCard = this.getDiscard().getTop();
-			boolean hasToDraw = topCard instanceof UnoDrawCard && !((UnoDrawCard) topCard).isPlayed();
+			boolean hasToDraw = topCard instanceof UnoDrawCard && ((UnoDrawCard) topCard).isOpen();
 
 			if (!hasToDraw)
 				changeColor(player, topCard);
