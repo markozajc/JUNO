@@ -45,10 +45,8 @@ class UnoControlledGameTest {
 
 		for (int i = 0; i < 5000; i++) {
 			try {
-				UnoPlayer winner = game.playGame();
+				game.playGame();
 
-				System.out.println(
-					"\n[R" + i + "=========== " + (winner != null ? winner.getName() : "PX") + " won =============]");
 				assertEquals(game.getDiscard().getSize() + game.getDraw().getSize()
 						+ game.getFirstPlayer().getHand().getSize() + game.getSecondPlayer().getHand().getSize(),
 					game.getDeck().getExpectedSize());
