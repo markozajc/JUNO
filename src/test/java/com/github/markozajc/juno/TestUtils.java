@@ -21,10 +21,11 @@ import com.github.markozajc.juno.players.UnoPlayer;
  */
 public class TestUtils {
 
-	private static class DummyUnoHand extends UnoHand {
+	private static class DummyUnoPlayer extends UnoPlayer {
 
-		public DummyUnoHand(@Nonnull Collection<UnoCard> cards) {
-			this.cards.addAll(cards);
+		public DummyUnoPlayer(@Nonnull Collection<UnoCard> cards) {
+			super("DummyUnoPlayer-" + System.currentTimeMillis());
+			this.getHand().getCards().addAll(cards);
 		}
 
 		@Override
@@ -87,20 +88,20 @@ public class TestUtils {
 	}
 
 	/**
-	 * Returns a dummy {@link UnoDeck} containing a preferred {@link Collection} of
-	 * cards. Calling either {@link UnoHand#playCard(UnoGame, UnoPlayer)},
-	 * {@link UnoHand#chooseColor(UnoGame)} or
-	 * {@link UnoHand#shouldPlayDrawnCard(UnoGame, UnoCard, UnoPlayer)} will throw an
+	 * Returns a dummy {@link UnoPlayer} containing a preferred {@link Collection} of
+	 * {@link UnoCard}s. Calling either {@link UnoPlayer#playCard(UnoGame, UnoPlayer)},
+	 * {@link UnoPlayer#chooseColor(UnoGame)} or
+	 * {@link UnoPlayer#shouldPlayDrawnCard(UnoGame, UnoCard, UnoPlayer)} will throw an
 	 * {@link UnsupportedOperationException}.
 	 *
 	 * @param cards
 	 *            {@link Collection} of {@link UnoCard}s the {@link UnoHand} should
 	 *            contain
-	 * @return the created {@link UnoHand}
+	 * @return the created {@link UnoPlayer}
 	 */
 	@Nonnull
-	public static DummyUnoHand getDummyHand(@Nonnull Collection<UnoCard> cards) {
-		return new DummyUnoHand(cards);
+	public static DummyUnoPlayer getDummyPlayer(@Nonnull Collection<UnoCard> cards) {
+		return new DummyUnoPlayer(cards);
 	}
 
 	/**
@@ -115,10 +116,6 @@ public class TestUtils {
 	@Nonnull
 	public static DummyUnoDeck getDummyDeck(@Nonnull List<UnoCard> cards) {
 		return new DummyUnoDeck(cards);
-	}
-
-	public static UnoPlayer getDummyPlayer(@Nonnull DummyUnoHand hand) {
-		return new UnoPlayer(hand, "DummyPlayer" + System.currentTimeMillis());
 	}
 
 }
