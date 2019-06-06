@@ -135,7 +135,7 @@ public abstract class UnoGame {
 	 * @return
 	 */
 	private static boolean checkVictory(UnoPlayer player, UnoDiscardPile discard) {
-		return player.getHand().getSize() == 0 && discard.getTop().isPlayed();
+		return player.getHand().getSize() == 0 && !discard.getTop().isOpen();
 	}
 
 	/**
