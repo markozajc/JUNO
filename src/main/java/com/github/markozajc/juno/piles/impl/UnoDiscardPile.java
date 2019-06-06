@@ -40,7 +40,7 @@ public class UnoDiscardPile implements UnoPile {
 	 * @see #getConsecutiveDraw()
 	 */
 	private static boolean isRelevant(UnoCard card, int drawMark) {
-		return card instanceof UnoDrawCard && ((UnoDrawCard) card).getAmount() == drawMark && !card.isPlayed();
+		return card instanceof UnoDrawCard && ((UnoDrawCard) card).getAmount() == drawMark && card.isOpen();
 	}
 
 	/**
