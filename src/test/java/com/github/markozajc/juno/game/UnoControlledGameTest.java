@@ -25,9 +25,7 @@ class UnoControlledGameTest {
 		}
 
 		@Override
-		public void onEvent(String format, Object... arguments) {
-			System.out.printf(format + " ", arguments);
-		}
+		public void onEvent(String format, Object... arguments) {}
 	}
 
 	private static final String DEBUG_FORMAT = "\nDebug information: EXT:%s,EXM:%s,RDN:%s,H1C:%s,H2C:%s,DRC:%s,DIC:%s,TCR:%s";
