@@ -2,6 +2,7 @@ package com.github.markozajc.juno.rules.pack.impl.house;
 
 import javax.annotation.Nonnull;
 
+import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.impl.UnoNumericCard;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
@@ -9,6 +10,7 @@ import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
 import com.github.markozajc.juno.rules.types.flow.UnoInitializationConclusion;
+import com.github.markozajc.juno.rules.types.flow.UnoPhaseConclusion;
 
 public class SevenORulePack {
 
@@ -24,12 +26,12 @@ public class SevenORulePack {
 
 		@Override
 		public UnoInitializationConclusion initializationPhase(UnoPlayer player, UnoGame game) {
-			if (game.getTopCard() instanceof UnoNumericCard && !game.getTopCard().isPlayed()
+			if (game.getTopCard() instanceof UnoNumericCard && game.getTopCard().isOpen()
 					&& (((UnoNumericCard) game.getTopCard()).getNumber() == 0
 							|| ((UnoNumericCard) game.getTopCard()).getNumber() == 7)) {
 				// If the top card is a numeric card with a seven or a zero
 
-				game.getTopCard().markPlayed();
+				game.getTopCard().markClosed();
 
 				UnoPlayer foe = game.nextPlayer(player);
 				UnoHand playerHand = player.getHand();
@@ -39,6 +41,17 @@ public class SevenORulePack {
 				// Swap hands
 
 				game.onEvent("Swapped cards", (Object[]) null);
+			}
+
+			return UnoInitializationConclusion.NOTHING;
+		}
+
+		@Override
+		public UnoPhaseConclusion decisionPhase(UnoPlayer player, UnoGame game, UnoCard decidedCard) {
+			if (decidedCard instanceof UnoNumericCard && !decidedCard.isOpen()
+					&& (((UnoNumericCard) decidedCard).getNumber() == 0
+							|| ((UnoNumericCard) decidedCard).getNumber() == 7)) {
+				decidedCard.markOpen();
 			}
 
 			return UnoInitializationConclusion.NOTHING;
