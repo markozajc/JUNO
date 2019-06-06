@@ -68,13 +68,8 @@ public class UnoStrategicPlayer extends UnoPlayer {
 	}
 
 	@Nullable
-	private static UnoActionCard chooseActionCard(List<UnoCard> possiblePlacements, List<Entry<Long, UnoCardColor>> colorAnalysis) {
-		return chooseBestCard(possiblePlacements, colorAnalysis, UnoActionCard.class);
-	}
-
-	@Nullable
-	private static UnoNumericCard chooseNumericCard(List<UnoCard> possiblePlacements, List<Entry<Long, UnoCardColor>> colorAnalysis) {
-		return chooseBestCard(possiblePlacements, colorAnalysis, UnoNumericCard.class);
+	private static <T extends UnoCard> T simpleChooseCard(List<UnoCard> possiblePlacements, List<Entry<Long, UnoCardColor>> colorAnalysis, Class<T> type) {
+		return chooseBestColorCard(UnoUtils.filterKind(type, possiblePlacements), colorAnalysis);
 	}
 
 	/**
@@ -94,9 +89,8 @@ public class UnoStrategicPlayer extends UnoPlayer {
 	 *         requested kind
 	 */
 	@Nullable
-	private static <T extends UnoCard> T chooseBestCard(List<UnoCard> possiblePlacements, List<Entry<Long, UnoCardColor>> colorAnalysis, Class<T> cardType) {
-		List<T> filteredPossiblePlacements = UnoUtils.filterKind(cardType, possiblePlacements);
-		if (filteredPossiblePlacements.isEmpty())
+	private static <T extends UnoCard> T chooseBestColorCard(List<T> possiblePlacements, List<Entry<Long, UnoCardColor>> colorAnalysis) {
+		if (possiblePlacements.isEmpty())
 			return null;
 		// In case there's no card of the requested kind
 
@@ -105,14 +99,14 @@ public class UnoStrategicPlayer extends UnoPlayer {
 				continue;
 			// Skips the wild cards because it might be a good idea to save them for later
 
-			List<T> matches = UnoUtils.getColorCards(color.getValue(), filteredPossiblePlacements);
+			List<T> matches = UnoUtils.getColorCards(color.getValue(), possiblePlacements);
 			// Gets the cards of
 
 			if (!matches.isEmpty())
 				return matches.get(0);
 		}
 
-		return filteredPossiblePlacements.get(0);
+		return possiblePlacements.get(0);
 		// Fallback method
 	}
 
@@ -135,12 +129,12 @@ public class UnoStrategicPlayer extends UnoPlayer {
 			return drawCard;
 		// Places an action card if possible
 
-		UnoActionCard actionCard = chooseActionCard(possible, colorAnalysis);
+		UnoActionCard actionCard = simpleChooseCard(possible, colorAnalysis, UnoActionCard.class);
 		if (actionCard != null)
 			return actionCard;
 		// Places an action card if possible
 
-		UnoNumericCard numericCard = chooseNumericCard(possible, colorAnalysis);
+		UnoNumericCard numericCard = simpleChooseCard(possible, colorAnalysis, UnoNumericCard.class);
 		if (numericCard != null)
 			return numericCard;
 		// Places a numeric card if possible
