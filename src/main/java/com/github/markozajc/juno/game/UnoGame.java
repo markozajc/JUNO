@@ -317,14 +317,29 @@ public abstract class UnoGame {
 		}
 	}
 
+	/**
+	 * @return the first {@link UnoPlayer}. This is the player to get the turn first
+	 * @see #getSecondPlayer()
+	 */
 	public UnoPlayer getFirstPlayer() {
 		return this.first;
 	}
 
+	/**
+	 * @return the second {@link UnoPlayer}
+	 * @see #getFirstPlayer()
+	 */
 	public UnoPlayer getSecondPlayer() {
 		return this.second;
 	}
 
+	/**
+	 * Fetches the {@link UnoHouseRule}s used in this {@link UnoGame}'s
+	 * {@link UnoRulePack} using {@link UnoRuleUtils#getHouseRules(UnoRulePack)}. This is
+	 * a singleton so it will consume more resources when called multiple times.
+	 *
+	 * @return this {@link UnoGame}'s {@link UnoHouseRule}s
+	 */
 	public List<UnoHouseRule> getHouseRules() {
 		if (this.houseRules == null)
 			this.houseRules = UnoRuleUtils.getHouseRules(getRules());

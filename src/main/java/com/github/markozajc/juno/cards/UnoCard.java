@@ -3,6 +3,7 @@ package com.github.markozajc.juno.cards;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.players.UnoPlayer;
 
@@ -122,10 +123,28 @@ public abstract class UnoCard {
 		// Mark as closed
 	}
 
+	/**
+	 * Whether the card is "open" or not. A {@link UnoCard} being open can mean multiple
+	 * different card-specific things, but it always means that the card has not been
+	 * "activated" yet (eg. {@link UnoDrawCard} has been just placed and no cards have
+	 * been drawn because of it yet). Cards are usually marked as open
+	 * ({@link #markOpen()}) at decision phase and marked as closed
+	 * ({@link #markClosed()}) at initialization phase of the next turn.
+	 *
+	 * @return whether the card is "open" or not
+	 */
 	public boolean isOpen() {
 		return this.open;
 	}
 
+	/**
+	 * Marks the card as "open" - see {@link #isOpen()} for more details.
+	 *
+	 * @throws IllegalStateException
+	 *             if the {@link UnoCard} is already open
+	 *
+	 * @see #isOpen()
+	 */
 	public void markOpen() {
 		if (isOpen())
 			throw new IllegalStateException("Card is already marked as open");
@@ -133,6 +152,13 @@ public abstract class UnoCard {
 		this.open = true;
 	}
 
+	/**
+	 * Marks the {@link UnoCard} as "closed" - see {@link #isOpen()} for more details.
+	 *
+	 * @throws IllegalStateException
+	 *             if the {@link UnoCard} is already closed
+	 * @see #isOpen()
+	 */
 	public void markClosed() {
 		if (!isOpen())
 			throw new IllegalStateException("Card is already marked as closed");

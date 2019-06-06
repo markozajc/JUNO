@@ -32,6 +32,8 @@ public class UnoStreamPlayer extends UnoPlayer {
 	/**
 	 * Creates a new {@link UnoStreamPlayer}.
 	 *
+	 * @param name
+	 *            this player's name
 	 * @param is
 	 *            {@link InputStream} to read from
 	 * @param ps

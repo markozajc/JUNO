@@ -80,6 +80,15 @@ public class UnoRuleUtils {
 		return rules.stream().filter(kind::isInstance).map(kind::cast).collect(Collectors.toList());
 	}
 
+	/**
+	 * Gets the {@link UnoHouseRule}s from a {@link UnoRulePack}. This will scan the
+	 * {@link UnoRule}s of that pack and return all {@link UnoHouseRule} of which
+	 * {@link UnoRulePack} share all {@link UnoRule}s.
+	 *
+	 * @param pack
+	 *            the {@link UnoRulePack} to scan
+	 * @return all complete {@link UnoHouseRule}s included in this pack
+	 */
 	@SuppressWarnings("null")
 	@Nonnull
 	public static List<UnoHouseRule> getHouseRules(UnoRulePack pack) {

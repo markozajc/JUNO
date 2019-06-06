@@ -24,7 +24,9 @@ import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule;
  */
 public class UnoConsoleGame extends UnoControlledGame {
 
-	@SuppressWarnings("resource")
+	@SuppressWarnings({
+			"resource", "null"
+	})
 	@Nonnull
 	private static UnoRulePack getRulePack() {
 		List<UnoHouseRule> rules = new ArrayList<>();

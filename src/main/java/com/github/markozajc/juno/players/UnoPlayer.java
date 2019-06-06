@@ -9,7 +9,22 @@ import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.players.impl.UnoConsolePlayer;
+import com.github.markozajc.juno.players.impl.UnoStrategicPlayer;
+import com.github.markozajc.juno.players.impl.UnoStreamPlayer;
 
+/**
+ * A class representing a player in UNO. A UNO player owns {@link UnoHand}s and
+ * contains the logic that determines what card is to be placed when it gets a turn
+ * ({@link #playCard(UnoGame, UnoPlayer)}) whether or not it should place a
+ * newly-drawn card ({@link #shouldPlayDrawnCard(UnoGame, UnoCard, UnoPlayer)}) and
+ * what color to assign to wild cards ({@link #chooseColor(UnoGame)}). A
+ * {@link UnoPlayer} can either be autonomous (an example of that would be
+ * {@link UnoStrategicPlayer}) or controlled by a human being (for example
+ * {@link UnoStreamPlayer} and {@link UnoConsolePlayer})
+ *
+ * @author Marko Zajc
+ */
 public abstract class UnoPlayer {
 
 	@Nonnull
@@ -17,25 +32,49 @@ public abstract class UnoPlayer {
 	@Nonnull
 	private final String name;
 
+	/**
+	 * Creates a new {@link UnoPlayer}.
+	 *
+	 * @param name
+	 *            this {@link UnoPlayer}'s name
+	 */
 	public UnoPlayer(@Nonnull String name) {
 		this.hand = new UnoHand();
 		this.name = name;
 	}
 
+	/**
+	 * @return the {@link UnoHand} this player possesses
+	 */
 	@Nonnull
 	public final UnoHand getHand() {
 		return this.hand;
 	}
 
+	/**
+	 * @return this player's name
+	 */
 	@Nonnull
 	public final String getName() {
 		return this.name;
 	}
 
+	/**
+	 * Sets this player's {@link UnoHand}, changing its entire inventory of cards. Take
+	 * care not to ruin the card economy while using this!
+	 *
+	 * @param hand
+	 *            the new {@link UnoHand}.
+	 */
 	public final void setHand(@Nonnull UnoHand hand) {
 		this.hand = hand;
 	}
 
+	/**
+	 * A shortcut to {@link UnoHand#getCards()}.
+	 *
+	 * @return this {@link UnoPlayer}'s cards
+	 */
 	public final List<UnoCard> getCards() {
 		return getHand().getCards();
 	}
@@ -51,7 +90,7 @@ public abstract class UnoPlayer {
 	 *            the ongoing {@link UnoGame}
 	 * @param next
 	 *            the next {@link UnoPlayer}
-	 * @return the {@link UnoCard} to play or {@code null} if the hand wants to draw a
+	 * @return the {@link UnoCard} to place or {@code null} if the hand wants to draw a
 	 *         card
 	 */
 	@Nullable

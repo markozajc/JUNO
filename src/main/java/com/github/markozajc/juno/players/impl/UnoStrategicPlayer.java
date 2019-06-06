@@ -29,6 +29,12 @@ import com.github.markozajc.juno.utils.UnoUtils;
  */
 public class UnoStrategicPlayer extends UnoPlayer {
 
+	/**
+	 * Creates a new {@link UnoStrategicPlayer}.
+	 *
+	 * @param name
+	 *            this player's name
+	 */
 	public UnoStrategicPlayer(@Nonnull String name) {
 		super(name);
 	}

@@ -79,6 +79,14 @@ public class UnoRulePack {
 		return this.rules;
 	}
 
+	/**
+	 * Creates a new {@link UnoRulePack} that includes this {@link UnoRulePack} and a
+	 * {@link Collection} of additional {@link UnoRulePack}.
+	 *
+	 * @param packs
+	 *            {@link Collection} of {@link UnoRulePack}s to include
+	 * @return the combined {@link UnoRulePack}
+	 */
 	@CheckReturnValue
 	@Nonnull
 	public UnoRulePack addPacks(@Nonnull Collection<UnoRulePack> packs) {
@@ -88,6 +96,14 @@ public class UnoRulePack {
 		return UnoRulePack.ofPacks(newPack);
 	}
 
+	/**
+	 * Creates a new {@link UnoRulePack} that includes this {@link UnoRulePack} and
+	 * additional {@link UnoRulePack}.
+	 *
+	 * @param packs
+	 *            {@link UnoRulePack}s to include
+	 * @return the combined {@link UnoRulePack}
+	 */
 	@CheckReturnValue
 	@Nonnull
 	@SuppressWarnings("null")
