@@ -1,6 +1,7 @@
 package com.github.markozajc.juno.game;
 
 import java.io.PrintStream;
+import java.util.List;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -14,6 +15,8 @@ import com.github.markozajc.juno.piles.impl.UnoDrawPile;
 import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.UnoRule;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
+import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule;
+import com.github.markozajc.juno.utils.UnoRuleUtils;
 
 /**
  * A class representing a game of UNO. {@link UnoGame} is the thing that controls the
@@ -25,31 +28,22 @@ import com.github.markozajc.juno.rules.pack.UnoRulePack;
  */
 public abstract class UnoGame {
 
-	/**
-	 * The first player.
-	 */
 	@Nonnull
 	private final UnoPlayer first;
-	/**
-	 * The second player.
-	 */
 	@Nonnull
 	private final UnoPlayer second;
-
+	@Nonnegative
 	private final int cardAmount;
-
-	private UnoDrawPile draw;
-
 	@Nonnull
 	private final UnoDiscardPile discard = new UnoDiscardPile();
-
 	@Nonnull
 	private final UnoRulePack rules;
-
 	@Nonnull
 	private final UnoDeck deck;
-
+	@Nullable
 	private UnoCard topCard;
+	private UnoDrawPile draw;
+	private List<UnoHouseRule> houseRules;
 
 	/**
 	 * Returns the other {@link UnoPlayer}.
@@ -328,6 +322,13 @@ public abstract class UnoGame {
 
 	public UnoPlayer getSecondPlayer() {
 		return this.second;
+	}
+
+	public List<UnoHouseRule> getHouseRules() {
+		if (this.houseRules == null)
+			this.houseRules = UnoRuleUtils.getHouseRules(getRules());
+
+		return this.houseRules;
 	}
 
 }
