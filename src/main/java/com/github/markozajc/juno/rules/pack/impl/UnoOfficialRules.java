@@ -1,6 +1,7 @@
 package com.github.markozajc.juno.rules.pack.impl;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -70,9 +71,14 @@ public class UnoOfficialRules {
 
 	@SuppressWarnings("null")
 	@Nonnull
-	public static UnoRulePack getPack(UnoHouseRule... houseRules) {
-		return getPack()
-				.addPacks(Arrays.asList(houseRules).stream().map(UnoHouseRule::getPack).collect(Collectors.toList()));
+	public static UnoRulePack getPack(@Nonnull UnoHouseRule... houseRules) {
+		return getPack(Arrays.asList(houseRules));
+	}
+
+	@SuppressWarnings("null")
+	@Nonnull
+	public static UnoRulePack getPack(@Nonnull List<UnoHouseRule> houseRules) {
+		return getPack().addPacks(houseRules.stream().map(UnoHouseRule::getPack).collect(Collectors.toList()));
 	}
 
 }
