@@ -92,10 +92,6 @@
 						</goals>
 					</execution>
 				</executions>
-				<configuration>
-					<additionalparam>-Xdoclint:none</additionalparam>
-					<additionalOptions>-Xdoclint:none</additionalOptions>
-				</configuration>
 			</plugin>
 
 			<plugin>
