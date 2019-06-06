@@ -9,6 +9,7 @@ import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
 import com.github.markozajc.juno.rules.types.flow.UnoInitializationConclusion;
 import com.github.markozajc.juno.rules.types.flow.UnoPhaseConclusion;
 import com.github.markozajc.juno.utils.UnoGameUtils;
+import com.github.markozajc.juno.utils.UnoRuleUtils;
 
 /**
  * The game flow rule responsible for drawing {@link UnoCard}s from the discard pile
@@ -18,7 +19,6 @@ import com.github.markozajc.juno.utils.UnoGameUtils;
  */
 public class CardDrawingRule implements UnoGameFlowRule {
 
-	private static final String PLACED_DRAWN = "%s has placed the drawn %s.";
 	private static final String DRAW_CARDS = "%s drew %s cards from a %s.";
 	private static final String DRAW_CARD = "%s drew a card.";
 
@@ -43,9 +43,9 @@ public class CardDrawingRule implements UnoGameFlowRule {
 			game.onEvent(DRAW_CARD, player.getName());
 
 			if (UnoGameUtils.canPlaceCard(player, game, drawn)
-					&& player.shouldPlayDrawnCard(game, drawn, game.nextPlayer(player))
-					&& UnoGameUtils.placeCard(game, player, drawn)) {
-				game.onEvent(PLACED_DRAWN, drawn.getPlacer().getName(), drawn.toString());
+					&& player.shouldPlayDrawnCard(game, drawn, game.nextPlayer(player))) {
+				UnoRuleUtils.filterRuleKind(game.getRules().getRules(), UnoGameFlowRule.class)
+						.forEach(gfr -> gfr.decisionPhase(player, game, drawn));
 			}
 		}
 
