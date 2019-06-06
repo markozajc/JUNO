@@ -127,10 +127,16 @@ public abstract class UnoCard {
 	}
 
 	public void markOpen() {
+		if (isOpen())
+			throw new IllegalStateException("Card is already marked as open");
+
 		this.open = true;
 	}
 
 	public void markClosed() {
+		if (!isOpen())
+			throw new IllegalStateException("Card is already marked as closed");
+
 		this.open = false;
 	}
 
