@@ -44,7 +44,7 @@ public class UnoStrategicPlayer extends UnoPlayer {
 
 	@Nullable
 	private static UnoNumericCard sevenoStrategy(List<UnoCard> possiblePlacements, List<Entry<Long, UnoCardColor>> colorAnalysis, UnoPlayer us, UnoPlayer foe) {
-		if (us.getHand().getSize() >= foe.getHand().getSize())
+		if (us.getHand().getSize() - 1 >= foe.getHand().getSize())
 			return null;
 
 		return chooseBestColorCard(sevenoFilter(possiblePlacements), colorAnalysis);
@@ -158,7 +158,7 @@ public class UnoStrategicPlayer extends UnoPlayer {
 
 		List<UnoCard> possibleNumeric;
 		if (game.getHouseRules().contains(UnoHouseRule.SEVENO)
-				&& this.getHand().getSize() >= next.getHand().getSize()) {
+				&& this.getHand().getSize() - 1 >= next.getHand().getSize()) {
 			possibleNumeric = new ArrayList<>(possible);
 			possibleNumeric.removeAll(sevenoFilter(possible));
 		} else {
