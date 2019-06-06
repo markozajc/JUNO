@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.Test;
 
 import com.github.markozajc.juno.cards.UnoStandardDeck;
-import com.github.markozajc.juno.hands.impl.StrategicUnoHand;
 import com.github.markozajc.juno.players.UnoPlayer;
+import com.github.markozajc.juno.players.impl.UnoStrategicPlayer;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
 
 class UnoControlledGameTest {
@@ -24,8 +24,8 @@ class UnoControlledGameTest {
 	void stressTest() {
 		System.out.println("[==== INITIATING THE STRESS TEST ====]");
 
-		UnoGame game = new UnoControlledGame(new UnoPlayer(new StrategicUnoHand(), "P1"),
-				new UnoPlayer(new StrategicUnoHand(), "P2"), new UnoStandardDeck(), 7, UnoOfficialRules.getPack()) {
+		UnoGame game = new UnoControlledGame(new UnoStrategicPlayer("P1"), new UnoStrategicPlayer("P2"),
+				new UnoStandardDeck(), 7, UnoOfficialRules.getPack()) {
 
 			@Override
 			public void onEvent(String format, Object... arguments) {
