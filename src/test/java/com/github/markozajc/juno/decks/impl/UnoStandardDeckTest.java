@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import com.github.markozajc.juno.TestUtils;
 import com.github.markozajc.juno.cards.UnoStandardDeck;
 import com.github.markozajc.juno.decks.UnoDeck;
-import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.players.UnoPlayer;
 
 class UnoStandardDeckTest {
 
@@ -25,7 +25,7 @@ class UnoStandardDeckTest {
 	@Test
 	void testCloning() {
 		UnoDeck deck = new UnoStandardDeck();
-		UnoHand hand = TestUtils.getDummyHand(Collections.emptyList());
+		UnoPlayer hand = TestUtils.getDummyPlayer(Collections.emptyList());
 		deck.getCards().get(0).setPlacer(hand);
 
 		assertThrows(IllegalStateException.class, () -> deck.getCards().get(0).getPlacer());

@@ -9,8 +9,8 @@ import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.game.UnoGame;
-import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.piles.impl.UnoDrawPile;
+import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 
 /**
@@ -27,8 +27,8 @@ public class UnoGameUtils {
 	 * Checks whether a card can be placed on the top card. {@link UnoRulePack} and top
 	 * of the discard pile are sourced from the given game.
 	 *
-	 * @param hand
-	 *            the {@link UnoHand} placing the card
+	 * @param placer
+	 *            the {@link UnoPlayer} placing the card
 	 * @param game
 	 *            the ongoing {@link UnoGame}
 	 * @param card
@@ -36,8 +36,9 @@ public class UnoGameUtils {
 	 * @return whether the given card can be placed on top of the discard pile
 	 */
 	@SuppressWarnings("null")
-	public static boolean canPlaceCard(@Nonnull UnoHand hand, @Nonnull UnoGame game, @Nonnull UnoCard card) {
-		return !UnoRuleUtils.combinedPlacementAnalysis(game.getTopCard(), Arrays.asList(card), game.getRules(), hand)
+	public static boolean canPlaceCard(@Nonnull UnoPlayer placer, @Nonnull UnoGame game, @Nonnull UnoCard card) {
+		return !UnoRuleUtils
+				.combinedPlacementAnalysis(game.getTopCard(), Arrays.asList(card), game.getRules(), placer.getHand())
 				.isEmpty();
 	}
 
@@ -77,17 +78,17 @@ public class UnoGameUtils {
 	 * @param game
 	 *            the ongoing {@link UnoGame}
 	 * @param placer
-	 *            the {@link UnoHand} placing the card
+	 *            the {@link UnoPlayer} placing the card
 	 * @param toPlace
 	 *            the {@link UnoCard} to place
 	 * @return whether the card was placed or not. Returns {@code false} in case
-	 *         {@link #canPlaceCard(UnoHand, UnoGame, UnoCard)} returns {@code false}
+	 *         {@link #canPlaceCard(UnoPlayer, UnoGame, UnoCard)} returns {@code false}
 	 */
-	public static boolean placeCard(@Nonnull UnoGame game, @Nonnull UnoHand placer, @Nonnull UnoCard toPlace) {
+	public static final boolean placeCard(@Nonnull UnoGame game, @Nonnull UnoPlayer placer, @Nonnull UnoCard toPlace) {
 		if (!canPlaceCard(placer, game, toPlace))
 			return false;
 
-		placer.addToDiscard(game.getDiscard(), toPlace);
+		placer.getHand().addToDiscard(game.getDiscard(), toPlace);
 		toPlace.setPlacer(placer);
 
 		return true;

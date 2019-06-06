@@ -15,7 +15,7 @@ import com.github.markozajc.juno.cards.impl.UnoActionCard.UnoAction;
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.cards.impl.UnoNumericCard;
 import com.github.markozajc.juno.cards.impl.UnoWildCard;
-import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
 
@@ -46,10 +46,10 @@ class UnoRuleUtilsTest {
 		 * two, Yellow skip, Green reverse, Blue reverse
 		 */
 
-		UnoHand hand = TestUtils.getDummyHand(Arrays.asList(cards[0]));
+		UnoPlayer player = TestUtils.getDummyPlayer(Arrays.asList(cards[0]));
 
 		assertTrue(TestUtils.listEqualsUnordered(
-			UnoRuleUtils.combinedPlacementAnalysis(cards[0], Arrays.asList(cards), pack, hand),
+			UnoRuleUtils.combinedPlacementAnalysis(cards[0], Arrays.asList(cards), pack, player.getHand()),
 			Arrays.asList(cards[0], cards[1], cards[3], cards[4], cards[6], cards[10])));
 		// Pack: official
 		// Card: Blue 0 <0>
@@ -58,7 +58,7 @@ class UnoRuleUtilsTest {
 		 */
 
 		assertTrue(TestUtils.listEqualsUnordered(
-			UnoRuleUtils.combinedPlacementAnalysis(cards[1], Arrays.asList(cards), pack, hand),
+			UnoRuleUtils.combinedPlacementAnalysis(cards[1], Arrays.asList(cards), pack, player.getHand()),
 			Arrays.asList(cards[0], cards[1], cards[4], cards[5], cards[7])));
 		// Pack: official
 		// Card: Red 0 <1>
@@ -67,7 +67,7 @@ class UnoRuleUtilsTest {
 		 */
 
 		assertTrue(TestUtils.listEqualsUnordered(
-			UnoRuleUtils.combinedPlacementAnalysis(cards[2], Arrays.asList(cards), pack, hand),
+			UnoRuleUtils.combinedPlacementAnalysis(cards[2], Arrays.asList(cards), pack, player.getHand()),
 			Arrays.asList(cards[2], cards[3], cards[4], cards[5], cards[8])));
 		// Pack: official
 		// Card: Yellow 1 <2>
@@ -76,7 +76,7 @@ class UnoRuleUtilsTest {
 		 */
 
 		assertTrue(TestUtils.listEqualsUnordered(
-			UnoRuleUtils.combinedPlacementAnalysis(cards[3], Arrays.asList(cards), pack, hand),
+			UnoRuleUtils.combinedPlacementAnalysis(cards[3], Arrays.asList(cards), pack, player.getHand()),
 			Arrays.asList(cards[0], cards[2], cards[3], cards[4], cards[6], cards[10])));
 		// Pack: official
 		// Card: Blue 1 <3>
@@ -85,7 +85,7 @@ class UnoRuleUtilsTest {
 		 */
 
 		assertTrue(TestUtils.listEqualsUnordered(
-			UnoRuleUtils.combinedPlacementAnalysis(cards[4], Arrays.asList(cards), pack, hand),
+			UnoRuleUtils.combinedPlacementAnalysis(cards[4], Arrays.asList(cards), pack, player.getHand()),
 			Arrays.asList(cards[4], cards[5])));
 		// Pack: official
 		// Card: Wild <4>
@@ -95,7 +95,7 @@ class UnoRuleUtilsTest {
 
 		cards[4].setColorMask(UnoCardColor.BLUE);
 		assertTrue(TestUtils.listEqualsUnordered(
-			UnoRuleUtils.combinedPlacementAnalysis(cards[4], Arrays.asList(cards), pack, hand),
+			UnoRuleUtils.combinedPlacementAnalysis(cards[4], Arrays.asList(cards), pack, player.getHand()),
 			Arrays.asList(cards[0], cards[3], cards[4], cards[5], cards[6], cards[10])));
 		// Pack: official
 		// Card: Wild <4>, masked as Red
@@ -104,44 +104,52 @@ class UnoRuleUtilsTest {
 		 */
 		cards[4].reset();
 
+		cards[5].markOpen();
 		assertTrue(TestUtils.listEqualsUnordered(
-			UnoRuleUtils.combinedPlacementAnalysis(cards[5], Arrays.asList(cards), pack, hand),
+			UnoRuleUtils.combinedPlacementAnalysis(cards[5], Arrays.asList(cards), pack, player.getHand()),
 			Collections.emptyList()));
 		// Pack: official
-		// Card: Draw four (unplayed) <5>
+		// Card: Draw four (open) <5>
 		/*
 		 * Expected: (none)
 		 */
+		cards[5].reset();
 
+		cards[6].markOpen();
 		assertTrue(TestUtils.listEqualsUnordered(
-			UnoRuleUtils.combinedPlacementAnalysis(cards[6], Arrays.asList(cards), pack, hand),
+			UnoRuleUtils.combinedPlacementAnalysis(cards[6], Arrays.asList(cards), pack, player.getHand()),
 			Collections.emptyList()));
 		// Pack: official
-		// Card: Blue draw two (unplayed) <6>
+		// Card: Blue draw two (open) <6>
 		/*
 		 * Expected: (none)
 		 */
+		cards[6].reset();
 
+		cards[7].markOpen();
 		assertTrue(TestUtils.listEqualsUnordered(
-			UnoRuleUtils.combinedPlacementAnalysis(cards[7], Arrays.asList(cards), pack, hand),
+			UnoRuleUtils.combinedPlacementAnalysis(cards[7], Arrays.asList(cards), pack, player.getHand()),
 			Collections.emptyList()));
 		// Pack: official
-		// Card: Red draw two (unplayed) <7>
+		// Card: Red draw two (open) <7>
 		/*
 		 * Expected: (none)
 		 */
+		cards[7].reset();
 
+		cards[8].markOpen();
 		assertTrue(TestUtils.listEqualsUnordered(
-			UnoRuleUtils.combinedPlacementAnalysis(cards[8], Arrays.asList(cards), pack, hand),
+			UnoRuleUtils.combinedPlacementAnalysis(cards[8], Arrays.asList(cards), pack, player.getHand()),
 			Arrays.asList(cards[2], cards[4], cards[5], cards[8])));
 		// Pack: official
 		// Card: Yellow skip <8>
 		/*
 		 * Expected: Yellow 1, Wild, Wild draw four, Yellow skip
 		 */
+		cards[8].reset();
 
 		assertTrue(TestUtils.listEqualsUnordered(
-			UnoRuleUtils.combinedPlacementAnalysis(cards[9], Arrays.asList(cards), pack, hand),
+			UnoRuleUtils.combinedPlacementAnalysis(cards[9], Arrays.asList(cards), pack, player.getHand()),
 			Arrays.asList(cards[4], cards[5], cards[9], cards[10])));
 		// Pack: official
 		// Card: Green reverse <9>
@@ -150,7 +158,7 @@ class UnoRuleUtilsTest {
 		 */
 
 		assertTrue(TestUtils.listEqualsUnordered(
-			UnoRuleUtils.combinedPlacementAnalysis(cards[10], Arrays.asList(cards), pack, hand),
+			UnoRuleUtils.combinedPlacementAnalysis(cards[10], Arrays.asList(cards), pack, player.getHand()),
 			Arrays.asList(cards[0], cards[3], cards[4], cards[6], cards[9], cards[10])));
 		// Pack: official
 		// Card: Blue reverse <10>

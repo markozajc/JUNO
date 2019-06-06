@@ -29,7 +29,7 @@ public class UnoDiscardPile implements UnoPile {
 	 * <ul>
 	 * <li>the card is a draw card
 	 * <li>the draw card has the same amount of cards as the previous ones
-	 * <li>the draw card is not played already
+	 * <li>the draw card is not closed
 	 * </ul>
 	 *
 	 * @param card
@@ -40,7 +40,7 @@ public class UnoDiscardPile implements UnoPile {
 	 * @see #getConsecutiveDraw()
 	 */
 	private static boolean isRelevant(UnoCard card, int drawMark) {
-		return card instanceof UnoDrawCard && ((UnoDrawCard) card).getAmount() == drawMark && !card.isPlayed();
+		return card instanceof UnoDrawCard && ((UnoDrawCard) card).getAmount() == drawMark && card.isOpen();
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class UnoDiscardPile implements UnoPile {
 	}
 
 	/**
-	 * Marks the top {@link UnoCard} as played (if possible).
+	 * Marks the top {@link UnoCard} as closed (if possible).
 	 *
 	 * @deprecated Uses a deprecated way of changing the card, does not let you know
 	 *             whether the card has actually been deprecated and requires you

@@ -3,6 +3,7 @@ package com.github.markozajc.juno.rules.impl.flow;
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
 import com.github.markozajc.juno.rules.types.flow.UnoPhaseConclusion;
 import com.github.markozajc.juno.utils.UnoGameUtils;
@@ -19,10 +20,10 @@ public class CardPlacementRule implements UnoGameFlowRule {
 	private static final String INVALID_CARD = "%s tried to place an invalid card.";
 
 	@Override
-	public UnoPhaseConclusion decisionPhase(UnoHand hand, UnoGame game, UnoCard decidedCard) {
+	public UnoPhaseConclusion decisionPhase(UnoPlayer player, UnoGame game, UnoCard decidedCard) {
 		if (decidedCard != null) {
-			if (!UnoGameUtils.placeCard(game, hand, decidedCard)) {
-				game.onEvent(INVALID_CARD, hand.getName());
+			if (!UnoGameUtils.placeCard(game, player, decidedCard)) {
+				game.onEvent(INVALID_CARD, player.getName());
 				return new UnoPhaseConclusion(true);
 			}
 

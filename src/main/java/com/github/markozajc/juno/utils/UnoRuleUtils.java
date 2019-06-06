@@ -1,6 +1,7 @@
 package com.github.markozajc.juno.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,6 +12,7 @@ import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.rules.UnoRule;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
+import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule;
 import com.github.markozajc.juno.rules.types.UnoCardPlacementRule;
 import com.github.markozajc.juno.rules.types.UnoCardPlacementRule.PlacementClearance;
 
@@ -35,7 +37,7 @@ public class UnoRuleUtils {
 	 * @param pack
 	 *            the {@link UnoRulePack} to use
 	 * @param hand
-	 *            the {@link UnoHand} filtering the cards
+	 *            the current {@link UnoHand}
 	 * @return a {@link List} of {@link UnoCard}s that can be placed atop of the
 	 *         {@code target} {@link UnoCard}
 	 */
@@ -76,6 +78,24 @@ public class UnoRuleUtils {
 	@Nonnull
 	public static <T extends UnoRule> List<T> filterRuleKind(@Nonnull Collection<UnoRule> rules, @Nonnull Class<T> kind) {
 		return rules.stream().filter(kind::isInstance).map(kind::cast).collect(Collectors.toList());
+	}
+
+	/**
+	 * Gets the {@link UnoHouseRule}s from a {@link UnoRulePack}. This will scan the
+	 * {@link UnoRule}s of that pack and return all {@link UnoHouseRule} of which
+	 * {@link UnoRulePack} share all {@link UnoRule}s.
+	 *
+	 * @param pack
+	 *            the {@link UnoRulePack} to scan
+	 * @return all complete {@link UnoHouseRule}s included in this pack
+	 */
+	@SuppressWarnings("null")
+	@Nonnull
+	public static List<UnoHouseRule> getHouseRules(UnoRulePack pack) {
+		return Arrays.asList(UnoHouseRule.values())
+				.stream()
+				.filter(hr -> pack.getRules().containsAll(hr.getPack().getRules()))
+				.collect(Collectors.toList());
 	}
 
 }

@@ -1,17 +1,22 @@
 package com.github.markozajc.juno.game;
 
 import java.io.PrintStream;
+import java.util.List;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.piles.impl.UnoDiscardPile;
 import com.github.markozajc.juno.piles.impl.UnoDrawPile;
+import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.UnoRule;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
+import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule;
+import com.github.markozajc.juno.utils.UnoRuleUtils;
 
 /**
  * A class representing a game of UNO. {@link UnoGame} is the thing that controls the
@@ -23,51 +28,22 @@ import com.github.markozajc.juno.rules.pack.UnoRulePack;
  */
 public abstract class UnoGame {
 
-	/**
-	 * A list of players in an UNO game.
-	 *
-	 * @author Marko Zajc
-	 */
-	public enum UnoPlayer {
-		/**
-		 * The first player. This player gets to place a card first.
-		 */
-		PLAYER1,
-		/**
-		 * The second player.
-		 */
-		PLAYER2,
-		/**
-		 * Nobody. This is used to signal a tie by {@link UnoGame#playGame()}.
-		 */
-		NOBODY;
-	}
-
-	/**
-	 * First player's hand.
-	 */
 	@Nonnull
-	public final UnoHand playerOneHand;
-	/**
-	 * Second player's hand.
-	 */
+	private final UnoPlayer first;
 	@Nonnull
-	public final UnoHand playerTwoHand;
-
+	private final UnoPlayer second;
+	@Nonnegative
 	private final int cardAmount;
-
-	private UnoDrawPile draw;
-
 	@Nonnull
 	private final UnoDiscardPile discard = new UnoDiscardPile();
-
 	@Nonnull
 	private final UnoRulePack rules;
-
 	@Nonnull
 	private final UnoDeck deck;
-
+	@Nullable
 	private UnoCard topCard;
+	private UnoDrawPile draw;
+	private List<UnoHouseRule> houseRules;
 
 	/**
 	 * Returns the other {@link UnoPlayer}.
@@ -77,34 +53,17 @@ public abstract class UnoGame {
 	 * @return the other {@link UnoPlayer}
 	 */
 	@Nonnull
-	private static UnoPlayer reversePlayer(UnoPlayer player) {
-		return player.equals(UnoPlayer.PLAYER1) ? UnoPlayer.PLAYER2 : UnoPlayer.PLAYER1;
-	}
-
-	/**
-	 * Returns hand belonging to the given {@link UnoPlayer}.
-	 *
-	 * @param player
-	 *            the {@link UnoPlayer}
-	 * @param playerOneHand
-	 *            player one's hand
-	 * @param playerTwoHand
-	 *            player two's hand
-	 * @return {@code player}'s hand
-	 */
-	@SuppressWarnings("null")
-	@Nonnull
-	private static UnoHand decideHand(UnoPlayer player, UnoHand playerOneHand, UnoHand playerTwoHand) {
-		return player.equals(UnoPlayer.PLAYER1) ? playerOneHand : playerTwoHand;
+	private UnoPlayer reversePlayer(UnoPlayer player) {
+		return player.equals(this.first) ? this.second : this.first;
 	}
 
 	/**
 	 * Creates a new UNO game.
 	 *
-	 * @param playerOneHand
-	 *            first player's hand
-	 * @param playerTwoHand
-	 *            second player's hand
+	 * @param first
+	 *            the first {@link UnoPlayer}
+	 * @param second
+	 *            the second {@link UnoPlayer}
 	 * @param deck
 	 *            the {@link UnoDeck} to use
 	 * @param cardAmount
@@ -112,10 +71,10 @@ public abstract class UnoGame {
 	 * @param rules
 	 *            the {@link UnoRulePack} for this {@link UnoGame}
 	 */
-	public UnoGame(@Nonnull UnoHand playerOneHand, @Nonnull UnoHand playerTwoHand, @Nonnull UnoDeck deck,
+	public UnoGame(@Nonnull UnoPlayer first, @Nonnull UnoPlayer second, @Nonnull UnoDeck deck,
 			@Nonnegative int cardAmount, @Nonnull UnoRulePack rules) {
-		this.playerOneHand = playerOneHand;
-		this.playerTwoHand = playerTwoHand;
+		this.first = first;
+		this.second = second;
 		this.deck = deck;
 		this.cardAmount = cardAmount;
 		this.rules = rules;
@@ -126,15 +85,15 @@ public abstract class UnoGame {
 		// Creates the draw pile
 
 		this.discard.clear();
-		this.playerOneHand.clear();
-		this.playerTwoHand.clear();
+		this.first.getHand().clear();
+		this.second.getHand().clear();
 		// Clears every other pile
 
 		this.discard.add(this.draw.drawInitalCard());
 		// Draws the initial card
 
-		this.playerOneHand.draw(this, this.cardAmount);
-		this.playerTwoHand.draw(this, this.cardAmount);
+		this.first.getHand().draw(this, this.cardAmount);
+		this.second.getHand().draw(this, this.cardAmount);
 		// Deals the cards
 	}
 
@@ -154,47 +113,54 @@ public abstract class UnoGame {
 	}
 
 	/**
-	 * Plays a hand. This method should get a card to place from a hand
+	 * Gives a {@link UnoPlayer} a turn. This method should get a card to place from a
+	 * hand and then place it (if possible).
 	 *
-	 * @param hand
+	 * @param player
+	 *            the {@link UnoPlayer} to give a turn to
 	 */
-	protected abstract void playHand(@Nonnull UnoHand hand);
+	protected abstract void turn(@Nonnull UnoPlayer player);
 
 	/**
-	 * Checks whether a hand has won. Criteria for winning in UNO is
+	 * Checks whether a {@link UnoPlayer} has won. Criteria for winning in UNO is
 	 * <ul>
 	 * <li>Having no more cards ({@link UnoHand#getSize()} {@code == 0})
-	 * <li>The top {@link UnoCard} being played ({@link UnoCard#isPlayed()})
+	 * <li>The top {@link UnoCard} being closed ({@link UnoCard#isOpen()} needs to be
+	 * {@code false}
 	 * </ul>
 	 *
-	 * @param hand
+	 * @param player
+	 *            the {@link UnoPlayer} to check
 	 * @param discard
+	 *            the discard pile
 	 * @return
 	 */
-	private static boolean checkVictory(UnoHand hand, UnoDiscardPile discard) {
-		return hand.getSize() == 0 && discard.getTop().isPlayed();
+	private static boolean checkVictory(UnoPlayer player, UnoDiscardPile discard) {
+		return player.getHand().getSize() == 0 && !discard.getTop().isOpen();
 	}
 
 	/**
 	 * Used as a last resort case when both the {@link UnoDiscardPile} and the
 	 * {@link UnoDrawPile} are empty. Either indicates a catastrophic failure in the card
 	 * economy (the least likely), that the {@link UnoGame} implementation handled the
-	 * two piles improperly (unlikely), that both of the {@link UnoHand}s malfunctioned
-	 * (unlikely) or that both {@link UnoHand}s were intentionally made to just draw
-	 * cards (the most likely).
+	 * two piles improperly (unlikely), that both of the {@link UnoPlayer}s'
+	 * {@link UnoHand}s malfunctioned (unlikely) or that both {@link UnoPlayer}s'
+	 * {@link UnoHand}s were intentionally made to just draw cards (the most likely).
 	 *
-	 * @return the fallback winner
+	 * @return the fallback winner or {@code null} if it's a tie (very, very unlikely,
+	 *         but still worth mentioning)
 	 */
+	@Nullable
 	private final UnoPlayer fallbackVictory() {
-		if (this.playerOneHand.getSize() < this.playerTwoHand.getSize()) {
-			return UnoPlayer.PLAYER1;
+		if (this.first.getHand().getSize() < this.second.getHand().getSize()) {
+			return this.first;
 			// P1 has less cards
 
-		} else if (this.playerTwoHand.getSize() < this.playerOneHand.getSize()) {
-			return UnoPlayer.PLAYER2;
+		} else if (this.second.getHand().getSize() < this.first.getHand().getSize()) {
+			return this.second;
 			// P2 has less cards
 		} else {
-			return UnoPlayer.NOBODY;
+			return null;
 			// P1 and P2 have the same amount of cards (tie)
 		}
 	}
@@ -202,24 +168,32 @@ public abstract class UnoGame {
 	/**
 	 * Plays a game of UNO.
 	 *
-	 * @return the winner {@link UnoPlayer}
+	 * @return the victorious {@link UnoPlayer} or {@code null} if it's a tie (very, very
+	 *         unlikely, but still worth mentioning)
 	 */
-	@Nonnull
+	@SuppressWarnings("null")
+	@Nullable
 	public UnoPlayer playGame() {
 		init();
 		// Initiates game
 
 		UnoPlayer winner = null;
-		for (UnoPlayer player = UnoPlayer.PLAYER1; winner == null; player = reversePlayer(player)) {
+		UnoPlayer[] players = new UnoPlayer[] {
+				this.first, this.second
+		};
+
+		boolean fallback = false;
+		for (UnoPlayer player = players[0]; winner == null && !fallback; player = reversePlayer(player)) {
 			UnoPlayer reversePlayer = reversePlayer(player);
 			// Gets the other player
 
-			winner = playAndCheckHand(decideHand(player, this.playerOneHand, this.playerTwoHand), player,
-				decideHand(reversePlayer, this.playerOneHand, this.playerTwoHand), reversePlayer);
-			// Plays the hand and checks both
+			winner = playAndCheckPlayer(player, reversePlayer);
+			// Gives the players a turn and checks both
 
-			if (this.discard.getSize() <= 1 && this.draw.getSize() == 0)
+			if (this.discard.getSize() <= 1 && this.draw.getSize() == 0) {
 				winner = fallbackVictory();
+				fallback = true;
+			}
 			// Fallback method used in the case of both piles getting empty. Do note that the
 			// game can not continue at this point so a winner
 			// must be chosen.
@@ -230,30 +204,27 @@ public abstract class UnoGame {
 	}
 
 	/**
-	 * Plays a hand and check whether either of the {@link UnoPlayer}s has won.
+	 * Gives a {@link UnoPlayer} a turn and check whether either of the
+	 * {@link UnoPlayer}s has won.
 	 *
-	 * @param playerHand
-	 *            player's hand
-	 * @param foeHand
-	 *            foe's hand
 	 * @param player
-	 *            the {@link UnoPlayer} that owns the {@code playerHand}
+	 *            the {@link UnoPlayer} to give the turn to
 	 * @param foe
-	 *            the {@link UnoPlayer} that owns the {@code foeHand}
+	 *            the other {@link UnoPlayer}
 	 * @return the victor or {@code null} if nobody has won yet
 	 */
-	private UnoPlayer playAndCheckHand(@Nonnull UnoHand playerHand, @Nonnull UnoPlayer player, @Nonnull UnoHand foeHand, @Nonnull UnoPlayer foe) {
+	private UnoPlayer playAndCheckPlayer(@Nonnull UnoPlayer player, @Nonnull UnoPlayer foe) {
 		updateTopCard();
 		// Updates the top card
 
-		playHand(playerHand);
+		turn(player);
 		// Plays player's hand
 
-		if (checkVictory(playerHand, this.discard))
+		if (checkVictory(player, this.discard))
 			return player;
 		// Checks whether whether player has won
 
-		if (checkVictory(foeHand, this.discard))
+		if (checkVictory(foe, this.discard))
 			return foe;
 		// Checks whether whether the foe has won (only ran if the top card was a draw card
 		// and player
@@ -306,13 +277,13 @@ public abstract class UnoGame {
 		UnoDrawPile drawPile = this.draw;
 		if (drawPile == null)
 			throw new IllegalStateException(
-					"The draw pile is null - please play at least one game to initialize the piles.");
+					"The draw pile is null - please play at least one round to initialize the piles.");
 
 		return drawPile;
 	}
 
 	/**
-	 * Returns the discard pile. This is where hands place their cards.
+	 * Returns the discard pile. This is where {@link UnoPlayer}s place their cards.
 	 *
 	 * @return the {@link UnoDiscardPile}
 	 */
@@ -330,6 +301,53 @@ public abstract class UnoGame {
 	@Nonnull
 	public UnoDeck getDeck() {
 		return this.deck;
+	}
+
+	/**
+	 * Returns the {@link UnoPlayer} to get the turn after the provided {@link UnoPlayer}
+	 *
+	 * @param player
+	 *            the {@link UnoPlayer}
+	 * @return the {@link UnoPlayer} after {@code player}
+	 */
+	public final UnoPlayer nextPlayer(UnoPlayer player) {
+		if (player.equals(this.first)) {
+			return this.second;
+		} else if (player.equals(this.second)) {
+			return this.first;
+		} else {
+			throw new IllegalArgumentException("The provided UnoPlayer is not a part of this UnoGame.");
+		}
+	}
+
+	/**
+	 * @return the first {@link UnoPlayer}. This is the player to get the turn first
+	 * @see #getSecondPlayer()
+	 */
+	public UnoPlayer getFirstPlayer() {
+		return this.first;
+	}
+
+	/**
+	 * @return the second {@link UnoPlayer}
+	 * @see #getFirstPlayer()
+	 */
+	public UnoPlayer getSecondPlayer() {
+		return this.second;
+	}
+
+	/**
+	 * Fetches the {@link UnoHouseRule}s used in this {@link UnoGame}'s
+	 * {@link UnoRulePack} using {@link UnoRuleUtils#getHouseRules(UnoRulePack)}. This is
+	 * a singleton so it will consume more resources when called multiple times.
+	 *
+	 * @return this {@link UnoGame}'s {@link UnoHouseRule}s
+	 */
+	public List<UnoHouseRule> getHouseRules() {
+		if (this.houseRules == null)
+			this.houseRules = UnoRuleUtils.getHouseRules(getRules());
+
+		return this.houseRules;
 	}
 
 }
