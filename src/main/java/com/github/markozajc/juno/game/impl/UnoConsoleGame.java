@@ -69,6 +69,11 @@ public class UnoConsoleGame extends UnoControlledGame {
 	public void onEvent(String format, Object... arguments) {
 		System.out.printf(format, arguments);
 		System.out.println();
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		}
 	}
 
 }
