@@ -189,7 +189,7 @@ public class UnoStrategicPlayer extends UnoPlayer {
 				.stream()
 				.filter(p -> !p.getValue().equals(UnoCardColor.WILD))
 				.findFirst()
-				.orElseThrow(() -> new IllegalStateException("Couldn't choose a color (UnoUtils malfuntioned!)"))
+				.orElseThrow(() -> new IllegalStateException("Couldn't choose a color (UnoUtils malfunctioned!)"))
 				.getValue();
 	}
 
