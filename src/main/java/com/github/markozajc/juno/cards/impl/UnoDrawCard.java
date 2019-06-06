@@ -55,7 +55,7 @@ public class UnoDrawCard extends UnoCard {
 	}
 
 	/**
-	 * Marks this card as "played". This means that a player has already drawn because of
+	 * Marks this card as "closed" ("played"). This means that a player has already drawn because of
 	 * it.
 	 *
 	 * @deprecated You shouldn't be using this directly as
@@ -91,7 +91,7 @@ public class UnoDrawCard extends UnoCard {
 	 * @param player
 	 *            the owner of the {@link UnoHand} to add the drawn cards to
 	 * @throws IllegalStateException
-	 *             in case this card is already marked as played
+	 *             in case this card is already marked as closed
 	 */
 	public void drawTo(@Nonnull UnoGame game, @Nonnull UnoPlayer player) {
 		markClosed();

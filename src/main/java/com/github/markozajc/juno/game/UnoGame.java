@@ -125,7 +125,8 @@ public abstract class UnoGame {
 	 * Checks whether a {@link UnoPlayer} has won. Criteria for winning in UNO is
 	 * <ul>
 	 * <li>Having no more cards ({@link UnoHand#getSize()} {@code == 0})
-	 * <li>The top {@link UnoCard} being played ({@link UnoCard#isPlayed()})
+	 * <li>The top {@link UnoCard} being closed ({@link UnoCard#isOpen()} needs to be
+	 * {@code false}
 	 * </ul>
 	 *
 	 * @param player
@@ -273,7 +274,7 @@ public abstract class UnoGame {
 		UnoDrawPile drawPile = this.draw;
 		if (drawPile == null)
 			throw new IllegalStateException(
-					"The draw pile is null - please play at least one game to initialize the piles.");
+					"The draw pile is null - please play at least one round to initialize the piles.");
 
 		return drawPile;
 	}

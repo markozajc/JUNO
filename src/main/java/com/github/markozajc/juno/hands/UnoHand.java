@@ -14,16 +14,12 @@ import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.utils.UnoGameUtils;
 
 /**
- * A representation of a hand - the thing that holds and places cards to the discard
- * pile. Each {@link UnoPlayer} has a hand. Hands can either be automated (meaning
- * they decide for themselves) or human-driven (meaning they're an interface that
- * lets a human decide). A hand must do two essential things; choose colors and
- * cards. It is requested to choose a color each time it places a wild-colored card.
- * It is requested to choose (play) a card each time it gets a turn. It may not
- * choose invalid cards (cards that it either doesn't possess or that can't be placed
- * on the discard pile) or invalid colors (the wild color).
+ * A representation of a hand - a container for {@link UnoCard}s that is owned by a
+ * {@link UnoPlayer}. {@link UnoHand}s manage the cards and {@link UnoPlayer}s
+ * contain the logic.
  *
  * @author Marko Zajc
+ * @see UnoPlayer
  */
 public class UnoHand implements UnoPile {
 
