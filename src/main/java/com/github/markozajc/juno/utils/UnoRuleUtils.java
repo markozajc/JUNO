@@ -80,6 +80,8 @@ public class UnoRuleUtils {
 		return rules.stream().filter(kind::isInstance).map(kind::cast).collect(Collectors.toList());
 	}
 
+	@SuppressWarnings("null")
+	@Nonnull
 	public static List<UnoHouseRule> getHouseRules(UnoRulePack pack) {
 		return Arrays.asList(UnoHouseRule.values())
 				.stream()
