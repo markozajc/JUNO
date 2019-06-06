@@ -26,6 +26,7 @@ import com.github.markozajc.juno.rules.types.flow.UnoPhaseConclusion;
  * {@link UnoCard} onto the discard pile and opening the cards that will be activated
  * in the next turn by the initialization phase. This phase returns a
  * {@link UnoPhaseConclusion}, which allows repeating the phase.
+ * </ul>
  *
  * @author Marko Zajc
  */
