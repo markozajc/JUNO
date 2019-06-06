@@ -75,7 +75,7 @@ public class DrawPlacementRules {
 
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
-			if (target instanceof UnoDrawCard && !((UnoDrawCard) target).isPlayed())
+			if (target instanceof UnoDrawCard && target.isOpen())
 				return PlacementClearance.PROHIBITED;
 
 			return PlacementClearance.NEUTRAL;

@@ -24,7 +24,7 @@ public class CardDrawingRule implements UnoGameFlowRule {
 
 	@Override
 	public UnoInitializationConclusion initializationPhase(UnoPlayer player, UnoGame game) {
-		if (game.getTopCard() instanceof UnoDrawCard && !game.getTopCard().isPlayed()) {
+		if (game.getTopCard() instanceof UnoDrawCard && game.getTopCard().isOpen()) {
 			((UnoDrawCard) game.getTopCard()).drawTo(game, player);
 			game.onEvent(DRAW_CARDS, player.getName(), ((UnoDrawCard) game.getTopCard()).getAmount(),
 				game.getTopCard().toString());
@@ -48,6 +48,9 @@ public class CardDrawingRule implements UnoGameFlowRule {
 				game.onEvent(PLACED_DRAWN, drawn.getPlacer().getName(), drawn.toString());
 			}
 		}
+
+		if (decidedCard instanceof UnoDrawCard && !decidedCard.isOpen())
+			decidedCard.markOpen();
 
 		return UnoPhaseConclusion.NOTHING;
 	}

@@ -20,7 +20,7 @@ public class ColorChoosingRule implements UnoGameFlowRule {
 
 	@Override
 	public UnoInitializationConclusion initializationPhase(UnoPlayer player, UnoGame game) {
-		if (game.getTopCard() != null && game.getTopCard().getColor().equals(UnoCardColor.WILD) && game.getTopCard().isPlayed()) {
+		if (game.getTopCard() != null && game.getTopCard().getColor().equals(UnoCardColor.WILD) && !game.getTopCard().isOpen()) {
 			UnoCardColor color = game.getTopCard().getPlacer().chooseColor(game);
 
 			if (color.equals(UnoCardColor.WILD)) {
