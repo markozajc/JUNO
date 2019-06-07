@@ -14,6 +14,7 @@ import com.github.markozajc.juno.cards.impl.UnoWildCard;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
+import com.github.markozajc.juno.rules.pack.impl.house.UnoProgressiveRulePack;
 import com.github.markozajc.juno.utils.UnoRuleUtils;
 
 /**
@@ -138,7 +139,8 @@ public abstract class BasicUnoGame extends UnoGame {
 
 					int draw = 1;
 					if (hasToDraw) {
-						draw = this.getDiscard().getConsecutiveDraw();
+						List<UnoDrawCard> drawCards = UnoProgressiveRulePack.getConsecutive(this.getDiscard());
+						draw = drawCards.size() * drawCards.get(0).getAmount();
 						this.getDiscard().markTopPlayed();
 					}
 
