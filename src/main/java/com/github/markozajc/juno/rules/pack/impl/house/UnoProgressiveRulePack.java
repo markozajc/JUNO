@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.game.UnoGame;
@@ -13,6 +15,7 @@ import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.UnoRule;
 import com.github.markozajc.juno.rules.impl.flow.CardDrawingRule;
 import com.github.markozajc.juno.rules.impl.placement.DrawPlacementRules.OpenDrawCardPlacementRule;
+import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
 import com.github.markozajc.juno.rules.types.flow.UnoInitializationConclusion;
 import com.github.markozajc.juno.rules.types.flow.UnoPhaseConclusion;
@@ -20,6 +23,14 @@ import com.github.markozajc.juno.utils.UnoGameUtils;
 import com.github.markozajc.juno.utils.UnoRuleUtils;
 
 public class UnoProgressiveRulePack {
+
+	private UnoProgressiveRulePack() {}
+
+	private static UnoRulePack pack;
+
+	private static void createPack() {
+		pack = new UnoRulePack(new ProgressiveUnoPlacementRule(), new ProgressiveUnoFlowRule());
+	}
 
 	/**
 	 * Checks the relevance of the draw card by the following criteria: (relevance is a
@@ -161,6 +172,18 @@ public class UnoProgressiveRulePack {
 			return null;
 		}
 
+	}
+
+	/**
+	 * @return the Progressive UNO house {@link UnoRulePack}
+	 */
+	@SuppressWarnings("null")
+	@Nonnull
+	public static UnoRulePack getPack() {
+		if (pack == null)
+			createPack();
+
+		return pack;
 	}
 
 }
