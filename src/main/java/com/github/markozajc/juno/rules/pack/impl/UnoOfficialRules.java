@@ -17,6 +17,7 @@ import com.github.markozajc.juno.rules.impl.placement.ColorPlacementRules;
 import com.github.markozajc.juno.rules.impl.placement.DrawPlacementRules;
 import com.github.markozajc.juno.rules.impl.placement.NumericPlacementRules;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
+import com.github.markozajc.juno.rules.pack.impl.house.UnoProgressiveRulePack;
 import com.github.markozajc.juno.rules.pack.impl.house.UnoSevenORulePack;
 
 /**
@@ -42,7 +43,9 @@ public class UnoOfficialRules {
 		 *
 		 * @see UnoSevenORulePack
 		 */
-		SEVENO(UnoSevenORulePack.getPack(), "SevenO");
+		SEVENO(UnoSevenORulePack.getPack(), "SevenO"),
+
+		PROGRESSIVE(UnoProgressiveRulePack.getPack(), "Progressive UNO");
 
 		private final UnoRulePack pack;
 		private final String name;
