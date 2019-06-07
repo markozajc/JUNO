@@ -122,40 +122,44 @@ public class UnoProgressiveRulePack {
 		private static final String DRAW_CARDS = "%s drew %s cards from %s %s%s.";
 		private static final String DRAW_CARD = "%s drew a card.";
 
+		@SuppressWarnings("null")
+		private static final void drawDeterminedCards(@Nonnull UnoGame game, @Nonnull UnoPlayer player) {
+			List<UnoDrawCard> consecutive = getConsecutive(game.getDiscard());
+			if (!consecutive.isEmpty()) {
+				// If the top card is a draw card
+
+				for (UnoDrawCard drawCard : consecutive)
+					drawCard.drawTo(game, player);
+				// Draw all cards to the hand
+
+				game.onEvent(DRAW_CARDS, player.getName(), consecutive.size() * consecutive.get(0).getAmount(),
+					consecutive.size(), consecutive.get(0).toString(), consecutive.size() == 1 ? "" : "s");
+
+			} else {
+				// If the top card is not a draw card
+
+				UnoCard drawn = player.getHand().draw(game, 1).get(0);
+				game.onEvent(DRAW_CARD, player.getName());
+				// Draw a single card to the hand
+
+				if (UnoGameUtils.canPlaceCard(player, game, drawn)
+						&& player.shouldPlayDrawnCard(game, drawn, game.nextPlayer(player))) {
+					UnoRuleUtils.filterRuleKind(game.getRules().getRules(), UnoGameFlowRule.class)
+							.forEach(gfr -> gfr.decisionPhase(player, game, drawn));
+				}
+				// Allow the player to place the card (if possible)
+			}
+		}
+
 		@Override
 		public UnoInitializationConclusion initializationPhase(UnoPlayer player, UnoGame game) {
 			return UnoInitializationConclusion.NOTHING;
 		}
 
-		@SuppressWarnings("null")
 		@Override
 		public UnoPhaseConclusion decisionPhase(UnoPlayer player, UnoGame game, UnoCard decidedCard) {
 			if (decidedCard == null) {
-				List<UnoDrawCard> consecutive = getConsecutive(game.getDiscard());
-				if (!consecutive.isEmpty()) {
-					// If the top card is a draw card
-
-					for (UnoDrawCard drawCard : consecutive)
-						drawCard.drawTo(game, player);
-					// Draw all cards to the hand
-
-					game.onEvent(DRAW_CARDS, player.getName(), consecutive.size() * consecutive.get(0).getAmount(),
-						consecutive.size(), consecutive.get(0).toString(), consecutive.size() == 1 ? "" : "s");
-
-				} else {
-					// If the top card is not a draw card
-
-					UnoCard drawn = player.getHand().draw(game, 1).get(0);
-					game.onEvent(DRAW_CARD, player.getName());
-					// Draw a single card to the hand
-
-					if (UnoGameUtils.canPlaceCard(player, game, drawn)
-							&& player.shouldPlayDrawnCard(game, drawn, game.nextPlayer(player))) {
-						UnoRuleUtils.filterRuleKind(game.getRules().getRules(), UnoGameFlowRule.class)
-								.forEach(gfr -> gfr.decisionPhase(player, game, drawn));
-					}
-					// Allow the player to place the card (if possible)
-				}
+				drawDeterminedCards(game, player);
 			}
 
 			if (decidedCard instanceof UnoDrawCard && !decidedCard.isOpen())
