@@ -1,6 +1,6 @@
 package com.github.markozajc.juno.rules;
 
-public class UnoRuleConflictException extends RuntimeException {
+public class UnoRuleConflictException extends Exception {
 
 	private final UnoRule rule;
 	private final UnoRule conflicting;
