@@ -5,11 +5,9 @@ import javax.annotation.Nullable;
 /**
  * An interface representing rules in UNOy.
  *
- * @param <T>
- *            type of the rule
  * @author Marko Zajc
  */
-public interface UnoRule<T extends UnoRule<?>> {
+public interface UnoRule {
 
 	public enum ConflictResolution {
 
@@ -20,7 +18,7 @@ public interface UnoRule<T extends UnoRule<?>> {
 	}
 
 	@Nullable
-	public default ConflictResolution conflictsWith(T r) {
+	public default ConflictResolution conflictsWith(UnoRule r) {
 		return null;
 	}
 
