@@ -10,6 +10,8 @@ import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.rules.UnoRule;
+import com.github.markozajc.juno.rules.UnoRule.ConflictResolution;
+import com.github.markozajc.juno.rules.UnoRuleConflictException;
 
 /**
  * A pack of {@link UnoRule}s. Multiple {@link UnoRulePack}s can be combined into one
@@ -109,6 +111,50 @@ public class UnoRulePack {
 	@SuppressWarnings("null")
 	public UnoRulePack addPacks(@Nonnull UnoRulePack... packs) {
 		return this.addPacks(Arrays.asList(packs));
+	}
+
+	public UnoRulePack resolveConflicts() throws UnoRuleConflictException {
+		List<UnoRule> conflicting = new ArrayList<>();
+
+		for (UnoRule rule : this.rules) {
+			// Iterates over all rules
+
+			for (UnoRule checkRule : this.rules) {
+				// Iterates over all rules for each rule
+
+				if (checkRule.equals(rule))
+					continue;
+				// Skips the same rule
+
+				ConflictResolution conflict = rule.conflictsWith(rule);
+				// Analyzes the conflicts
+
+				if (conflict != null) {
+					// Proceeds if conflicts have been found
+					switch (conflict) {
+						case FAIL:
+							throw new UnoRuleConflictException(rule, checkRule);
+							// Fails if there need be
+
+						case BACKOFF:
+							conflicting.add(rule);
+							break;
+						// Backs off the rule if requested
+
+						case REPLACE:
+							conflicting.add(checkRule);
+							break;
+						// Replaces the rule if requested
+					}
+				}
+			}
+		}
+
+		List<UnoRule> newRules = new ArrayList<>(this.rules);
+		newRules.removeAll(conflicting);
+		// Removes all conflicting rules
+
+		return new UnoRulePack(newRules);
 	}
 
 }
