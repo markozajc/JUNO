@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
+import com.github.markozajc.juno.rules.UnoRuleConflictException;
 import com.github.markozajc.juno.rules.impl.flow.ActionCardRule;
 import com.github.markozajc.juno.rules.impl.flow.CardDrawingRule;
 import com.github.markozajc.juno.rules.impl.flow.CardPlacementRule;
@@ -112,7 +113,13 @@ public class UnoOfficialRules {
 	@SuppressWarnings("null")
 	@Nonnull
 	public static UnoRulePack getPack(@Nonnull List<UnoHouseRule> houseRules) {
-		return getPack().addPacks(houseRules.stream().map(UnoHouseRule::getPack).collect(Collectors.toList()));
+		try {
+			return getPack().addPacks(houseRules.stream().map(UnoHouseRule::getPack).collect(Collectors.toList()))
+					.resolveConflicts();
+		} catch (UnoRuleConflictException e) {
+			// Shouldn't happen, all house rule packs mustn't have a failing conflict resolution
+			return getPack();
+		}
 	}
 
 }
