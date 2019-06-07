@@ -1,11 +1,15 @@
 package com.github.markozajc.juno.rules;
 
+import javax.annotation.Nullable;
+
 /**
- * A meta-interface for UNO rules.
+ * An interface representing rules in UNOy.
  *
+ * @param <T>
+ *            type of the rule
  * @author Marko Zajc
  */
-public interface UnoRule {
+public interface UnoRule<T extends UnoRule<?>> {
 
 	public enum ConflictResolution {
 
@@ -13,6 +17,11 @@ public interface UnoRule {
 		REPLACE,
 		BACKOFF
 
+	}
+
+	@Nullable
+	public default ConflictResolution conflictsWith(T r) {
+		return null;
 	}
 
 }
