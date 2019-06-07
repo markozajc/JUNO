@@ -13,6 +13,7 @@ import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.players.UnoPlayer;
+import com.github.markozajc.juno.rules.pack.impl.house.UnoProgressiveRulePack;
 import com.github.markozajc.juno.utils.UnoRuleUtils;
 
 /**
@@ -56,9 +57,10 @@ public class UnoStreamPlayer extends UnoPlayer {
 				+ " | Draw pile size: " + game.getDraw().getSize() + " | Discard pile size: "
 				+ game.getDiscard().getSize() + " | Top card: " + game.getDiscard().getTop() + "]");
 
-		if (top instanceof UnoDrawCard && ((UnoDrawCard) top).isOpen()) {
-			this.ps.println("0 - Draw " + game.getDiscard().getConsecutiveDraw() + " cards from a " + top);
-
+		List<UnoDrawCard> drawCards = UnoProgressiveRulePack.getConsecutive(game.getDiscard());
+		if (!drawCards.isEmpty()) {
+			this.ps.println("0 - Draw " + drawCards.size() * drawCards.get(0).getAmount() + " cards from "
+					+ drawCards.size() + " " + top + (drawCards.size() == 1 ? "" : "s"));
 		} else {
 			this.ps.println("0 - Draw");
 		}
