@@ -18,7 +18,7 @@ public interface UnoRule {
 	}
 
 	@Nullable
-	public default ConflictResolution conflictsWith(UnoRule r) {
+	public default ConflictResolution conflictsWith(UnoRule rule) {
 		return null;
 	}
 
