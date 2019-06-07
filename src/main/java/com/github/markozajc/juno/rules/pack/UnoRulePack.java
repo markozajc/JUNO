@@ -126,7 +126,7 @@ public class UnoRulePack {
 					continue;
 				// Skips the same rule
 
-				ConflictResolution conflict = rule.conflictsWith(rule);
+				ConflictResolution conflict = rule.conflictsWith(checkRule);
 				// Analyzes the conflicts
 
 				if (conflict != null) {
