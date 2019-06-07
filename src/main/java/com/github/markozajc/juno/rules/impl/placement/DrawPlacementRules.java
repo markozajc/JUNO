@@ -21,7 +21,7 @@ public class DrawPlacementRules {
 
 	private static void createPack() {
 		pack = new UnoRulePack(new DrawAmountPlacementRule(), new DrawFourHitchPlacementRule(),
-				new UnplayedCardPlacementRule());
+				new OpenDrawCardPlacementRule());
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class DrawPlacementRules {
 	 *
 	 * @author Marko Zajc
 	 */
-	public static class UnplayedCardPlacementRule implements UnoCardPlacementRule {
+	public static class OpenDrawCardPlacementRule implements UnoCardPlacementRule {
 
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
