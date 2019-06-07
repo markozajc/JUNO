@@ -119,7 +119,7 @@ public class UnoProgressiveRulePack {
 
 	public static class ProgressiveUnoFlowRule extends CardDrawingRule {
 
-		private static final String DRAW_CARDS = "%s drew %s cards from %s %ss.";
+		private static final String DRAW_CARDS = "%s drew %s cards from %s %s.";
 		private static final String DRAW_CARD = "%s drew a card.";
 
 		@Override
@@ -139,8 +139,9 @@ public class UnoProgressiveRulePack {
 						drawCard.drawTo(game, player);
 					// Draw all cards to the hand
 
-					game.onEvent(DRAW_CARDS, player.getName(), consecutive.size() * consecutive.get(0).getAmount(),
-						consecutive.size(), consecutive.get(0).toString());
+					game.onEvent(consecutive.size() == 1 ? DRAW_CARDS : DRAW_CARDS + "s", player.getName(),
+						consecutive.size() * consecutive.get(0).getAmount(), consecutive.size(),
+						consecutive.get(0).toString());
 
 				} else {
 					// If the top card is not a draw card
