@@ -50,7 +50,7 @@ public class UnoStrategicPlayer extends UnoPlayer {
 
 	@Nullable
 	private static UnoNumericCard sevenoStrategy(List<UnoCard> possiblePlacements, List<Entry<Long, UnoCardColor>> colorAnalysis, UnoPlayer us, UnoPlayer foe) {
-		if (us.getHand().getSize() - 1 >= foe.getHand().getSize())
+		if (us.getHand().getSize() - 1 <= foe.getHand().getSize())
 			return null;
 
 		return chooseBestColorCard(sevenoFilter(possiblePlacements), colorAnalysis);
