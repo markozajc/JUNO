@@ -5,4 +5,14 @@ package com.github.markozajc.juno.rules;
  *
  * @author Marko Zajc
  */
-public interface UnoRule {}
+public interface UnoRule {
+
+	public enum ConflictResolution {
+
+		FAIL,
+		REPLACE,
+		BACKOFF
+
+	}
+
+}
