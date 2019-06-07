@@ -1,11 +1,23 @@
 package com.github.markozajc.juno.rules.pack.impl.house;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
+import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.piles.impl.UnoDiscardPile;
+import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.UnoRule;
+import com.github.markozajc.juno.rules.impl.flow.CardDrawingRule;
 import com.github.markozajc.juno.rules.impl.placement.DrawPlacementRules.OpenDrawCardPlacementRule;
+import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
+import com.github.markozajc.juno.rules.types.flow.UnoInitializationConclusion;
+import com.github.markozajc.juno.rules.types.flow.UnoPhaseConclusion;
+import com.github.markozajc.juno.utils.UnoGameUtils;
+import com.github.markozajc.juno.utils.UnoRuleUtils;
 
 public class UnoProgressiveRulePack {
 
@@ -38,7 +50,7 @@ public class UnoProgressiveRulePack {
 	 *
 	 * @return the draw mark or {@code 0}
 	 */
-	private int getDrawMark(UnoDiscardPile discard) {
+	private static int getDrawMark(UnoDiscardPile discard) {
 		UnoCard top = discard.getTop();
 		if (top instanceof UnoDrawCard) {
 			return ((UnoDrawCard) top).getAmount();
@@ -47,30 +59,18 @@ public class UnoProgressiveRulePack {
 		return 0;
 	}
 
-	/**
-	 * Calculates the <i>consecutive draw</i> for this discard pile. Consecutive draw is
-	 * the main point of the progressive UNO rule (which is adopted by JUNO because it's
-	 * really great). It's essentially a count of consecutive "relevant" draw cards
-	 * (cards of the same type) from top to bottom, multiplied by the <i>draw mark</i>,
-	 * which is used in determining relevance and is the amount
-	 * ({@link UnoDrawCard#getAmount()}) of the top card
-	 * ({@link UnoDiscardPile#getTop()}).<br>
-	 * <b>TL;DR</b> consecutive draw is the streak of {@link UnoDrawCard}s.
-	 *
-	 * @return the consecutive draw or {@code 0} if the top card isn't a
-	 *         {@link UnoDrawCard}
-	 */
-	public int getConsecutiveDraw(UnoDiscardPile discard) {
+	public static List<UnoDrawCard> getConsecutive(UnoDiscardPile discard) {
 		int drawMark = getDrawMark(discard);
 		if (drawMark == 0)
-			return 0;
+			return Collections.emptyList();
 		// The top card is not a draw card; there's no draw consecutive draw to calculate
 
-		int consecutive = 0;
+		List<UnoDrawCard> consecutive = new ArrayList<>();
 
 		for (UnoCard card : discard.getCards()) {
 			if (isRelevant(card, drawMark)) {
-				consecutive++;
+				consecutive.add((UnoDrawCard) card);
+
 			} else {
 				break;
 			}
@@ -78,7 +78,7 @@ public class UnoProgressiveRulePack {
 		// Iterates over the draw pile, until it hits an irrelevant card, adding to the
 		// consecutive draw on each relevant one
 
-		return consecutive * drawMark;
+		return consecutive;
 	}
 
 	public static class ProgressiveUnoPlacementRule extends OpenDrawCardPlacementRule {
@@ -99,6 +99,63 @@ public class UnoProgressiveRulePack {
 		@Override
 		public ConflictResolution conflictsWith(UnoRule rule) {
 			if (rule instanceof OpenDrawCardPlacementRule)
+				return ConflictResolution.REPLACE;
+
+			return null;
+		}
+
+	}
+
+	public static class ProgressiveUnoFlowRule extends CardDrawingRule {
+
+		private static final String DRAW_CARDS = "%s drew %s cards from %s %ss.";
+		private static final String DRAW_CARD = "%s drew a card.";
+
+		@Override
+		public UnoInitializationConclusion initializationPhase(UnoPlayer player, UnoGame game) {
+			return UnoInitializationConclusion.NOTHING;
+		}
+
+		@SuppressWarnings("null")
+		@Override
+		public UnoPhaseConclusion decisionPhase(UnoPlayer player, UnoGame game, UnoCard decidedCard) {
+			if (decidedCard == null) {
+				List<UnoDrawCard> consecutive = getConsecutive(game.getDiscard());
+				if (!consecutive.isEmpty()) {
+					// If the top card is a draw card
+
+					for (UnoDrawCard drawCard : consecutive)
+						drawCard.drawTo(game, player);
+					// Draw all cards to the hand
+
+					game.onEvent(DRAW_CARDS, player.getName(), consecutive.size() * consecutive.get(0).getAmount(),
+						consecutive.size(), consecutive.get(0).toString());
+
+				} else {
+					// If the top card is not a draw card
+
+					UnoCard drawn = player.getHand().draw(game, 1).get(0);
+					game.onEvent(DRAW_CARD, player.getName());
+					// Draw a single card to the hand
+
+					if (UnoGameUtils.canPlaceCard(player, game, drawn)
+							&& player.shouldPlayDrawnCard(game, drawn, game.nextPlayer(player))) {
+						UnoRuleUtils.filterRuleKind(game.getRules().getRules(), UnoGameFlowRule.class)
+								.forEach(gfr -> gfr.decisionPhase(player, game, drawn));
+					}
+					// Allow the player to place the card (if possible)
+				}
+			}
+
+			if (decidedCard instanceof UnoDrawCard && !decidedCard.isOpen())
+				decidedCard.markOpen();
+
+			return UnoPhaseConclusion.NOTHING;
+		}
+
+		@Override
+		public ConflictResolution conflictsWith(UnoRule rule) {
+			if (rule instanceof CardDrawingRule)
 				return ConflictResolution.REPLACE;
 
 			return null;
