@@ -30,7 +30,7 @@ import com.github.markozajc.juno.rules.types.flow.UnoPhaseConclusion;
  *
  * @author Marko Zajc
  */
-public interface UnoGameFlowRule extends UnoRule {
+public interface UnoGameFlowRule extends UnoRule<UnoGameFlowRule> {
 
 	/**
 	 * The phase that is called at the beginning of a turn. This is the phase where you

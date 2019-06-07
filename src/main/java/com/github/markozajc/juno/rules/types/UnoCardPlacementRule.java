@@ -13,7 +13,7 @@ import com.github.markozajc.juno.rules.UnoRule;
  *
  * @author Marko Zajc
  */
-public interface UnoCardPlacementRule extends UnoRule {
+public interface UnoCardPlacementRule extends UnoRule<UnoCardPlacementRule> {
 
 	/**
 	 * The placement clearance for a card that determines whether a card can be placed
