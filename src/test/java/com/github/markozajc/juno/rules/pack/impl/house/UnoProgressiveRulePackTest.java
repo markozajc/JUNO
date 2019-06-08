@@ -49,7 +49,7 @@ class UnoProgressiveRulePackTest {
 		// Adds an irrelevant color to the top
 
 		consecutive = UnoProgressiveRulePack.getConsecutive(discard);
-		assertEquals(consecutive.size() * consecutive.get(0).getAmount(), 0);
+		assertTrue(consecutive.isEmpty());
 		// That is a consecutive draw of 0 cards
 
 		discard.add(new UnoDrawCard(UnoCardColor.RED));
