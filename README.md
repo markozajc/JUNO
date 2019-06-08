@@ -4,7 +4,7 @@
 # JUNO
 JUNO is a UNO library for Java with lots of extensibility and flow control that comes bundled with several implementation of cards, rules and more.
 
-JUNO is built on top of the official UNO rules (can be found [here](https://service.mattel.com/instruction_sheets/UNO%20Basic%20IS.pdf)) and thus only comes preloaded with the official deck, rules and cards. You can, however, add your own rules and cards with its powerful systems and utilities. 
+It is built on top of the official UNO rules (can be found [here](https://service.mattel.com/instruction_sheets/UNO%20Basic%20IS.pdf)) and thus only comes preloaded with the official deck, rules and cards. You can, however, add your own rules and cards with its powerful systems and utilities. 
 
 ## Download and installation
 Latest version: [![Download](https://api.bintray.com/packages/iareas/Libraries/JUNO/images/download.svg) ](https://bintray.com/iareas/Libraries/JUNO/_latestVersion).
@@ -54,7 +54,8 @@ The third method, `#shouldPlayDrawnCard(UnoGame, UnoCard, UnoPlayer)`, allows th
 
 The synopsis of implementing the UnoPlayer is
 	
-```java public class MyUnoPlayer extends UnoPlayer {
+```java
+public class MyUnoPlayer extends UnoPlayer {
 
 	public MyUnoPlayer(String name) {
 		super(name);
@@ -79,13 +80,13 @@ The synopsis of implementing the UnoPlayer is
 ```
 
 ### UnoGame
-UnoGame is the class that controls the game's flow and logic. You most likely don't need to extend this class directly as UnoControlledGame (which makes use of UnoGameFlowRule rules) gives you most if not all flow control.
+UnoGame is the class that controls the game's flow and logic. You most likely don't need to extend this class directly as UnoControlledGame (which makes use of UnoGameFlowRule for flow control) gives you most if not all flow control.
 
 #### Extending ControlledUnoGame
-ControlledUnoGame is fairly easy to extend - the only method that you have to extend is `UnoGame#onEvent(String, String...)`, which transmits messages from the rules.
+ControlledUnoGame is fairly easy to extend - the only method that you have to extend is `UnoGame#onEvent(String, String...)`, which is used to send messages from the rules to the UnoGame. You just have to catch the messages that come in and log them somewhere.
 
 ### UnoRule
-A UnoRule defines rules in the game. Rules also control the flow of the game itself in a UnoControlledGame. JUNO comes preloaded with the official set of UNO rules as well as the Progressive UNO and SevenO house rules, which can be optionally applied to a UnoOfficialRules with `.getPack(UnoHouseRule...)` or `.getPack(Collection<UnoHouseRule>)`. UnoRule comes in two variants - the UnoCardPlacementRule and the UnoGameFlowRule. You do not need to extend the rules unless you want to add custom behavior that is not supported by the official UNO rules/home rules
+A UnoRule defines rules in the game. Rules also control the flow of the game itself in a UnoControlledGame. JUNO comes preloaded with the official set of UNO rules as well as the Progressive UNO and SevenO house rules, which can be optionally activated in UnoOfficialRules with `.getPack(UnoHouseRule...)` or `.getPack(Collection<UnoHouseRule>)`. UnoRule comes in two variants - the UnoCardPlacementRule and the UnoGameFlowRule. You do not need to extend the rules unless you want to add custom behavior that is not supported by the official UNO rules/home rules
 
 #### UnoCardPlacementRule
 A UnoCardPlacement rule defines what cards can be placed on top of what cards. It works in all UnoGame implementations that use `UnoRuleUtils.combinedPlacementAnalysis(UnoCard, Collection<UnoCard>, UnoRulePack, UnoHand)`. Implementing it is pretty simple - the only thing you need to override is `#canBePlaced(UnoCard, UnoCard, UnoHand)`. This method returns a PlacementClearance enum, which decides whether the second UnoCard (card) can be placed on top of the first one (target). PlacementClearance has 3 values - ALLOWED, NEUTRAL and PROHIBITED (look at their respective javadocs for more information about them).
