@@ -1,6 +1,7 @@
 package com.github.markozajc.juno.rules.pack.impl;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -120,7 +121,7 @@ public class UnoOfficialRules {
 	 */
 	@SuppressWarnings("null")
 	@Nonnull
-	public static UnoRulePack getPack(@Nonnull List<UnoHouseRule> houseRules) {
+	public static UnoRulePack getPack(@Nonnull Collection<UnoHouseRule> houseRules) {
 		try {
 			return getPack().addPacks(houseRules.stream().map(UnoHouseRule::getPack).collect(Collectors.toList()))
 					.resolveConflicts();
