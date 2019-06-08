@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
+import com.github.markozajc.juno.rules.UnoRuleConflictException;
 import com.github.markozajc.juno.rules.impl.flow.ActionCardRule;
 import com.github.markozajc.juno.rules.impl.flow.CardDrawingRule;
 import com.github.markozajc.juno.rules.impl.flow.CardPlacementRule;
@@ -16,6 +17,7 @@ import com.github.markozajc.juno.rules.impl.placement.ColorPlacementRules;
 import com.github.markozajc.juno.rules.impl.placement.DrawPlacementRules;
 import com.github.markozajc.juno.rules.impl.placement.NumericPlacementRules;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
+import com.github.markozajc.juno.rules.pack.impl.house.UnoProgressiveRulePack;
 import com.github.markozajc.juno.rules.pack.impl.house.UnoSevenORulePack;
 
 /**
@@ -36,12 +38,19 @@ public class UnoOfficialRules {
 	public enum UnoHouseRule {
 
 		/**
-		 * The SevenO house rules; placing a card with a zero or a seven swaps hands. See its
+		 * The SevenO house rule; placing a card with a zero or a seven swaps hands. See its
 		 * rule pack ({@link UnoSevenORulePack}) for more details.
 		 *
 		 * @see UnoSevenORulePack
 		 */
-		SEVENO(UnoSevenORulePack.getPack(), "SevenO");
+		SEVENO(UnoSevenORulePack.getPack(), "SevenO"),
+
+		/**
+		 * The Progressive UNO house rule; {@link UnoDrawCard} of the same amount can be
+		 * stacked to defend and increase penalty. See its rule pack
+		 * ({@link UnoProgressiveRulePack}) for more details.
+		 */
+		PROGRESSIVE(UnoProgressiveRulePack.getPack(), "Progressive UNO");
 
 		private final UnoRulePack pack;
 		private final String name;
@@ -112,7 +121,13 @@ public class UnoOfficialRules {
 	@SuppressWarnings("null")
 	@Nonnull
 	public static UnoRulePack getPack(@Nonnull List<UnoHouseRule> houseRules) {
-		return getPack().addPacks(houseRules.stream().map(UnoHouseRule::getPack).collect(Collectors.toList()));
+		try {
+			return getPack().addPacks(houseRules.stream().map(UnoHouseRule::getPack).collect(Collectors.toList()))
+					.resolveConflicts();
+		} catch (UnoRuleConflictException e) {
+			// Shouldn't happen, all house rule packs mustn't have a failing conflict resolution
+			return getPack();
+		}
 	}
 
 }

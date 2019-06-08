@@ -14,8 +14,11 @@ import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.players.impl.UnoStrategicPlayer;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
+import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule;
 
 class UnoControlledGameTest {
+
+	private static final int ROUNDS = 10000;
 
 	private static final class UnoStressTestGame extends UnoControlledGame {
 
@@ -41,9 +44,9 @@ class UnoControlledGameTest {
 		System.out.println("[==== INITIATING THE STRESS TEST ====]");
 
 		UnoGame game = new UnoStressTestGame(new UnoStrategicPlayer("P1"), new UnoStrategicPlayer("P2"),
-				new UnoStandardDeck(), 7, UnoOfficialRules.getPack());
+				new UnoStandardDeck(), 7, UnoOfficialRules.getPack(UnoHouseRule.values()));
 
-		for (int i = 0; i < 5000; i++) {
+		for (int i = 0; i < ROUNDS; i++) {
 			try {
 				game.playGame();
 
@@ -51,8 +54,11 @@ class UnoControlledGameTest {
 						+ game.getFirstPlayer().getHand().getSize() + game.getSecondPlayer().getHand().getSize(),
 					game.getDeck().getExpectedSize());
 			} catch (Exception e) {
+				e.printStackTrace();
 				fail("The stress test has failed. " + gatherDebugInfo(game, i, e));
 			}
 		}
+
+		System.out.println("[==== STRESS TEST PLAYED " + ROUNDS + " ROUNDS ====]");
 	}
 }

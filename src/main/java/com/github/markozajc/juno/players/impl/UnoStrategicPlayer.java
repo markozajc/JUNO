@@ -50,44 +50,32 @@ public class UnoStrategicPlayer extends UnoPlayer {
 
 	@Nullable
 	private static UnoNumericCard sevenoStrategy(List<UnoCard> possiblePlacements, List<Entry<Long, UnoCardColor>> colorAnalysis, UnoPlayer us, UnoPlayer foe) {
-		if (us.getHand().getSize() - 1 >= foe.getHand().getSize())
+		if (us.getHand().getSize() - 1 <= foe.getHand().getSize())
 			return null;
 
 		return chooseBestColorCard(sevenoFilter(possiblePlacements), colorAnalysis);
 	}
 
 	@Nullable
-	private static UnoDrawCard chooseDrawCard(List<UnoCard> possiblePlacements, List<Entry<Long, UnoCardColor>> colorAnalysis, UnoCard topCard, UnoPlayer next) {
+	private static UnoDrawCard chooseDrawCard(List<UnoCard> possiblePlacements, List<Entry<Long, UnoCardColor>> colorAnalysis, UnoGame game, UnoPlayer next) {
 
-		/*
-		 * if (topCard instanceof UnoDrawCard && !((UnoDrawCard) topCard).isPlayed()) { // In
-		 * case the other hand placed a draw card
-		 *
-		 * if (!((UnoDrawCard) topCard).getOriginalColor().equals(UnoCardColor.WILD)) { // If
-		 * the card is NOT a draw four card (or any other custom wild draw card)
-		 *
-		 * UnoDrawCard result = chooseBestCard(possiblePlacements, colorAnalysis,
-		 * UnoDrawCard.class); if (result != null) return result;
-		 *
-		 * } else { return UnoUtils.filterKind(UnoDrawCard.class, possiblePlacements).get(0);
-		 * }
-		 *
-		 * } // Defends self if "attacked" with a Draw X card
-		 */
-		// TODO reimplement when progressive uno rule is added
+		boolean shouldPlay = false;
+		if (game.getHouseRules().contains(UnoHouseRule.PROGRESSIVE)) {
+			// Progressive UNO is enabled
+			shouldPlay = game.getTopCard() instanceof UnoDrawCard || next.getHand().getSize() <= DRAW_CARD_THRESHOLD;
 
-		// Places an action card if possible (both action cards do the same thing in 2 player
-		// games so yeah)
+			// Only place if "attacked" or if opponent's amount of card is smaller than the
+			// threshold
 
-		if (next.getHand().getSize() <= DRAW_CARD_THRESHOLD) {
-			List<UnoDrawCard> drawCards = UnoUtils.filterKind(UnoDrawCard.class, possiblePlacements);
-			if (!drawCards.isEmpty())
-				return drawCards.get(0);
+		} else {
+			shouldPlay = true;
+			// Always play, there's nothing to worry about
 		}
-		// Places a Draw X card in case opponent's hand size is less or equal to
-		// DRAW_CARD_THRESHOLD
 
-		return null;
+		if (!shouldPlay)
+			return null;
+
+		return simpleChooseCard(possiblePlacements, colorAnalysis, UnoDrawCard.class);
 	}
 
 	@Nullable
@@ -152,7 +140,7 @@ public class UnoStrategicPlayer extends UnoPlayer {
 				return sevenoCard;
 		}
 
-		UnoDrawCard drawCard = chooseDrawCard(possible, colorAnalysis, top, next);
+		UnoDrawCard drawCard = chooseDrawCard(possible, colorAnalysis, game, next);
 		if (drawCard != null)
 			return drawCard;
 		// Places an action card if possible
