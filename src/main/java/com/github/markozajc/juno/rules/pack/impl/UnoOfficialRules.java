@@ -2,7 +2,6 @@ package com.github.markozajc.juno.rules.pack.impl;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -31,7 +30,7 @@ public class UnoOfficialRules {
 	/**
 	 * An enum of supported "house rules". House rules are official optional changes to
 	 * the flow of the game that introduce new strategies and gameplay. They can be
-	 * included into a pack using {@link #getPack(List)} or
+	 * included into a pack using {@link #getPack(Collection)} or
 	 * {@link #getPack(UnoHouseRule...)}.
 	 *
 	 * @author Marko Zajc
