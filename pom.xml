@@ -110,8 +110,11 @@
 
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>versions-maven-plugin</artifactId>
-				<version>2.7</version>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.6.0</version>
+				<configuration>
+					<mainClass>com.github.markozajc.juno.game.impl.UnoConsoleGame</mainClass>
+				</configuration>
 			</plugin>
 
 		</plugins>
