@@ -122,6 +122,8 @@ public class UnoRulePack {
 	 *             in case a {@link ConflictResolution#FAIL} is returned at any time
 	 * @see UnoRule#conflictsWith(UnoRule)
 	 */
+	@CheckReturnValue
+	@Nonnull
 	public UnoRulePack resolveConflicts() throws UnoRuleConflictException {
 		List<UnoRule> conflicting = new ArrayList<>();
 
