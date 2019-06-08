@@ -1,4 +1,4 @@
-[![Download](https://api.bintray.com/packages/iareas/Libraries/JUNO/images/download.svg) ](https://bintray.com/iareas/Libraries/JUNO/_latestVersion).
+[![Download](https://api.bintray.com/packages/iareas/Libraries/JUNO/images/download.svg) ](https://bintray.com/iareas/Libraries/JUNO/_latestVersion)
 [![Build Status](https://travis-ci.org/markozajc/JUNO.svg?branch=master)](https://travis-ci.org/markozajc/JUNO)
 [![Discord](https://discordapp.com/api/guilds/323031870088675328/widget.png)](https://discord.gg/asDUrbR)
 # JUNO
