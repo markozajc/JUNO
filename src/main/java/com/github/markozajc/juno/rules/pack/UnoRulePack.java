@@ -113,6 +113,15 @@ public class UnoRulePack {
 		return this.addPacks(Arrays.asList(packs));
 	}
 
+	/**
+	 * Analyzes and resolves all {@link UnoRule} conflicts and returns the new list of
+	 * {@link UnoRule}s in a new {@link UnoRulePack}.
+	 *
+	 * @return the {@link UnoRulePack} with resolved conflicts
+	 * @throws UnoRuleConflictException
+	 *             in case a {@link ConflictResolution#FAIL} is returned at any time
+	 * @see UnoRule#conflictsWith(UnoRule)
+	 */
 	public UnoRulePack resolveConflicts() throws UnoRuleConflictException {
 		List<UnoRule> conflicting = new ArrayList<>();
 

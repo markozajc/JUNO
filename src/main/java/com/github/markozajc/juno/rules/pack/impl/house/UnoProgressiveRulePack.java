@@ -16,12 +16,26 @@ import com.github.markozajc.juno.rules.UnoRule;
 import com.github.markozajc.juno.rules.impl.flow.CardDrawingRule;
 import com.github.markozajc.juno.rules.impl.placement.DrawPlacementRules.OpenDrawCardPlacementRule;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
+import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
+import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule;
 import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
 import com.github.markozajc.juno.rules.types.flow.UnoInitializationConclusion;
 import com.github.markozajc.juno.rules.types.flow.UnoPhaseConclusion;
 import com.github.markozajc.juno.utils.UnoGameUtils;
 import com.github.markozajc.juno.utils.UnoRuleUtils;
 
+/**
+ * A house {@link UnoRulePack} that implements the official Progressive UNO house
+ * rule. The rule adds the mechanic that adds a stacking penalty to the draw cards;
+ * each time a player places a {@link UnoDrawCard}, the next player is allowed to
+ * place a {@link UnoDrawCard} of the same amount on top of it, stacking its penalty
+ * and "defending" self. This goes on for as long as the players keep placing draw
+ * cards. This {@link UnoRulePack} is also referenced by
+ * {@link UnoHouseRule#PROGRESSIVE}, which is makes it easy to install into
+ * {@link UnoOfficialRules}.
+ *
+ * @author Marko Zajc
+ */
 public class UnoProgressiveRulePack {
 
 	private UnoProgressiveRulePack() {}
@@ -70,6 +84,15 @@ public class UnoProgressiveRulePack {
 		return 0;
 	}
 
+	/**
+	 * Returns the {@link List} of consecutive relevant {@link UnoDrawCard}s from a
+	 * discard pile, starting from the top card. Will return an empty list if the top
+	 * card is closed or is not a {@link UnoDrawCard}.
+	 *
+	 * @param discard
+	 *            {@link UnoDiscardPile} to search through
+	 * @return {@link List} of consecutive cards
+	 */
 	public static List<UnoDrawCard> getConsecutive(UnoDiscardPile discard) {
 		int drawMark = getDrawMark(discard);
 		if (drawMark == 0)
@@ -92,6 +115,13 @@ public class UnoProgressiveRulePack {
 		return consecutive;
 	}
 
+	/**
+	 * The placement rule for progressive UNO. Allows {@link UnoDrawCard}s with the same
+	 * amount to be placed on top of open {@link UnoDrawCard}. Replaces
+	 * {@link OpenDrawCardPlacementRule}.
+	 *
+	 * @author Marko Zajc
+	 */
 	public static class ProgressiveUnoPlacementRule extends OpenDrawCardPlacementRule {
 
 		@Override
@@ -117,6 +147,12 @@ public class UnoProgressiveRulePack {
 
 	}
 
+	/**
+	 * The flow rule for progressive UNO. Stacks penalty of consecutive
+	 * {@link UnoDrawCard}.
+	 *
+	 * @author Marko Zajc
+	 */
 	public static class ProgressiveUnoFlowRule extends CardDrawingRule {
 
 		private static void drawAll(List<UnoDrawCard> cards, @Nonnull UnoGame game, @Nonnull UnoPlayer player) {

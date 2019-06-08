@@ -38,13 +38,18 @@ public class UnoOfficialRules {
 	public enum UnoHouseRule {
 
 		/**
-		 * The SevenO house rules; placing a card with a zero or a seven swaps hands. See its
+		 * The SevenO house rule; placing a card with a zero or a seven swaps hands. See its
 		 * rule pack ({@link UnoSevenORulePack}) for more details.
 		 *
 		 * @see UnoSevenORulePack
 		 */
 		SEVENO(UnoSevenORulePack.getPack(), "SevenO"),
 
+		/**
+		 * The Progressive UNO house rule; {@link UnoDrawCard} of the same amount can be
+		 * stacked to defend and increase penalty. See its rule pack
+		 * ({@link UnoProgressiveRulePack}) for more details.
+		 */
 		PROGRESSIVE(UnoProgressiveRulePack.getPack(), "Progressive UNO");
 
 		private final UnoRulePack pack;
