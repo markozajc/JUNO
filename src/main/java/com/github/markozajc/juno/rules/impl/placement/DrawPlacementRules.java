@@ -66,7 +66,7 @@ public class DrawPlacementRules {
 	}
 
 	/**
-	 * A placement rule that prohibits all cards from being placed on an unplayed
+	 * A placement rule that prohibits all cards from being placed on an open
 	 * {@link UnoDrawCard}.
 	 *
 	 * @author Marko Zajc
