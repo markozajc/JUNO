@@ -15,24 +15,24 @@ JUNO is published to the Maven central and can thus be easily obtained with mult
 Add the following to your pom.xml's dependencies section:
 
 ```xml
-    <dependency>
-        <groupId>com.github.markozajc</groupId>
-        <artifactId>juno</artifactId>
-        <version>VERSION</version>
-    </dependency>
+<dependency>
+	<groupId>com.github.markozajc</groupId>
+	<artifactId>juno</artifactId>
+	<version>VERSION</version>
+</dependency>
 ```
 
 #### Gradle
 Merge the following into your build.gradle:
 
-```json
-	dependencies {
-		compile 'com.github.markozajc:juno:VERSION'
-	}
-	
-	repositories {
-		mavenCentral()
-	}
+```gradle
+dependencies {
+	compile 'com.github.markozajc:juno:VERSION'
+}
+
+repositories {
+	mavenCentral()
+}
 ```
 
 ## Usage
