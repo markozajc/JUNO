@@ -9,33 +9,23 @@ import com.github.markozajc.juno.cards.UnoCardColor;
  *
  * @author Marko Zajc
  */
-public class UnoWildCard implements UnoCard {
+public class UnoWildCard extends UnoCard {
 
-	private UnoCardColor color = UnoCardColor.WILD;
-
-	@Override
-	public UnoCardColor getColor() {
-		return this.color;
+	/**
+	 * Creates a new {@link UnoWildCard}.
+	 */
+	public UnoWildCard() {
+		super(UnoCardColor.WILD);
 	}
 
 	@Override
 	public String toString() {
-		return "Wild";
-	}
-
-	/**
-	 * Sets this wild card's color.
-	 *
-	 * @param color
-	 *            the new color
-	 */
-	public void setColor(UnoCardColor color) {
-		this.color = color;
+		return getOriginalColor().toString();
 	}
 
 	@Override
-	public void reset() {
-		this.color = UnoCardColor.WILD;
+	public UnoCard cloneCard() {
+		return new UnoWildCard();
 	}
 
 }

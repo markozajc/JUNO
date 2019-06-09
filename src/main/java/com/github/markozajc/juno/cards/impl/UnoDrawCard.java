@@ -1,7 +1,13 @@
 package com.github.markozajc.juno.cards.impl;
 
+import javax.annotation.Nonnegative;
+import javax.annotation.Nonnull;
+
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
+import com.github.markozajc.juno.game.UnoGame;
+import com.github.markozajc.juno.hands.UnoHand;
+import com.github.markozajc.juno.players.UnoPlayer;
 
 /**
  * A card that makes the other player draw two or four cards, depending on the
@@ -17,11 +23,9 @@ import com.github.markozajc.juno.cards.UnoCardColor;
  *
  * @author Marko Zajc
  */
-public class UnoDrawCard implements UnoCard {
+public class UnoDrawCard extends UnoCard {
 
-	private UnoCardColor color;
-	private final int draw;
-	private boolean played = false;
+	private final int amount;
 
 	/**
 	 * Creates a new draw two card.
@@ -31,7 +35,7 @@ public class UnoDrawCard implements UnoCard {
 	 * @throws IllegalArgumentException
 	 *             if {@code color} is equal to {@link UnoCardColor#WILD}
 	 */
-	public UnoDrawCard(UnoCardColor color) {
+	public UnoDrawCard(@Nonnull UnoCardColor color) {
 		this(color, 2);
 
 		if (color.equals(UnoCardColor.WILD))
@@ -45,53 +49,21 @@ public class UnoDrawCard implements UnoCard {
 		this(UnoCardColor.WILD, 4);
 	}
 
-	UnoDrawCard(UnoCardColor color, int draw) {
-		this.color = color;
-		this.draw = draw;
-	}
-
-	@Override
-	public boolean isPlayed() {
-		return this.played;
+	private UnoDrawCard(@Nonnull UnoCardColor color, @Nonnegative int amount) {
+		super(color);
+		this.amount = amount;
 	}
 
 	/**
-	 * Marks this card as "played". This means that a player has already drawn because of
+	 * Marks this card as "closed" ("played"). This means that a player has already drawn because of
 	 * it.
+	 *
+	 * @deprecated You shouldn't be using this directly as
+	 *             {@link #drawTo(UnoGame, UnoPlayer)} already does it for you.
 	 */
+	@Deprecated
 	public void setPlayed() {
-		this.played = true;
-	}
-
-	/**
-	 * Sets the card's color
-	 *
-	 * @param color the new color
-	 * @throws IllegalStateException
-	 *             if this card is a draw two card
-	 */
-	public void setColor(UnoCardColor color) {
-		if (this.draw == 2)
-			throw new IllegalStateException("Can't change the color of a draw two card.");
-
-		this.color = color;
-	}
-
-	@Override
-	public UnoCardColor getColor() {
-		return this.color;
-	}
-
-	/**
-	 * Gets the original color of the card. This is useful for draw four cards where
-	 * {@link #getColor()} can represent the changed color.
-	 *
-	 * @return the original color
-	 */
-	public UnoCardColor getOriginalColor() {
-		if (this.draw == 4)
-			return UnoCardColor.WILD;
-		return getColor();
+		markClosed();
 	}
 
 	/**
@@ -101,19 +73,34 @@ public class UnoDrawCard implements UnoCard {
 	 * @return the draw amount of this cards
 	 */
 	public int getAmount() {
-		return this.draw;
+		return this.amount;
 	}
 
 	@Override
 	public String toString() {
-		return getOriginalColor().toString() + " draw " + this.draw;
+		return getOriginalColor().toString() + " draw " + this.getAmount();
+	}
+
+	/**
+	 * Draws the set amount of {@link UnoCard}s from the draw pile of the given
+	 * {@link UnoGame} and adds them to a {@link UnoHand}. This method is safe as it uses
+	 * {@link UnoHand#draw(UnoGame, int)}.
+	 *
+	 * @param game
+	 *            the ongoing {@link UnoGame}
+	 * @param player
+	 *            the owner of the {@link UnoHand} to add the drawn cards to
+	 * @throws IllegalStateException
+	 *             in case this card is already marked as closed
+	 */
+	public void drawTo(@Nonnull UnoGame game, @Nonnull UnoPlayer player) {
+		markClosed();
+		player.getHand().draw(game, getAmount());
 	}
 
 	@Override
-	public void reset() {
-		this.played = false;
-		if (this.draw == 4)
-			this.color = UnoCardColor.WILD;
+	public UnoCard cloneCard() {
+		return new UnoDrawCard(getColor(), getAmount());
 	}
 
 }

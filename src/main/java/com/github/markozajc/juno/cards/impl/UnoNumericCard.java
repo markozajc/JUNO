@@ -1,5 +1,8 @@
 package com.github.markozajc.juno.cards.impl;
 
+import javax.annotation.Nonnegative;
+import javax.annotation.Nonnull;
+
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
 
@@ -11,10 +14,9 @@ import com.github.markozajc.juno.cards.UnoCardColor;
  *
  * @author Marko Zajc
  */
-public class UnoNumericCard implements UnoCard {
+public class UnoNumericCard extends UnoCard {
 
 	private final int number;
-	private final UnoCardColor color;
 
 	/**
 	 * Creates a new {@link UnoNumericCard}.
@@ -27,7 +29,9 @@ public class UnoNumericCard implements UnoCard {
 	 *             if {@code number} is not in the allowed range or {@code color} is
 	 *             equal to {@link UnoCardColor#WILD}
 	 */
-	public UnoNumericCard(int number, UnoCardColor color) {
+	public UnoNumericCard(@Nonnull UnoCardColor color, @Nonnegative int number) {
+		super(color);
+
 		if (color.equals(UnoCardColor.WILD))
 			throw new IllegalArgumentException("The wild card color is not allowed!");
 
@@ -35,12 +39,6 @@ public class UnoNumericCard implements UnoCard {
 			throw new IllegalArgumentException("Number " + number + " is not in the allowed range (0-9)!");
 
 		this.number = number;
-		this.color = color;
-	}
-
-	@Override
-	public UnoCardColor getColor() {
-		return this.color;
 	}
 
 	/**
@@ -54,12 +52,12 @@ public class UnoNumericCard implements UnoCard {
 
 	@Override
 	public String toString() {
-		return this.color.toString() + " " + this.number;
+		return this.getOriginalColor().toString() + " " + this.number;
 	}
 
 	@Override
-	public void reset() {
-		// Doesn't have a state, nothing to reset
+	public UnoCard cloneCard() {
+		return new UnoNumericCard(getColor(), getNumber());
 	}
 
 }
