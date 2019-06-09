@@ -46,27 +46,6 @@ public class TestUtils {
 
 	}
 
-	private static class DummyUnoDeck implements UnoDeck {
-
-		@Nonnull
-		private final List<UnoCard> cards;
-
-		public DummyUnoDeck(@Nonnull List<UnoCard> cards) {
-			this.cards = cards;
-		}
-
-		@Override
-		public int getExpectedSize() {
-			return this.cards.size();
-		}
-
-		@Override
-		public List<UnoCard> getCards() {
-			return this.cards;
-			// Doesn't actually make a clone. A production deck should always make a clone here.
-		}
-	}
-
 	/**
 	 * Checks the equality of two {@link Collection}s in an unordered manner.
 	 *
@@ -106,16 +85,17 @@ public class TestUtils {
 
 	/**
 	 * Returns a dummy {@link UnoDeck} containing a preferred {@link List} of cards.
-	 * {@link UnoDeck#getExpectedSize()} will contain the size of the provided
-	 * {@link List}.
 	 *
 	 * @param cards
 	 *            {@link List} of {@link UnoCard}s the {@link UnoDeck} should contain
 	 * @return the built {@link UnoDeck}
+	 * @deprecated no longer of any use as {@link UnoDeck}s can be made using their
+	 *             constructor
 	 */
+	@Deprecated
 	@Nonnull
-	public static DummyUnoDeck getDummyDeck(@Nonnull List<UnoCard> cards) {
-		return new DummyUnoDeck(cards);
+	public static UnoDeck getDummyDeck(@Nonnull List<UnoCard> cards) {
+		return new UnoDeck(cards);
 	}
 
 }

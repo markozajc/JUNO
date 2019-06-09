@@ -103,7 +103,7 @@ public abstract class BasicUnoGame extends UnoGame {
 	 *            the second {@link UnoPlayer}
 	 */
 	public BasicUnoGame(@Nonnull UnoPlayer first, @Nonnull UnoPlayer second) {
-		super(first, second, new UnoStandardDeck(), 7, UnoOfficialRules.getPack());
+		super(first, second, UnoStandardDeck.getDeck(), 7, UnoOfficialRules.getPack());
 	}
 
 	private void changeColor(UnoPlayer player, UnoCard card) {

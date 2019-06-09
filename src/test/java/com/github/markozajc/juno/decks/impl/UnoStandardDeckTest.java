@@ -15,15 +15,15 @@ class UnoStandardDeckTest {
 
 	@Test
 	void testSize() {
-		UnoDeck deck = new UnoStandardDeck();
-		assertEquals(deck.getExpectedSize(), deck.getCards().size(),
+		UnoDeck deck = UnoStandardDeck.getDeck();
+		assertEquals(UnoStandardDeck.getExpectedSize(), deck.getCards().size(),
 			"Invalid UNO deck; the standard UNO deck actual size does not match the expected one.");
 	}
 
 	@SuppressWarnings("null")
 	@Test
 	void testCloning() {
-		UnoDeck deck = new UnoStandardDeck();
+		UnoDeck deck = UnoStandardDeck.getDeck();
 		UnoPlayer hand = TestUtils.getDummyPlayer(Collections.emptyList());
 		deck.getCards().get(0).setPlacer(hand);
 

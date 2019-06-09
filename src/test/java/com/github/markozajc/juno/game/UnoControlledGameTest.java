@@ -44,7 +44,7 @@ class UnoControlledGameTest {
 		System.out.println("[==== INITIATING THE STRESS TEST ====]");
 
 		UnoGame game = new UnoStressTestGame(new UnoStrategicPlayer("P1"), new UnoStrategicPlayer("P2"),
-				new UnoStandardDeck(), 7, UnoOfficialRules.getPack(UnoHouseRule.values()));
+				UnoStandardDeck.getDeck(), 7, UnoOfficialRules.getPack(UnoHouseRule.values()));
 
 		for (int i = 0; i < ROUNDS; i++) {
 			try {
@@ -52,7 +52,7 @@ class UnoControlledGameTest {
 
 				assertEquals(game.getDiscard().getSize() + game.getDraw().getSize()
 						+ game.getFirstPlayer().getHand().getSize() + game.getSecondPlayer().getHand().getSize(),
-					game.getDeck().getExpectedSize());
+					UnoStandardDeck.getExpectedSize());
 			} catch (Exception e) {
 				e.printStackTrace();
 				fail("The stress test has failed. " + gatherDebugInfo(game, i, e));

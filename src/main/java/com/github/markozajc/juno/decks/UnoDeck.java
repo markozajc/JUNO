@@ -2,7 +2,6 @@ package com.github.markozajc.juno.decks;
 
 import java.util.List;
 
-import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.UnoCard;
@@ -15,24 +14,23 @@ import com.github.markozajc.juno.utils.UnoDeckUtils;
  *
  * @author Marko Zajc
  */
-public interface UnoDeck {
+public class UnoDeck {
+
+	@Nonnull
+	private final List<UnoCard> cards;
+
+	public UnoDeck(@Nonnull List<UnoCard> cards) {
+		this.cards = cards;
+	}
 
 	/**
-	 * Should return a <u>CLONE</u> of the deck. You can acquire a clone of the cards
-	 * using {@link UnoDeckUtils#cloneCards(java.util.Collection)}.
+	 * Returns a modifiable clone of the deck.
 	 *
 	 * @return a clone of the deck
 	 */
 	@Nonnull
-	public List<UnoCard> getCards();
-
-	/**
-	 * The expected size of the deck. This is encouraged to be a hard-coded constant, but
-	 * make sure it equals {@link #getCards()}'s size.
-	 *
-	 * @return this deck's size
-	 */
-	@Nonnegative
-	public int getExpectedSize();
+	public List<UnoCard> getCards() {
+		return UnoDeckUtils.cloneCards(this.cards);
+	}
 
 }

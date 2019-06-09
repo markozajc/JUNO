@@ -45,8 +45,8 @@ public class UnoConsoleGame extends UnoControlledGame {
 	 * and a {@link UnoStrategicPlayer} named "Billy the StrategicUnoHand".
 	 */
 	public UnoConsoleGame() {
-		super(new UnoConsolePlayer("You"), new UnoStrategicPlayer("Billy the StrategicUnoHand"), new UnoStandardDeck(),
-				7, getRulePack());
+		super(new UnoConsolePlayer("You"), new UnoStrategicPlayer("Billy the StrategicUnoHand"),
+				UnoStandardDeck.getDeck(), 7, getRulePack());
 	}
 
 	/**
