@@ -1,38 +1,65 @@
 package com.github.markozajc.juno.decks;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.utils.UnoDeckUtils;
+import com.github.markozajc.juno.piles.UnoPile;
 
 /**
- * A class representing a (static) UNO deck. Note that the output of any of the
- * methods is not expected to change under any circumstance and is considered as such
- * by the UnoGame implementations.
+ * A class representing a UNO deck. UNO decks are taken and taken at the beginning of
+ * a UNO round and cloned. The clone {@link List} of the {@link UnoCard} is then
+ * distributed among the {@link UnoPile}s.
  *
  * @author Marko Zajc
  */
-public interface UnoDeck {
+public class UnoDeck {
 
 	/**
-	 * Should return a <u>CLONE</u> of the deck. You can acquire a clone of the cards
-	 * using {@link UnoDeckUtils#cloneCards(java.util.Collection)}.
+	 * Clones a {@link Collection} of cards into a modifiable {@link List}. This uses
+	 * {@link UnoCard#cloneCard()} to clone the cards, so (if the {@link UnoCard}
+	 * implementations implement that method correctly, which they should) the copies of
+	 * the {@link UnoCard} aren't be shallow.
+	 *
+	 * @param cards
+	 *            {@link Collection} of {@link UnoCard} to clone
+	 * @return modifiable {@link List} of cloned {@link UnoCard}s
+	 */
+	@Nonnull
+	private static List<UnoCard> cloneCards(@Nonnull Collection<UnoCard> cards) {
+		List<UnoCard> result = new ArrayList<>();
+		for (UnoCard card : cards) {
+			result.add(card.cloneCard());
+		}
+
+		return result;
+	}
+
+	@Nonnull
+	private final List<UnoCard> cards;
+
+	/**
+	 * Creates a new {@link UnoDeck}.
+	 *
+	 * @param cards
+	 *            a {@link List} of {@link UnoCard} this {@link UnoDeck} should consist
+	 *            of
+	 */
+	public UnoDeck(@Nonnull List<UnoCard> cards) {
+		this.cards = cards;
+	}
+
+	/**
+	 * Returns a modifiable clone of the deck.
 	 *
 	 * @return a clone of the deck
 	 */
 	@Nonnull
-	public List<UnoCard> getCards();
-
-	/**
-	 * The expected size of the deck. This is encouraged to be a hard-coded constant, but
-	 * make sure it equals {@link #getCards()}'s size.
-	 *
-	 * @return this deck's size
-	 */
-	@Nonnegative
-	public int getExpectedSize();
+	public List<UnoCard> getCards() {
+		return cloneCards(this.cards);
+	}
 
 }
