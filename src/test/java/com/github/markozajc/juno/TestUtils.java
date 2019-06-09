@@ -21,6 +21,22 @@ import com.github.markozajc.juno.players.UnoPlayer;
  */
 public class TestUtils {
 
+	private static class CheckState {
+
+		private boolean state = false;
+
+		CheckState() {}
+
+		public boolean isState() {
+			return this.state;
+		}
+
+		public void setState(boolean state) {
+			this.state = state;
+		}
+
+	}
+
 	private static class DummyUnoPlayer extends UnoPlayer {
 
 		public DummyUnoPlayer(@Nonnull Collection<UnoCard> cards) {
@@ -96,6 +112,10 @@ public class TestUtils {
 	@Nonnull
 	public static UnoDeck getDummyDeck(@Nonnull List<UnoCard> cards) {
 		return new UnoDeck(cards);
+	}
+
+	public static CheckState createCheckState() {
+		return new CheckState();
 	}
 
 }
