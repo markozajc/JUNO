@@ -21,7 +21,7 @@ import com.github.markozajc.juno.players.UnoPlayer;
  */
 public class TestUtils {
 
-	private static class CheckState {
+	public static class CheckState {
 
 		private boolean state = false;
 
