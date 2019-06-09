@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 import javax.annotation.Nonnull;
 
-import com.github.markozajc.juno.cards.UnoStandardDeck;
+import com.github.markozajc.juno.decks.impl.UnoStandardDeck;
 import com.github.markozajc.juno.game.UnoControlledGame;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.players.UnoPlayer;

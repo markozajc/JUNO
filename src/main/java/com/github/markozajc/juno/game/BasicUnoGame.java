@@ -7,10 +7,10 @@ import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
-import com.github.markozajc.juno.cards.UnoStandardDeck;
 import com.github.markozajc.juno.cards.impl.UnoActionCard;
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.cards.impl.UnoWildCard;
+import com.github.markozajc.juno.decks.impl.UnoStandardDeck;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
