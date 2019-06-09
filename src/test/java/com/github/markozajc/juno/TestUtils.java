@@ -27,7 +27,7 @@ public class TestUtils {
 
 		CheckState() {}
 
-		public boolean isState() {
+		public boolean getState() {
 			return this.state;
 		}
 
