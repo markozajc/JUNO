@@ -8,7 +8,6 @@ import java.util.Collections;
 import org.junit.jupiter.api.Test;
 
 import com.github.markozajc.juno.TestUtils;
-import com.github.markozajc.juno.cards.UnoStandardDeck;
 import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.players.UnoPlayer;
 

@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Test;
 import com.github.markozajc.juno.TestUtils;
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
-import com.github.markozajc.juno.cards.UnoStandardDeck;
 import com.github.markozajc.juno.cards.impl.UnoNumericCard;
 import com.github.markozajc.juno.decks.UnoDeck;
+import com.github.markozajc.juno.decks.impl.UnoStandardDeck;
 
 class UnoDrawPileTest {
 

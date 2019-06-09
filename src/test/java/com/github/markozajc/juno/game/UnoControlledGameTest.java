@@ -8,8 +8,8 @@ import javax.annotation.Nonnull;
 
 import org.junit.jupiter.api.Test;
 
-import com.github.markozajc.juno.cards.UnoStandardDeck;
 import com.github.markozajc.juno.decks.UnoDeck;
+import com.github.markozajc.juno.decks.impl.UnoStandardDeck;
 import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.players.impl.UnoStrategicPlayer;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
