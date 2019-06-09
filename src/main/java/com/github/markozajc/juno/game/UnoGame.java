@@ -84,16 +84,16 @@ public abstract class UnoGame {
 		this.draw = new UnoDrawPile(this.deck);
 		// Creates the draw pile
 
-		this.discard.clear();
-		this.first.getHand().clear();
-		this.second.getHand().clear();
+		this.getDiscard().clear();
+		this.getFirstPlayer().getHand().clear();
+		this.getSecondPlayer().getHand().clear();
 		// Clears every other pile
 
-		this.discard.add(this.draw.drawInitalCard());
+		this.getDiscard().add(this.draw.drawInitalCard());
 		// Draws the initial card
 
-		this.first.getHand().draw(this, this.cardAmount);
-		this.second.getHand().draw(this, this.cardAmount);
+		this.getFirstPlayer().getHand().draw(this, this.cardAmount);
+		this.getSecondPlayer().getHand().draw(this, this.cardAmount);
 		// Deals the cards
 	}
 
@@ -101,7 +101,7 @@ public abstract class UnoGame {
 	 * Updates the {@link UnoCard} returned by {@link #getTopCard()}.
 	 */
 	private void updateTopCard() {
-		this.topCard = this.discard.getTop();
+		this.topCard = this.getDiscard().getTop();
 	}
 
 	/**
@@ -109,7 +109,7 @@ public abstract class UnoGame {
 	 * implementation when the draw pile gets empty.
 	 */
 	public void discardIntoDraw() {
-		this.draw.mergeResetShuffle(this.discard.createDrawPile());
+		this.getDraw().mergeResetShuffle(this.getDiscard().createDrawPile());
 	}
 
 	/**
@@ -152,12 +152,12 @@ public abstract class UnoGame {
 	 */
 	@Nullable
 	private final UnoPlayer fallbackVictory() {
-		if (this.first.getHand().getSize() < this.second.getHand().getSize()) {
-			return this.first;
+		if (this.getFirstPlayer().getHand().getSize() < this.getSecondPlayer().getHand().getSize()) {
+			return this.getFirstPlayer();
 			// P1 has less cards
 
-		} else if (this.second.getHand().getSize() < this.first.getHand().getSize()) {
-			return this.second;
+		} else if (this.getSecondPlayer().getHand().getSize() < this.getFirstPlayer().getHand().getSize()) {
+			return this.getSecondPlayer();
 			// P2 has less cards
 		} else {
 			return null;
@@ -179,7 +179,7 @@ public abstract class UnoGame {
 
 		UnoPlayer winner = null;
 		UnoPlayer[] players = new UnoPlayer[] {
-				this.first, this.second
+				this.getFirstPlayer(), this.getSecondPlayer()
 		};
 
 		boolean fallback = false;
@@ -190,7 +190,7 @@ public abstract class UnoGame {
 			winner = playAndCheckPlayer(player, reversePlayer);
 			// Gives the players a turn and checks both
 
-			if (this.discard.getSize() <= 1 && this.draw.getSize() == 0) {
+			if (this.getDiscard().getSize() <= 1 && this.getDraw().getSize() == 0) {
 				winner = fallbackVictory();
 				fallback = true;
 			}
@@ -220,11 +220,11 @@ public abstract class UnoGame {
 		turn(player);
 		// Plays player's hand
 
-		if (checkVictory(player, this.discard))
+		if (checkVictory(player, this.getDiscard()))
 			return player;
 		// Checks whether whether player has won
 
-		if (checkVictory(foe, this.discard))
+		if (checkVictory(foe, this.getDiscard()))
 			return foe;
 		// Checks whether whether the foe has won (only ran if the top card was a draw card
 		// and player
@@ -311,10 +311,12 @@ public abstract class UnoGame {
 	 * @return the {@link UnoPlayer} after {@code player}
 	 */
 	public final UnoPlayer nextPlayer(UnoPlayer player) {
-		if (player.equals(this.first)) {
-			return this.second;
-		} else if (player.equals(this.second)) {
-			return this.first;
+		if (player.equals(this.getFirstPlayer())) {
+			return this.getSecondPlayer();
+
+		} else if (player.equals(this.getSecondPlayer())) {
+			return this.getFirstPlayer();
+
 		} else {
 			throw new IllegalArgumentException("The provided UnoPlayer is not a part of this UnoGame.");
 		}
