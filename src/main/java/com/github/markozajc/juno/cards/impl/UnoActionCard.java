@@ -1,5 +1,7 @@
 package com.github.markozajc.juno.cards.impl;
 
+import javax.annotation.Nonnull;
+
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.UnoCardColor;
 
@@ -14,7 +16,7 @@ import com.github.markozajc.juno.cards.UnoCardColor;
  *
  * @author Marko Zajc
  */
-public class UnoActionCard implements UnoCard {
+public class UnoActionCard extends UnoCard {
 
 	/**
 	 * The two variations of the action card.
@@ -45,40 +47,38 @@ public class UnoActionCard implements UnoCard {
 
 	}
 
-	private UnoCardColor color;
-	private UnoAction action;
+	@Nonnull
+	private final UnoAction action;
 
 	/**
 	 * Creates a new {@link UnoActionCard}.
 	 *
-	 * @param action the {@link UnoAction}
-	 * @param color the {@link UnoCardColor}
+	 * @param action
+	 *            the {@link UnoAction}
+	 * @param color
+	 *            the {@link UnoCardColor}
 	 */
-	public UnoActionCard(UnoAction action, UnoCardColor color) {
-		this.color = color;
+	public UnoActionCard(@Nonnull UnoCardColor color, @Nonnull UnoAction action) {
+		super(color);
 		this.action = action;
-	}
-
-	@Override
-	public UnoCardColor getColor() {
-		return this.color;
 	}
 
 	/**
 	 * @return card's {@link UnoAction}
 	 */
+	@Nonnull
 	public UnoAction getAction() {
 		return this.action;
 	}
 
 	@Override
 	public String toString() {
-		return this.color.toString() + " " + this.action.toString();
+		return this.getColor().toString() + " " + this.action.toString();
 	}
 
 	@Override
-	public void reset() {
-		// Doesn't have a state, nothing to reset
+	public UnoCard cloneCard() {
+		return new UnoActionCard(getColor(), getAction());
 	}
 
 }

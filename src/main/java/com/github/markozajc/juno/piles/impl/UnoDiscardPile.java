@@ -23,79 +23,14 @@ public class UnoDiscardPile implements UnoPile {
 	private final List<UnoCard> cards = new ArrayList<>();
 
 	/**
-	 * Checks the relevance of the draw card by the following criteria: (relevance is a
-	 * part of the progressive UNO rule and determines whether a draw card is included in
-	 * the consecutive draw)
-	 * <ul>
-	 * <li>the card is a draw card
-	 * <li>the draw card has the same amount of cards as the previous ones
-	 * <li>the draw card is not played already
-	 * </ul>
+	 * Marks the top {@link UnoCard} as closed (if possible).
 	 *
-	 * @param card
-	 *            card to check
-	 * @param drawMark
-	 *            draw amount on the previous draw cards
-	 * @return whether the card is still relevant or not
-	 * @see #getConsecutiveDraw()
+	 * @deprecated Uses a deprecated way of changing the card, does not let you know
+	 *             whether the card has actually been deprecated and requires you
+	 *             hardcode in the methods for each {@link UnoCard}. Overall a method you
+	 *             shouldn't be using.
 	 */
-	private static boolean isRelevant(UnoCard card, int drawMark) {
-		return card instanceof UnoDrawCard && ((UnoDrawCard) card).getAmount() == drawMark && !card.isPlayed();
-	}
-
-	/**
-	 * Gets the draw mark of this discard pile. Draw mark is a part of the progressive
-	 * UNO rule and determines what cards down the discard pile are relevant to the
-	 * consecutive draw. This will return {@code 0} if the top card is not a
-	 * {@link UnoDrawCard}.
-	 *
-	 * @return the draw mark or {@code 0}
-	 */
-	private int getDrawMark() {
-		UnoCard top = getTop();
-		if (top instanceof UnoDrawCard) {
-			return ((UnoDrawCard) top).getAmount();
-		}
-
-		return 0;
-	}
-
-	/**
-	 * Calculates the <i>consecutive draw</i> for this discard pile. Consecutive draw is
-	 * the main point of the progressive UNO rule (which is adopted by JUNO because it's
-	 * really great). It's essentially a count of consecutive "relevant" draw cards
-	 * (cards of the same type) from top to bottom, multiplied by the <i>draw mark</i>,
-	 * which is used in determining relevance and is the amount
-	 * ({@link UnoDrawCard#getAmount()}) of the top card ({@link #getTop()}).<br>
-	 * <b>TL;DR</b> consecutive draw is the streak of {@link UnoDrawCard}s.
-	 *
-	 * @return the consecutive draw or {@code 0} if the top card isn't a
-	 *         {@link UnoDrawCard}
-	 */
-	public int getConsecutiveDraw() {
-		int drawMark = getDrawMark();
-		if (drawMark == 0)
-			return 0;
-		// The top card is not a draw card; there's no draw consecutive draw to calculate
-
-		int consecutive = 0;
-
-		for (UnoCard card : this.cards) {
-			if (isRelevant(card, drawMark)) {
-				consecutive++;
-			} else {
-				break;
-			}
-		}
-		// Iterates over the draw pile, until it hits an irrelevant card, adding to the
-		// consecutive draw on each relevant one
-
-		return consecutive * drawMark;
-	}
-
-	/**
-	 * Marks the top {@link UnoCard} as played (if possible).
-	 */
+	@Deprecated
 	public void markTopPlayed() {
 		UnoCard top = getTop();
 		if (!(top instanceof UnoDrawCard))
@@ -171,6 +106,13 @@ public class UnoDiscardPile implements UnoPile {
 		this.cards.add(top);
 
 		return pile;
+	}
+
+	/**
+	 * Clears the pile, dereferencing all {@link UnoCard}s from it.
+	 */
+	public void clear() {
+		this.cards.clear();
 	}
 
 }
