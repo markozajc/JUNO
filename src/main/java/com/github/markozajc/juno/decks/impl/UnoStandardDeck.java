@@ -1,10 +1,12 @@
-package com.github.markozajc.juno.cards;
+package com.github.markozajc.juno.decks.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.github.markozajc.juno.cards.UnoCard;
+import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.cards.impl.UnoActionCard;
 import com.github.markozajc.juno.cards.impl.UnoActionCard.UnoAction;
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
