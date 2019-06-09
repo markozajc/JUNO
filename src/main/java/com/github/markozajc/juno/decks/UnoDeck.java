@@ -1,12 +1,13 @@
 package com.github.markozajc.juno.decks;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.piles.UnoPile;
-import com.github.markozajc.juno.utils.UnoDeckUtils;
 
 /**
  * A class representing a UNO deck. UNO decks are taken and taken at the beginning of
@@ -16,6 +17,26 @@ import com.github.markozajc.juno.utils.UnoDeckUtils;
  * @author Marko Zajc
  */
 public class UnoDeck {
+
+	/**
+	 * Clones a {@link Collection} of cards into a modifiable {@link List}. This uses
+	 * {@link UnoCard#cloneCard()} to clone the cards, so (if the {@link UnoCard}
+	 * implementations implement that method correctly, which they should) the copies of
+	 * the {@link UnoCard} aren't be shallow.
+	 *
+	 * @param cards
+	 *            {@link Collection} of {@link UnoCard} to clone
+	 * @return modifiable {@link List} of cloned {@link UnoCard}s
+	 */
+	@Nonnull
+	private static List<UnoCard> cloneCards(@Nonnull Collection<UnoCard> cards) {
+		List<UnoCard> result = new ArrayList<>();
+		for (UnoCard card : cards) {
+			result.add(card.cloneCard());
+		}
+
+		return result;
+	}
 
 	@Nonnull
 	private final List<UnoCard> cards;
@@ -38,7 +59,7 @@ public class UnoDeck {
 	 */
 	@Nonnull
 	public List<UnoCard> getCards() {
-		return UnoDeckUtils.cloneCards(this.cards);
+		return cloneCards(this.cards);
 	}
 
 }
