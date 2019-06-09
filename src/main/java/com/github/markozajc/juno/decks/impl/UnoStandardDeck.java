@@ -76,11 +76,17 @@ public class UnoStandardDeck {
 		deck = new UnoDeck(cards);
 	}
 
+	/**
+	 * @return the expected size of this {@link UnoDeck} (108 cards)
+	 */
 	@Nonnegative
 	public static int getExpectedSize() {
 		return EXPECTED_SIZE; // NOSONAR
 	}
 
+	/**
+	 * @return the singleton {@link UnoDeck}
+	 */
 	@SuppressWarnings("null")
 	@Nonnull
 	public static UnoDeck getDeck() {
