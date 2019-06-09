@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.decks.UnoDeck;
 
@@ -26,7 +28,8 @@ public class UnoDeckUtils {
 	 *            {@link Collection} of {@link UnoCard} to clone
 	 * @return modifiable {@link List} of cloned {@link UnoCard}s
 	 */
-	public static List<UnoCard> cloneCards(Collection<UnoCard> cards) {
+	@Nonnull
+	public static List<UnoCard> cloneCards(@Nonnull Collection<UnoCard> cards) {
 		List<UnoCard> result = new ArrayList<>();
 		for (UnoCard card : cards) {
 			result.add(card.cloneCard());
