@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 import javax.annotation.Nonnull;
 
-import com.github.markozajc.juno.cards.UnoStandardDeck;
+import com.github.markozajc.juno.decks.impl.UnoStandardDeck;
 import com.github.markozajc.juno.game.UnoControlledGame;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.players.UnoPlayer;
@@ -45,8 +45,8 @@ public class UnoConsoleGame extends UnoControlledGame {
 	 * and a {@link UnoStrategicPlayer} named "Billy the StrategicUnoHand".
 	 */
 	public UnoConsoleGame() {
-		super(new UnoConsolePlayer("You"), new UnoStrategicPlayer("Billy the StrategicUnoHand"), new UnoStandardDeck(),
-				7, getRulePack());
+		super(new UnoConsolePlayer("You"), new UnoStrategicPlayer("Billy the StrategicUnoHand"),
+				UnoStandardDeck.getDeck(), 7, getRulePack());
 	}
 
 	/**
