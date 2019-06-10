@@ -1,6 +1,7 @@
 package com.github.markozajc.juno.cards;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Collections;
@@ -28,7 +29,7 @@ class UnoCardTest {
 		assertEquals(UnoCardColor.WILD, wild.getOriginalColor());
 		// Test the original color
 
-		assertThrows(IllegalStateException.class, () -> wild.setColorMask(UnoCardColor.BLUE));
+		assertThrows(IllegalStateException.class, () -> wild.setColorMask(UnoCardColor.GREEN));
 		// Test the multicall prevention
 
 		///////////////////////////////////////////////////////////////////////////////////
@@ -36,7 +37,7 @@ class UnoCardTest {
 		UnoCard nonWild = new UnoNumericCard(UnoCardColor.RED, 0);
 		// Creates a new red-colored card
 
-		assertThrows(IllegalStateException.class, () -> nonWild.setColorMask(UnoCardColor.BLUE));
+		assertThrows(IllegalStateException.class, () -> nonWild.setColorMask(UnoCardColor.GREEN));
 		// Test the non-wild color mask block
 
 		assertEquals(UnoCardColor.RED, nonWild.getColor());
@@ -63,6 +64,27 @@ class UnoCardTest {
 
 		assertThrows(IllegalStateException.class, () -> card.setPlacer(placer));
 		// Test the multicall prevention
+	}
+
+	@SuppressWarnings("null")
+	@Test
+	void testReset() {
+		UnoCard card = new UnoWildCard();
+		// Creates a new numeric card
+
+		card.setPlacer(TestUtils.getDummyPlayer(Collections.emptyList()));
+		card.setColorMask(UnoCardColor.GREEN);
+		card.markOpen();
+		// Sets the card's state
+
+		card.reset();
+		// Reset the card
+
+		assertThrows(IllegalStateException.class, () -> card.getPlacer());
+		assertEquals(UnoCardColor.WILD, card.getColor());
+		assertFalse(card.isOpen());
+		// Test the state
+
 	}
 
 }
