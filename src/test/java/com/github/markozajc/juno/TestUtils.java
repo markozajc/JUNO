@@ -15,22 +15,36 @@ import com.github.markozajc.juno.players.UnoPlayer;
 
 /**
  * This is not actually a test class. Instead it provides shared utility methods to
- * the tests themselves.
+ * the tests themselves. Acquired with {@link #createCheckState()}.
  *
  * @author Marko Zajc
  */
 public class TestUtils {
 
+	/**
+	 * A class storing a boolean state
+	 *
+	 * @author Marko Zajc
+	 */
 	public static class CheckState {
 
 		private boolean state = false;
 
 		CheckState() {}
 
+		/**
+		 * @return the state
+		 */
 		public boolean getState() {
 			return this.state;
 		}
 
+		/**
+		 * Sets the state
+		 *
+		 * @param state
+		 *            the new state
+		 */
 		public void setState(boolean state) {
 			this.state = state;
 		}
@@ -114,6 +128,11 @@ public class TestUtils {
 		return new UnoDeck(cards);
 	}
 
+	/**
+	 * Creates a new {@link CheckState}.
+	 *
+	 * @return the new {@link CheckState}
+	 */
 	public static CheckState createCheckState() {
 		return new CheckState();
 	}
