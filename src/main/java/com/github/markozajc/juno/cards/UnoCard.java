@@ -60,14 +60,22 @@ public abstract class UnoCard {
 
 	/**
 	 * Sets the color mask. A color mask is the color set above the original color and is
-	 * returned on {@link #getColor()} (but not on {@link #getOriginalColor()}).
+	 * returned on {@link #getColor()} (but not on {@link #getOriginalColor()}). A color
+	 * mask can only be set once and can only be reset with {@link #reset()}. Color masks
+	 * can only be applied to cards with the original color of {@link UnoCardColor#WILD}.
 	 *
 	 * @param mask
-	 *            the new color mask or {@code null} to remove the color mask
+	 *            the new color mask
+	 * @throws IllegalStateException
+	 *             if this {@link UnoCard}'s {@link #getOriginalColor()} is not
+	 *             {@link UnoCardColor#WILD} or if the color mask has already been set
 	 */
 	public final void setColorMask(@Nullable UnoCardColor mask) {
 		if (!getOriginalColor().equals(UnoCardColor.WILD))
 			throw new IllegalStateException("Card's original color must be \"WILD\" if you want to set a color.");
+
+		if (this.mask != null)
+			throw new IllegalStateException("Can't set the color mask more than once.");
 
 		this.mask = mask;
 	}

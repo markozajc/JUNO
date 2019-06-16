@@ -31,7 +31,7 @@ public class UnoHand implements UnoPile {
 
 	@Override
 	public List<UnoCard> getCards() {
-		return this.cards;
+		return this.cards; // TODO return an unmodifiable list
 	}
 
 	@Override
