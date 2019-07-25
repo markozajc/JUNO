@@ -29,6 +29,7 @@ public class UnoHand implements UnoPile {
 	@Nonnull
 	protected final List<UnoCard> cards = new ArrayList<>();
 
+	@Nonnull
 	@Override
 	public List<UnoCard> getCards() {
 		return this.cards; // TODO return an unmodifiable list
