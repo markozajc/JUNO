@@ -64,8 +64,24 @@ public interface UnoGameFlowRule extends UnoRule {
 	 */
 	@SuppressWarnings("unused")
 	default UnoPhaseConclusion decisionPhase(@Nonnull UnoPlayer player, @Nonnull UnoGame game,
-													@Nullable UnoCard decidedCard) {
+											 @Nullable UnoCard decidedCard) {
 		return UnoPhaseConclusion.NOTHING;
+	}
+
+	/**
+	 * The phase that is called after the game is ended for any reason. This phase is
+	 * meant for altering the winner of the game chosen by the default game behaviour.
+	 *
+	 * @param winner
+	 *            the chosen {@link UnoWinner}
+	 * @param game
+	 *            the ongoing {@link UnoGame}
+	 *
+	 * @return a {@link UnoFinishConclusion}
+	 */
+	@SuppressWarnings("unused")
+	default UnoFinishConclusion finishPhase(@Nonnull UnoWinner winner, @Nonnull UnoGame game) {
+		return UnoFinishConclusion.NOTHING;
 	}
 
 }
