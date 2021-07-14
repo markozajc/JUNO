@@ -51,7 +51,7 @@ public class UnoSevenORulePack {
 
 				game.getTopCard().markClosed();
 
-				UnoPlayer foe = game.nextPlayer(player);
+				UnoPlayer foe = game.getNextPlayer(player);
 				UnoHand playerHand = player.getHand();
 				UnoHand foeHand = foe.getHand();
 				player.setHand(foeHand);

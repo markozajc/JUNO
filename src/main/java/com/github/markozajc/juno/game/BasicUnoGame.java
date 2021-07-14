@@ -129,7 +129,7 @@ public abstract class BasicUnoGame extends UnoGame {
 
 			boolean drawn = false;
 			while (true) {
-				UnoCard card = player.playCard(this, nextPlayer(player));
+				UnoCard card = player.playCard(this, getNextPlayer(player));
 
 				if (card == null && !drawn) {
 					// In case hand throws nothing

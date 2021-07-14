@@ -307,17 +307,44 @@ public abstract class UnoGame {
 	 *            the {@link UnoPlayer}
 	 *
 	 * @return the {@link UnoPlayer} after {@code player}
+	 *
+	 * @deprecated Use {@link #getNextPlayer(UnoPlayer)} instead
 	 */
+	@Nonnull
+	@Deprecated
 	public final UnoPlayer nextPlayer(UnoPlayer player) {
-		if (player.equals(this.getFirstPlayer())) {
+		return getNextPlayer(player);
+	}
+
+	/**
+	 * Returns the {@link UnoPlayer} to get the turn after the provided {@link UnoPlayer}
+	 *
+	 * @param player
+	 *            the {@link UnoPlayer}
+	 *
+	 * @return the {@link UnoPlayer} after {@code player}
+	 */
+	@Nonnull
+	public final UnoPlayer getNextPlayer(UnoPlayer player) {
+		if (player == this.getFirstPlayer()) {
 			return this.getSecondPlayer();
 
-		} else if (player.equals(this.getSecondPlayer())) {
+		} else if (player == this.getSecondPlayer()) {
 			return this.getFirstPlayer();
 
 		} else {
 			throw new IllegalArgumentException("The provided UnoPlayer is not a part of this UnoGame.");
 		}
+	}
+
+	/**
+	 * Returns the {@link UnoPlayer} to get the next turn.
+	 *
+	 * @return the next {@link UnoPlayer}
+	 */
+	@Nonnull
+	public final UnoPlayer getNextPlayer() {
+		return getNextPlayer(this.last);
 	}
 
 	/**

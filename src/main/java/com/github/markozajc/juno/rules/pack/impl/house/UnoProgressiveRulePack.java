@@ -103,7 +103,6 @@ public class UnoProgressiveRulePack {
 		for (UnoCard card : discard.getCards()) {
 			if (isRelevant(card, drawMark)) {
 				consecutive.add((UnoDrawCard) card);
-
 			} else {
 				break;
 			}
@@ -188,7 +187,7 @@ public class UnoProgressiveRulePack {
 				// Draw a single card to the hand
 
 				if (UnoGameUtils.canPlaceCard(player, game, drawn)
-					&& player.shouldPlayDrawnCard(game, drawn, game.nextPlayer(player))) {
+					&& player.shouldPlayDrawnCard(game, drawn, game.getNextPlayer(player))) {
 					UnoRuleUtils.filterRuleKind(game.getRules().getRules(), UnoGameFlowRule.class)
 						.forEach(gfr -> gfr.decisionPhase(player, game, drawn));
 				}

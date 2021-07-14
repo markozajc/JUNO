@@ -36,7 +36,7 @@ public abstract class UnoControlledGame extends UnoGame {
 	 *            the {@link UnoRulePack} for this {@link UnoGame}
 	 */
 	protected UnoControlledGame(@Nonnull UnoPlayer first, @Nonnull UnoPlayer second, @Nonnull UnoDeck unoDeck,
-							 @Nonnegative int cardAmount, @Nonnull UnoRulePack rules) {
+								@Nonnegative int cardAmount, @Nonnull UnoRulePack rules) {
 		super(first, second, unoDeck, cardAmount, rules);
 	}
 
@@ -77,7 +77,7 @@ public abstract class UnoControlledGame extends UnoGame {
 		while (repeatDecision) {
 			repeatDecision = false;
 
-			UnoCard decision = player.playCard(game, game.nextPlayer(player));
+			UnoCard decision = player.playCard(game, game.getNextPlayer(player));
 
 			for (UnoGameFlowRule rule : rules) {
 				UnoPhaseConclusion fpc = rule.decisionPhase(player, game, decision);
