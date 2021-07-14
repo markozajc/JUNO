@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
+import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.rules.UnoRuleConflictException;
 import com.github.markozajc.juno.rules.impl.flow.*;
 import com.github.markozajc.juno.rules.impl.placement.*;
@@ -42,7 +43,13 @@ public class UnoOfficialRules {
 		 * stacked to defend and increase penalty. See its rule pack
 		 * ({@link UnoProgressiveRulePack}) for more details.
 		 */
-		PROGRESSIVE(UnoProgressiveRulePack.getPack(), "Progressive UNO");
+		PROGRESSIVE(UnoProgressiveRulePack.getPack(), "Progressive UNO"),
+
+		/**
+		 * Makes the opponent (the player that didn't request an end by calling
+		 * {@link UnoGame#endGame()}, by default this yields a draw) win.
+		 */
+		FOE_WINS_ON_QUIT(UnoFoeWinsOnEndRequestPack.getPack(), "\"Foe wins on quit\"");
 
 		private final UnoRulePack pack;
 		private final String name;
