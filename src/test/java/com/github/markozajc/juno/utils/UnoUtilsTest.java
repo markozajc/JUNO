@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import com.github.markozajc.juno.TestUtils;
 import com.github.markozajc.juno.cards.*;
 import com.github.markozajc.juno.cards.impl.*;
-import com.github.markozajc.juno.cards.impl.UnoActionCard.UnoAction;
+import com.github.markozajc.juno.cards.impl.UnoActionCard.UnoFlowAction;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -87,17 +87,17 @@ class UnoUtilsTest {
 
 	@Test
 	void testGetActionCards() {
-		UnoCard[] cards = new UnoCard[] { /* 0 Reverse */ new UnoActionCard(UnoCardColor.RED, UnoAction.REVERSE),
-			/* 1 Reverse */ new UnoActionCard(UnoCardColor.GREEN, UnoAction.REVERSE),
+		UnoCard[] cards = new UnoCard[] { /* 0 Reverse */ new UnoActionCard(UnoCardColor.RED, UnoFlowAction.REVERSE),
+			/* 1 Reverse */ new UnoActionCard(UnoCardColor.GREEN, UnoFlowAction.REVERSE),
 
-			/* 2 Skip */ new UnoActionCard(UnoCardColor.BLUE, UnoAction.SKIP),
-			/* 3 Skip */ new UnoActionCard(UnoCardColor.YELLOW, UnoAction.SKIP),
+			/* 2 Skip */ new UnoActionCard(UnoCardColor.BLUE, UnoFlowAction.SKIP),
+			/* 3 Skip */ new UnoActionCard(UnoCardColor.YELLOW, UnoFlowAction.SKIP),
 
 			/* 4 X */ new UnoWildCard(), /* 5 X */ new UnoDrawCard() };
 
-		assertTrue(TestUtils.listEqualsUnordered(UnoUtils.getActionCards(UnoAction.REVERSE, Arrays.asList(cards)),
+		assertTrue(TestUtils.listEqualsUnordered(UnoUtils.getActionCards(UnoFlowAction.REVERSE, Arrays.asList(cards)),
 												 Arrays.asList(cards[0], cards[1])));
-		assertTrue(TestUtils.listEqualsUnordered(UnoUtils.getActionCards(UnoAction.SKIP, Arrays.asList(cards)),
+		assertTrue(TestUtils.listEqualsUnordered(UnoUtils.getActionCards(UnoFlowAction.SKIP, Arrays.asList(cards)),
 												 Arrays.asList(cards[2], cards[3])));
 	}
 
@@ -126,8 +126,8 @@ class UnoUtilsTest {
 			/* 1 Numeric */ new UnoNumericCard(UnoCardColor.GREEN, 1),
 			/* 2 Numeric */ new UnoNumericCard(UnoCardColor.BLUE, 2),
 
-			/* 3 Action */ new UnoActionCard(UnoCardColor.RED, UnoAction.REVERSE),
-			/* 4 Action */ new UnoActionCard(UnoCardColor.GREEN, UnoAction.SKIP),
+			/* 3 Action */ new UnoActionCard(UnoCardColor.RED, UnoFlowAction.REVERSE),
+			/* 4 Action */ new UnoActionCard(UnoCardColor.GREEN, UnoFlowAction.SKIP),
 
 			/* 5 Draw */ new UnoDrawCard(UnoCardColor.RED), /* 6 Draw */ new UnoDrawCard(),
 

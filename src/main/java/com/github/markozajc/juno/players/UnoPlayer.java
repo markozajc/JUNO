@@ -34,7 +34,7 @@ public abstract class UnoPlayer {
 	 * @param name
 	 *            this {@link UnoPlayer}'s name
 	 */
-	public UnoPlayer(@Nonnull String name) {
+	protected UnoPlayer(@Nonnull String name) {
 		this.hand = new UnoHand();
 		this.name = name;
 	}

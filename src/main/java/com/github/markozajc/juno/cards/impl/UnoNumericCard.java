@@ -31,7 +31,7 @@ public class UnoNumericCard extends UnoCard {
 	public UnoNumericCard(@Nonnull UnoCardColor color, @Nonnegative int number) {
 		super(color);
 
-		if (color.equals(UnoCardColor.WILD))
+		if (color == UnoCardColor.WILD)
 			throw new IllegalArgumentException("The wild card color is not allowed!");
 
 		if (number > 9 || number < 0)

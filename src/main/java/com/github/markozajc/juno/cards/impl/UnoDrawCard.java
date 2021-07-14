@@ -37,7 +37,7 @@ public class UnoDrawCard extends UnoCard {
 	public UnoDrawCard(@Nonnull UnoCardColor color) {
 		this(color, 2);
 
-		if (color.equals(UnoCardColor.WILD))
+		if (color == UnoCardColor.WILD)
 			throw new IllegalArgumentException("The wild card color is not for draw two cards!");
 	}
 

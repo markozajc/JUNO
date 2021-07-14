@@ -5,6 +5,7 @@ import java.util.Collections;
 import org.junit.jupiter.api.Test;
 
 import com.github.markozajc.juno.TestUtils;
+import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.players.UnoPlayer;
 
@@ -26,7 +27,9 @@ class UnoStandardDeckTest {
 		UnoPlayer hand = TestUtils.getDummyPlayer(Collections.emptyList());
 		deck.getCards().get(0).setPlacer(hand);
 
-		assertThrows(IllegalStateException.class, () -> deck.getCards().get(0).getPlacer());
+		UnoCard card = deck.getCards().get(0);
+		assertThrows(IllegalStateException.class,
+					 card::getPlacer, "getPlacer() doesn't throw, but the placer was never set.");
 	}
 
 }

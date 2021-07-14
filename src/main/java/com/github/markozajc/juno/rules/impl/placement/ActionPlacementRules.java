@@ -32,7 +32,7 @@ public class ActionPlacementRules {
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
 			if (target instanceof UnoActionCard && card instanceof UnoActionCard
-				&& ((UnoActionCard) target).getAction().equals(((UnoActionCard) card).getAction()))
+				&& ((UnoActionCard) target).getFlowAction() == ((UnoActionCard) card).getFlowAction())
 				return PlacementClearance.ALLOWED;
 			// Checks whether target's action matches card's action
 

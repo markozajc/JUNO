@@ -25,7 +25,8 @@ class UnoProgressiveRulePackTest {
 		// Adds 4 open draw four cards
 
 		List<UnoDrawCard> consecutive = UnoProgressiveRulePack.getConsecutive(discard);
-		assertEquals(consecutive.size() * consecutive.get(0).getAmount(), 16);
+		assertEquals(16, consecutive.size() * consecutive.get(0).getAmount(),
+					 "4 draw four cards do not produce a consecutive draw of 16");
 		// That is a consecutive draw of 16 cards
 
 		int drawMark = consecutive.get(0).getAmount();
@@ -39,7 +40,8 @@ class UnoProgressiveRulePackTest {
 		// Sets the bottom card as closed
 
 		consecutive = UnoProgressiveRulePack.getConsecutive(discard);
-		assertEquals(consecutive.size() * consecutive.get(0).getAmount(), 12);
+		assertEquals(12, consecutive.size() * consecutive.get(0).getAmount(),
+					 "3 draw four cards do not produce a consecutive draw of 16");
 		// That is a consecutive draw of 12 cards
 
 		discard.add(new UnoNumericCard(UnoCardColor.RED, 0));
@@ -54,7 +56,8 @@ class UnoProgressiveRulePackTest {
 		// Adds a single open draw two card
 
 		consecutive = UnoProgressiveRulePack.getConsecutive(discard);
-		assertEquals(consecutive.size() * consecutive.get(0).getAmount(), 2);
+		assertEquals(2, consecutive.size() * consecutive.get(0).getAmount(),
+					 "1 draw two cards do not produce a consecutive draw of 2");
 		// That is a consecutive draw of 2 cards
 	}
 

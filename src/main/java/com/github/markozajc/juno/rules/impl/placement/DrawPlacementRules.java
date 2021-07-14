@@ -53,7 +53,7 @@ public class DrawPlacementRules {
 
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
-			if (card instanceof UnoDrawCard && !target.getOriginalColor().equals(UnoCardColor.WILD)
+			if (card instanceof UnoDrawCard && target.getOriginalColor() != UnoCardColor.WILD
 				&& ((UnoDrawCard) card).getAmount() == 4
 				&& !UnoUtils.getColorCards(target.getOriginalColor(), hand.getCards()).isEmpty())
 				return PlacementClearance.PROHIBITED;

@@ -39,7 +39,7 @@ class UnoControlledGameTest {
 	}
 
 	@Test
-	void stressTest() {
+	void testStress() {
 		System.out.println("[==== INITIATING THE STRESS TEST ====]");
 
 		UnoGame game =

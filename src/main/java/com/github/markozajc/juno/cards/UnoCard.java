@@ -30,7 +30,7 @@ public abstract class UnoCard {
 	 *            be able able to set a color mask using
 	 *            {@link #setColorMask(UnoCardColor)}
 	 */
-	public UnoCard(@Nonnull UnoCardColor color) {
+	protected UnoCard(@Nonnull UnoCardColor color) {
 		this.color = color;
 	}
 
@@ -71,7 +71,7 @@ public abstract class UnoCard {
 	 *             {@link UnoCardColor#WILD} or if the color mask has already been set
 	 */
 	public final void setColorMask(@Nullable UnoCardColor mask) {
-		if (!getOriginalColor().equals(UnoCardColor.WILD))
+		if (getOriginalColor() != UnoCardColor.WILD)
 			throw new IllegalStateException("Card's original color must be \"WILD\" if you want to set a color.");
 
 		if (this.mask != null)

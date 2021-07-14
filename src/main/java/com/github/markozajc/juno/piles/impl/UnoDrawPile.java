@@ -24,6 +24,8 @@ public class UnoDrawPile implements UnoPile {
 	@Nonnull
 	private final Queue<UnoCard> cards;
 	private boolean initialDrawn = false;
+	@Nonnull
+	private Random random;
 
 	/**
 	 * Creates a new {@link UnoDrawPile} from a {@link UnoDeck}.
@@ -32,7 +34,20 @@ public class UnoDrawPile implements UnoPile {
 	 *            the {@link UnoDeck} to create this pile from
 	 */
 	public UnoDrawPile(@Nonnull UnoDeck deck) {
-		this(deck.getCards(), false);
+		this(deck.getCards(), new Random(), false);
+	}
+
+	/**
+	 * Creates a new {@link UnoDrawPile} from a {@link UnoDeck}.
+	 *
+	 * @param deck
+	 *            the {@link UnoDeck} to create this pile from
+	 * @param random
+	 *            the random number generator used to shuffle the deck on
+	 *            {@link #shuffle()}
+	 */
+	public UnoDrawPile(@Nonnull UnoDeck deck, @Nonnull Random random) {
+		this(deck.getCards(), random, false);
 	}
 
 	/**
@@ -46,15 +61,31 @@ public class UnoDrawPile implements UnoPile {
 	 *            have a state (for example cards are a fresh clone from a deck)
 	 */
 	UnoDrawPile(@Nonnull List<UnoCard> cards, boolean resetAll) {
+		this(cards, new Random(), resetAll);
+	}
+
+	/**
+	 * Creates a new {@link UnoDrawPile} from a {@link List} of cards.
+	 *
+	 * @param cards
+	 *            the {@link List} of cards to create this pile from
+	 * @param resetAll
+	 *            whether to reset all {@link UnoCard}s from the list. It is VERY
+	 *            IMPORTANT that this is only set to {@code false} when none of the cards
+	 *            have a state (for example cards are a fresh clone from a deck)
+	 * @param random
+	 *            the random number generator used to shuffle the deck on
+	 *            {@link #shuffle()}
+	 *
+	 */
+	UnoDrawPile(@Nonnull List<UnoCard> cards, @Nonnull Random random, boolean resetAll) {
 		this.cards = new ArrayDeque<>(cards);
-		// Creates a new queue of cards
+		this.random = random;
 
 		if (resetAll)
 			this.cards.forEach(UnoCard::reset);
-		// Resets all card states if required
 
 		shuffle();
-		// Shuffles the cards
 	}
 
 	@Override
@@ -136,7 +167,7 @@ public class UnoDrawPile implements UnoPile {
 	 */
 	public void shuffle() {
 		List<UnoCard> cardsCopy = new ArrayList<>(getCards());
-		Collections.shuffle(cardsCopy);
+		Collections.shuffle(cardsCopy, this.random);
 		this.cards.clear();
 		this.cards.addAll(cardsCopy);
 	}

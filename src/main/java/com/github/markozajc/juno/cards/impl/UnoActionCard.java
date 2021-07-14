@@ -22,7 +22,7 @@ public class UnoActionCard extends UnoCard {
 	 *
 	 * @author Marko Zajc
 	 */
-	public enum UnoAction {
+	public enum UnoFlowAction {
 
 		/**
 		 * Reverse reverses the player order.
@@ -35,7 +35,7 @@ public class UnoActionCard extends UnoCard {
 
 		private final String text;
 
-		UnoAction(String text) {
+		UnoFlowAction(String text) {
 			this.text = text;
 		}
 
@@ -47,26 +47,37 @@ public class UnoActionCard extends UnoCard {
 	}
 
 	@Nonnull
-	private final UnoAction action;
+	private final UnoFlowAction action;
 
 	/**
 	 * Creates a new {@link UnoActionCard}.
 	 *
 	 * @param action
-	 *            the {@link UnoAction}
+	 *            the {@link UnoFlowAction}
 	 * @param color
 	 *            the {@link UnoCardColor}
 	 */
-	public UnoActionCard(@Nonnull UnoCardColor color, @Nonnull UnoAction action) {
+	public UnoActionCard(@Nonnull UnoCardColor color, @Nonnull UnoFlowAction action) {
 		super(color);
 		this.action = action;
 	}
 
 	/**
-	 * @return card's {@link UnoAction}
+	 * @return card's {@link UnoFlowAction}
+	 *
+	 * @deprecated Use {@link #getFlowAction()} instead
 	 */
 	@Nonnull
-	public UnoAction getAction() {
+	@Deprecated
+	public UnoFlowAction getAction() {
+		return getFlowAction();
+	}
+
+	/**
+	 * @return card's {@link UnoFlowAction}
+	 */
+	@Nonnull
+	public UnoFlowAction getFlowAction() {
 		return this.action;
 	}
 
@@ -77,7 +88,7 @@ public class UnoActionCard extends UnoCard {
 
 	@Override
 	public UnoCard cloneCard() {
-		return new UnoActionCard(getColor(), getAction());
+		return new UnoActionCard(getColor(), getFlowAction());
 	}
 
 }

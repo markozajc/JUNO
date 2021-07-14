@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import com.github.markozajc.juno.cards.*;
 import com.github.markozajc.juno.cards.impl.*;
-import com.github.markozajc.juno.cards.impl.UnoActionCard.UnoAction;
+import com.github.markozajc.juno.cards.impl.UnoActionCard.UnoFlowAction;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.piles.impl.UnoDiscardPile;
@@ -63,7 +63,7 @@ public class UnoUtils {
 		// case the other player placed a draw card (a progressive UNO thing, similar to the
 		// "check" state in Chess)
 
-		if (targetCard instanceof UnoWildCard && targetCard.getColor().equals(UnoCardColor.WILD))
+		if (targetCard instanceof UnoWildCard && targetCard.getColor() == UnoCardColor.WILD)
 			return Collections.emptyList();
 		// No card can be placed on an unset wild card
 
@@ -82,7 +82,7 @@ public class UnoUtils {
 
 			result.addAll(UnoUtils.filterKind(UnoActionCard.class, cards)
 				.stream()
-				.filter(c -> c.getAction() == castTop.getAction())
+				.filter(c -> c.getFlowAction() == castTop.getFlowAction())
 				.collect(Collectors.toList()));
 		}
 		// Adds all allowed action cards
@@ -100,7 +100,7 @@ public class UnoUtils {
 		result.addAll(UnoUtils.getColorCards(UnoCardColor.WILD, cards));
 		// Adds all wild-colored cards. Wild cards can be placed on anything.
 
-		if (!targetCard.getColor().equals(UnoCardColor.WILD)) {
+		if (targetCard.getColor() != UnoCardColor.WILD) {
 			for (UnoCard card : UnoUtils.getColorCards(targetCard.getColor(), cards)) {
 				if (!result.contains(card))
 					result.add(card);
@@ -125,7 +125,7 @@ public class UnoUtils {
 		List<Entry<Long, UnoCardColor>> result = new ArrayList<>();
 
 		for (UnoCardColor color : UnoCardColor.values())
-			result.add(new SimpleEntry<>(cards.stream().filter(c -> c.getColor().equals(color)).count(), color));
+			result.add(new SimpleEntry<>(cards.stream().filter(c -> c.getColor() == color).count(), color));
 
 		Collections.sort(result, (v1, v2) -> v2.getKey().compareTo(v1.getKey()));
 		return result;
@@ -144,7 +144,7 @@ public class UnoUtils {
 	 * @return {@link List} containing only cards of a certain color
 	 */
 	public static <T extends UnoCard> List<T> getColorCards(UnoCardColor color, Collection<T> cards) {
-		return cards.stream().filter(c -> c.getColor().equals(color)).collect(Collectors.toList());
+		return cards.stream().filter(c -> c.getColor() == color).collect(Collectors.toList());
 	}
 
 	/**
@@ -158,9 +158,9 @@ public class UnoUtils {
 	 *
 	 * @return {@link List} containing only cards of a certain color
 	 */
-	public static List<UnoActionCard> getActionCards(UnoAction action, Collection<UnoCard> cards) {
+	public static List<UnoActionCard> getActionCards(UnoFlowAction action, Collection<UnoCard> cards) {
 		return filterKind(UnoActionCard.class, cards).stream()
-			.filter(c -> c.getAction().equals(action))
+			.filter(c -> c.getFlowAction() == action)
 			.collect(Collectors.toList());
 	}
 

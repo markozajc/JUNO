@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import com.github.markozajc.juno.TestUtils;
 import com.github.markozajc.juno.cards.*;
 import com.github.markozajc.juno.cards.impl.*;
-import com.github.markozajc.juno.cards.impl.UnoActionCard.UnoAction;
+import com.github.markozajc.juno.cards.impl.UnoActionCard.UnoFlowAction;
 import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
@@ -25,9 +25,9 @@ class UnoRuleUtilsTest {
 			/* 1 */ new UnoNumericCard(UnoCardColor.RED, 0), /* 2 */ new UnoNumericCard(UnoCardColor.YELLOW, 1),
 			/* 3 */ new UnoNumericCard(UnoCardColor.BLUE, 1), /* 4 */ new UnoWildCard(), /* 5 */ new UnoDrawCard(),
 			/* 6 */ new UnoDrawCard(UnoCardColor.BLUE), /* 7 */ new UnoDrawCard(UnoCardColor.RED),
-			/* 8 */ new UnoActionCard(UnoCardColor.YELLOW, UnoAction.SKIP),
-			/* 9 */ new UnoActionCard(UnoCardColor.GREEN, UnoAction.REVERSE),
-			/* 10 */ new UnoActionCard(UnoCardColor.BLUE, UnoAction.REVERSE)
+			/* 8 */ new UnoActionCard(UnoCardColor.YELLOW, UnoFlowAction.SKIP),
+			/* 9 */ new UnoActionCard(UnoCardColor.GREEN, UnoFlowAction.REVERSE),
+			/* 10 */ new UnoActionCard(UnoCardColor.BLUE, UnoFlowAction.REVERSE)
 
 		};
 		// Creates a list of cards to be tested

@@ -106,7 +106,7 @@ public class UnoStrategicPlayer extends UnoPlayer {
 		// In case there's no card of the requested kind
 
 		for (Entry<Long, UnoCardColor> color : colorAnalysis) {
-			if (color.getValue().equals(UnoCardColor.WILD))
+			if (color.getValue() == UnoCardColor.WILD)
 				continue;
 			// Skips the wild cards because it might be a good idea to save them for later
 
@@ -181,7 +181,7 @@ public class UnoStrategicPlayer extends UnoPlayer {
 	public UnoCardColor chooseColor(UnoGame game) {
 		return UnoUtils.analyzeColors(this.getCards())
 			.stream()
-			.filter(p -> !p.getValue().equals(UnoCardColor.WILD))
+			.filter(p -> p.getValue() != UnoCardColor.WILD)
 			.findFirst()
 			.orElseThrow(() -> new IllegalStateException("Couldn't choose a color (UnoUtils malfunctioned!)"))
 			.getValue();

@@ -99,12 +99,12 @@ public abstract class BasicUnoGame extends UnoGame {
 	 * @param second
 	 *            the second {@link UnoPlayer}
 	 */
-	public BasicUnoGame(@Nonnull UnoPlayer first, @Nonnull UnoPlayer second) {
+	protected BasicUnoGame(@Nonnull UnoPlayer first, @Nonnull UnoPlayer second) {
 		super(first, second, UnoStandardDeck.getDeck(), 7, UnoOfficialRules.getPack());
 	}
 
 	private void changeColor(UnoPlayer player, UnoCard card) {
-		if (!card.getColor().equals(UnoCardColor.WILD))
+		if (card.getColor() != UnoCardColor.WILD)
 			return;
 
 		UnoCardColor color = player.chooseColor(this);
