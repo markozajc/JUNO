@@ -60,8 +60,7 @@ class UnoDrawPileTest {
 		assertTrue(initial instanceof UnoNumericCard, "The initial card is not a UnoNumericCard");
 		// Checks the initial card
 
-		assertEquals(pile.getSize(), UnoStandardDeck.getExpectedSize() - 1,
-					 "The size of the pile has not been reduced by one after drawing a card.");
+		assertEquals(1, pile.getSize(), "The size of the pile has not been reduced by one after drawing a card.");
 		// Checks whether the card has been actually drawn from the pile
 	}
 
