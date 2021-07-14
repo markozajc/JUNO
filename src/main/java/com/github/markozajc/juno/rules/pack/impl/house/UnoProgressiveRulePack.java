@@ -39,7 +39,7 @@ public class UnoProgressiveRulePack {
 	private static UnoRulePack pack;
 
 	private static void createPack() {
-		pack = new UnoRulePack(new ProgressiveUnoPlacementRule(), new ProgressiveUnoFlowRule());
+		pack = new UnoRulePack(new PlacementRule(), new FlowRule());
 	}
 
 	/**
@@ -113,14 +113,7 @@ public class UnoProgressiveRulePack {
 		return consecutive;
 	}
 
-	/**
-	 * The placement rule for progressive UNO. Allows {@link UnoDrawCard}s with the same
-	 * amount to be placed on top of open {@link UnoDrawCard}. Replaces
-	 * {@link OpenDrawCardPlacementRule}.
-	 *
-	 * @author Marko Zajc
-	 */
-	public static class ProgressiveUnoPlacementRule extends OpenDrawCardPlacementRule {
+	static class PlacementRule extends OpenDrawCardPlacementRule {
 
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
@@ -145,13 +138,7 @@ public class UnoProgressiveRulePack {
 
 	}
 
-	/**
-	 * The flow rule for progressive UNO. Stacks penalty of consecutive
-	 * {@link UnoDrawCard}.
-	 *
-	 * @author Marko Zajc
-	 */
-	public static class ProgressiveUnoFlowRule extends CardDrawingRule {
+	static class FlowRule extends CardDrawingRule {
 
 		private static void drawAll(List<UnoDrawCard> cards, @Nonnull UnoGame game, @Nonnull UnoPlayer player) {
 			int amount = 0;

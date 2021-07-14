@@ -32,15 +32,10 @@ public class UnoSevenORulePack {
 	private static UnoRulePack pack;
 
 	private static void createPack() {
-		pack = new UnoRulePack(new HandSwappingRule());
+		pack = new UnoRulePack(new FlowRule());
 	}
 
-	/**
-	 * The hand swapping flow rule that implements the core SevenO idea.
-	 *
-	 * @author Marko Zajc
-	 */
-	public static class HandSwappingRule implements UnoGameFlowRule {
+	static class FlowRule implements UnoGameFlowRule {
 
 		@Override
 		public UnoInitializationConclusion initializationPhase(UnoPlayer player, UnoGame game) {
