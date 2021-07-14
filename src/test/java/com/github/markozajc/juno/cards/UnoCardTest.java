@@ -1,17 +1,14 @@
 package com.github.markozajc.juno.cards;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.util.Collections;
 
 import org.junit.jupiter.api.Test;
 
 import com.github.markozajc.juno.TestUtils;
-import com.github.markozajc.juno.cards.impl.UnoNumericCard;
-import com.github.markozajc.juno.cards.impl.UnoWildCard;
+import com.github.markozajc.juno.cards.impl.*;
 import com.github.markozajc.juno.players.UnoPlayer;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class UnoCardTest {
 

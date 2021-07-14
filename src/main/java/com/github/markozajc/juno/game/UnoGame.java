@@ -3,15 +3,12 @@ package com.github.markozajc.juno.game;
 import java.io.PrintStream;
 import java.util.List;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import javax.annotation.*;
 
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.hands.UnoHand;
-import com.github.markozajc.juno.piles.impl.UnoDiscardPile;
-import com.github.markozajc.juno.piles.impl.UnoDrawPile;
+import com.github.markozajc.juno.piles.impl.*;
 import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.UnoRule;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
@@ -50,6 +47,7 @@ public abstract class UnoGame {
 	 *
 	 * @param player
 	 *            the {@link UnoPlayer} to reverse
+	 *
 	 * @return the other {@link UnoPlayer}
 	 */
 	@Nonnull
@@ -72,7 +70,7 @@ public abstract class UnoGame {
 	 *            the {@link UnoRulePack} for this {@link UnoGame}
 	 */
 	public UnoGame(@Nonnull UnoPlayer first, @Nonnull UnoPlayer second, @Nonnull UnoDeck deck,
-			@Nonnegative int cardAmount, @Nonnull UnoRulePack rules) {
+				   @Nonnegative int cardAmount, @Nonnull UnoRulePack rules) {
 		this.first = first;
 		this.second = second;
 		this.deck = deck;
@@ -133,6 +131,7 @@ public abstract class UnoGame {
 	 *            the {@link UnoPlayer} to check
 	 * @param discard
 	 *            the discard pile
+	 *
 	 * @return
 	 */
 	private static boolean checkVictory(UnoPlayer player, UnoDiscardPile discard) {
@@ -178,9 +177,7 @@ public abstract class UnoGame {
 		// Initiates game
 
 		UnoPlayer winner = null;
-		UnoPlayer[] players = new UnoPlayer[] {
-				this.getFirstPlayer(), this.getSecondPlayer()
-		};
+		UnoPlayer[] players = new UnoPlayer[] { this.getFirstPlayer(), this.getSecondPlayer() };
 
 		boolean fallback = false;
 		for (UnoPlayer player = players[0]; winner == null && !fallback; player = reversePlayer(player)) {
@@ -211,6 +208,7 @@ public abstract class UnoGame {
 	 *            the {@link UnoPlayer} to give the turn to
 	 * @param foe
 	 *            the other {@link UnoPlayer}
+	 *
 	 * @return the victor or {@code null} if nobody has won yet
 	 */
 	private UnoPlayer playAndCheckPlayer(@Nonnull UnoPlayer player, @Nonnull UnoPlayer foe) {
@@ -276,8 +274,7 @@ public abstract class UnoGame {
 	public UnoDrawPile getDraw() {
 		UnoDrawPile drawPile = this.draw;
 		if (drawPile == null)
-			throw new IllegalStateException(
-					"The draw pile is null - please play at least one round to initialize the piles.");
+			throw new IllegalStateException("The draw pile is null - please play at least one round to initialize the piles.");
 
 		return drawPile;
 	}
@@ -308,6 +305,7 @@ public abstract class UnoGame {
 	 *
 	 * @param player
 	 *            the {@link UnoPlayer}
+	 *
 	 * @return the {@link UnoPlayer} after {@code player}
 	 */
 	public final UnoPlayer nextPlayer(UnoPlayer player) {
@@ -324,6 +322,7 @@ public abstract class UnoGame {
 
 	/**
 	 * @return the first {@link UnoPlayer}. This is the player to get the turn first
+	 *
 	 * @see #getSecondPlayer()
 	 */
 	public UnoPlayer getFirstPlayer() {
@@ -332,6 +331,7 @@ public abstract class UnoGame {
 
 	/**
 	 * @return the second {@link UnoPlayer}
+	 *
 	 * @see #getFirstPlayer()
 	 */
 	public UnoPlayer getSecondPlayer() {

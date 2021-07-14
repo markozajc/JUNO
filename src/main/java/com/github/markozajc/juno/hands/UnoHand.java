@@ -1,10 +1,8 @@
 package com.github.markozajc.juno.hands;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
+import javax.annotation.*;
 
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.game.UnoGame;
@@ -19,6 +17,7 @@ import com.github.markozajc.juno.utils.UnoGameUtils;
  * contain the logic.
  *
  * @author Marko Zajc
+ *
  * @see UnoPlayer
  */
 public class UnoHand implements UnoPile {
@@ -48,6 +47,7 @@ public class UnoHand implements UnoPile {
 	 *            the ongoing {@link UnoGame}
 	 * @param amount
 	 *            the amount of cards to draw
+	 *
 	 * @return the drawn cards
 	 */
 	@Nonnull
@@ -68,6 +68,7 @@ public class UnoHand implements UnoPile {
 	 *            the {@link UnoDiscardPile} to discard the {@link UnoCard} to
 	 * @param card
 	 *            the {@link UnoCard} to discard
+	 *
 	 * @return whether the {@link UnoHand} actually possesses the given {@link UnoCard}
 	 */
 	public final boolean addToDiscard(@Nonnull UnoDiscardPile discard, @Nonnull UnoCard card) {

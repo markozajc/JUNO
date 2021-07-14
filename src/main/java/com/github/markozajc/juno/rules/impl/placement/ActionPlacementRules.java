@@ -22,8 +22,8 @@ public class ActionPlacementRules {
 	}
 
 	/**
-	 * An action-based placement rule that allows {@link UnoActionCard}s of the same color to be placed
-	 * atop of each other and neutrals others.
+	 * An action-based placement rule that allows {@link UnoActionCard}s of the same
+	 * color to be placed atop of each other and neutrals others.
 	 *
 	 * @author Marko Zajc
 	 */
@@ -32,7 +32,7 @@ public class ActionPlacementRules {
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
 			if (target instanceof UnoActionCard && card instanceof UnoActionCard
-					&& ((UnoActionCard) target).getAction().equals(((UnoActionCard) card).getAction()))
+				&& ((UnoActionCard) target).getAction().equals(((UnoActionCard) card).getAction()))
 				return PlacementClearance.ALLOWED;
 			// Checks whether target's action matches card's action
 

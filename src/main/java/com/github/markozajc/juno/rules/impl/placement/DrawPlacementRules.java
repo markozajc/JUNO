@@ -1,7 +1,6 @@
 package com.github.markozajc.juno.rules.impl.placement;
 
-import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.cards.UnoCardColor;
+import com.github.markozajc.juno.cards.*;
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
@@ -21,7 +20,7 @@ public class DrawPlacementRules {
 
 	private static void createPack() {
 		pack = new UnoRulePack(new DrawAmountPlacementRule(), new DrawFourHitchPlacementRule(),
-				new OpenDrawCardPlacementRule());
+							   new OpenDrawCardPlacementRule());
 	}
 
 	/**
@@ -35,7 +34,7 @@ public class DrawPlacementRules {
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
 			if (target instanceof UnoDrawCard && card instanceof UnoDrawCard
-					&& ((UnoDrawCard) target).getAmount() == ((UnoDrawCard) card).getAmount())
+				&& ((UnoDrawCard) target).getAmount() == ((UnoDrawCard) card).getAmount())
 				return PlacementClearance.ALLOWED;
 			// Checks whether target's amount matches card's amount
 
@@ -55,8 +54,8 @@ public class DrawPlacementRules {
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
 			if (card instanceof UnoDrawCard && !target.getOriginalColor().equals(UnoCardColor.WILD)
-					&& ((UnoDrawCard) card).getAmount() == 4
-					&& !UnoUtils.getColorCards(target.getOriginalColor(), hand.getCards()).isEmpty())
+				&& ((UnoDrawCard) card).getAmount() == 4
+				&& !UnoUtils.getColorCards(target.getOriginalColor(), hand.getCards()).isEmpty())
 				return PlacementClearance.PROHIBITED;
 			// Prohibits the placement of the wild draw four if the hand possesses a card that
 			// has the same color as the target (assumed to be the top of the discard pile) card.

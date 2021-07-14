@@ -1,7 +1,6 @@
 package com.github.markozajc.juno.cards;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import javax.annotation.*;
 
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.hands.UnoHand;
@@ -66,6 +65,7 @@ public abstract class UnoCard {
 	 *
 	 * @param mask
 	 *            the new color mask
+	 *
 	 * @throws IllegalStateException
 	 *             if this {@link UnoCard}'s {@link #getOriginalColor()} is not
 	 *             {@link UnoCardColor#WILD} or if the color mask has already been set
@@ -86,6 +86,7 @@ public abstract class UnoCard {
 	 *
 	 * @param placer
 	 *            this card's placer
+	 *
 	 * @throws IllegalStateException
 	 *             in case the placer has already been set.
 	 */
@@ -104,6 +105,7 @@ public abstract class UnoCard {
 	 * the hands shouldn't have this value set.
 	 *
 	 * @return this card's placer
+	 *
 	 * @throws IllegalStateException
 	 *             in case this card's placer hasn't been set yet
 	 */
@@ -165,6 +167,7 @@ public abstract class UnoCard {
 	 *
 	 * @throws IllegalStateException
 	 *             if the {@link UnoCard} is already closed
+	 *
 	 * @see #isOpen()
 	 */
 	public void markClosed() {

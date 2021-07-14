@@ -1,17 +1,14 @@
 package com.github.markozajc.juno.rules.pack.impl.house;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.cards.UnoCardColor;
-import com.github.markozajc.juno.cards.impl.UnoDrawCard;
-import com.github.markozajc.juno.cards.impl.UnoNumericCard;
+import com.github.markozajc.juno.cards.*;
+import com.github.markozajc.juno.cards.impl.*;
 import com.github.markozajc.juno.piles.impl.UnoDiscardPile;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class UnoProgressiveRulePackTest {
 

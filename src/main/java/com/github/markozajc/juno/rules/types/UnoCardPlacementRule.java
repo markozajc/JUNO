@@ -60,6 +60,7 @@ public interface UnoCardPlacementRule extends UnoRule {
 	 *            the of card to check
 	 * @param hand
 	 *            the {@link UnoHand} placing the card
+	 *
 	 * @return whether {@code card} can be placed atop of {@code target}. This should
 	 *         return ALLOWED if the cards may be placed atop of each other (for example
 	 *         Blue 1 on Blue 2), NEUTRAL if that is out of this rule's field (for
@@ -68,6 +69,7 @@ public interface UnoCardPlacementRule extends UnoRule {
 	 *         a card that's the color of the top card - the extra hitch to the Wild draw
 	 *         four that's in the official UNO rules)
 	 */
-	public abstract PlacementClearance canBePlaced(@Nonnull UnoCard target, @Nonnull UnoCard card, @Nonnull UnoHand hand);
+	PlacementClearance canBePlaced(@Nonnull UnoCard target, @Nonnull UnoCard card,
+												   @Nonnull UnoHand hand);
 
 }

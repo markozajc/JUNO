@@ -30,7 +30,7 @@ public enum UnoCardColor {
 
 	private final String text;
 
-	private UnoCardColor(String text) {
+	UnoCardColor(String text) {
 		this.text = text;
 	}
 

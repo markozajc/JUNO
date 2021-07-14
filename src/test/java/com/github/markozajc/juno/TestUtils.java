@@ -1,13 +1,11 @@
 package com.github.markozajc.juno;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.cards.UnoCardColor;
+import com.github.markozajc.juno.cards.*;
 import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
@@ -70,8 +68,7 @@ public class TestUtils {
 
 		@Override
 		public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard, UnoPlayer next) {
-			throw new UnsupportedOperationException(
-					"DummyUnoHand can not decide whether it should play drawn cards or not.");
+			throw new UnsupportedOperationException("DummyUnoHand can not decide whether it should play drawn cards or not.");
 		}
 
 	}
@@ -85,14 +82,16 @@ public class TestUtils {
 	 *            collection number one
 	 * @param collection2
 	 *            collection number two
+	 *
 	 * @return whether the collection contain equal items or not
 	 */
-	public static <T> boolean listEqualsUnordered(Collection<? extends T> collection1, Collection<? extends T> collection2) {
+	public static <T> boolean listEqualsUnordered(Collection<? extends T> collection1,
+												  Collection<? extends T> collection2) {
 		System.out.println("[= COMPARING COLLECTIONS /unordered =]");
-		System.out.println(
-			"Collection 1: " + collection1.stream().map(Object::toString).collect(Collectors.joining(",")));
-		System.out.println(
-			"Collection 2: " + collection2.stream().map(Object::toString).collect(Collectors.joining(",")));
+		System.out
+			.println("Collection 1: " + collection1.stream().map(Object::toString).collect(Collectors.joining(",")));
+		System.out
+			.println("Collection 2: " + collection2.stream().map(Object::toString).collect(Collectors.joining(",")));
 		return collection1.size() == collection2.size() && collection1.containsAll(collection2);
 	}
 
@@ -106,6 +105,7 @@ public class TestUtils {
 	 * @param cards
 	 *            {@link Collection} of {@link UnoCard}s the {@link UnoHand} should
 	 *            contain
+	 *
 	 * @return the created {@link UnoPlayer}
 	 */
 	@Nonnull
@@ -118,7 +118,9 @@ public class TestUtils {
 	 *
 	 * @param cards
 	 *            {@link List} of {@link UnoCard}s the {@link UnoDeck} should contain
+	 *
 	 * @return the built {@link UnoDeck}
+	 *
 	 * @deprecated no longer of any use as {@link UnoDeck}s can be made using their
 	 *             constructor
 	 */

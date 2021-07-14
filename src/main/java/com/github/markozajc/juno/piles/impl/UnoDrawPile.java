@@ -1,21 +1,15 @@
 package com.github.markozajc.juno.piles.impl;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
+import javax.annotation.*;
 
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.impl.UnoNumericCard;
 import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.piles.UnoPile;
-import com.github.markozajc.juno.utils.UnoGameUtils;
-import com.github.markozajc.juno.utils.UnoUtils;
+import com.github.markozajc.juno.utils.*;
 
 /**
  * A class representing a UNO draw pile. A draw pile behaves as the "entry point" for
@@ -95,7 +89,9 @@ public class UnoDrawPile implements UnoPile {
 	 *
 	 * @param amount
 	 *            the amount of {@link UnoCard}s to draw
+	 *
 	 * @return the drawn {@link UnoCard}
+	 *
 	 * @throws IllegalStateException
 	 *             if there aren't enough cards in this pile to satisfy the requested
 	 *             {@code amount}
@@ -122,6 +118,7 @@ public class UnoDrawPile implements UnoPile {
 	 * Draws a card from the pile.
 	 *
 	 * @return the drawn {@link UnoCard}
+	 *
 	 * @throws IllegalStateException
 	 *             if the pile is empty
 	 */

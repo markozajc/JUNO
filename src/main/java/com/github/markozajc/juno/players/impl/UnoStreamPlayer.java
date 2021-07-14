@@ -1,15 +1,12 @@
 package com.github.markozajc.juno.players.impl;
 
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.util.List;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.cards.UnoCardColor;
+import com.github.markozajc.juno.cards.*;
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.players.UnoPlayer;
@@ -50,17 +47,28 @@ public class UnoStreamPlayer extends UnoPlayer {
 	@Override
 	public UnoCard playCard(UnoGame game, UnoPlayer next) {
 		UnoCard top = game.getDiscard().getTop();
-		List<UnoCard> possible = UnoRuleUtils.combinedPlacementAnalysis(top, this.getHand().getCards(), game.getRules(),
-			this.getHand());
+		List<UnoCard> possible =
+			UnoRuleUtils.combinedPlacementAnalysis(top, this.getHand().getCards(), game.getRules(), this.getHand());
 
-		this.ps.println("Choose a card: [" + next.getName() + " hand size: " + next.getHand().getSize()
-				+ " | Draw pile size: " + game.getDraw().getSize() + " | Discard pile size: "
-				+ game.getDiscard().getSize() + " | Top card: " + game.getDiscard().getTop() + "]");
+		this.ps.println("Choose a card: [" + next.getName() +
+			" hand size: " +
+			next.getHand().getSize() +
+			" | Draw pile size: " +
+			game.getDraw().getSize() +
+			" | Discard pile size: " +
+			game.getDiscard().getSize() +
+			" | Top card: " +
+			game.getDiscard().getTop() +
+			"]");
 
 		List<UnoDrawCard> drawCards = UnoProgressiveRulePack.getConsecutive(game.getDiscard());
 		if (!drawCards.isEmpty()) {
-			this.ps.println("0 - Draw " + drawCards.size() * drawCards.get(0).getAmount() + " cards from "
-					+ drawCards.size() + " " + top + (drawCards.size() == 1 ? "" : "s"));
+			this.ps.println("0 - Draw " + drawCards.size() * drawCards.get(0).getAmount() +
+				" cards from " +
+				drawCards.size() +
+				" " +
+				top +
+				(drawCards.size() == 1 ? "" : "s"));
 		} else {
 			this.ps.println("0 - Draw");
 		}
@@ -86,10 +94,10 @@ public class UnoStreamPlayer extends UnoPlayer {
 			String nextLine = this.scanner.nextLine();
 			if (nextLine.equalsIgnoreCase("rules")) {
 				this.ps.println("Active rules: " + game.getRules()
-						.getRules()
-						.stream()
-						.map(r -> r.getClass().getSimpleName())
-						.collect(Collectors.joining(", ")));
+					.getRules()
+					.stream()
+					.map(r -> r.getClass().getSimpleName())
+					.collect(Collectors.joining(", ")));
 				continue;
 			}
 

@@ -1,17 +1,13 @@
 package com.github.markozajc.juno.game.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.decks.impl.UnoStandardDeck;
-import com.github.markozajc.juno.game.UnoControlledGame;
-import com.github.markozajc.juno.game.UnoGame;
+import com.github.markozajc.juno.game.*;
 import com.github.markozajc.juno.players.UnoPlayer;
-import com.github.markozajc.juno.players.impl.UnoConsolePlayer;
-import com.github.markozajc.juno.players.impl.UnoStrategicPlayer;
+import com.github.markozajc.juno.players.impl.*;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule;
@@ -24,9 +20,7 @@ import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule;
  */
 public class UnoConsoleGame extends UnoControlledGame {
 
-	@SuppressWarnings({
-			"resource", "null"
-	})
+	@SuppressWarnings({ "resource", "null" })
 	@Nonnull
 	private static UnoRulePack getRulePack() {
 		List<UnoHouseRule> rules = new ArrayList<>();
@@ -46,7 +40,7 @@ public class UnoConsoleGame extends UnoControlledGame {
 	 */
 	public UnoConsoleGame() {
 		super(new UnoConsolePlayer("You"), new UnoStrategicPlayer("Billy the StrategicUnoHand"),
-				UnoStandardDeck.getDeck(), 7, getRulePack());
+			  UnoStandardDeck.getDeck(), 7, getRulePack());
 	}
 
 	/**

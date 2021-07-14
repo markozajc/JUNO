@@ -1,11 +1,8 @@
 package com.github.markozajc.juno.utils;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
-import javax.annotation.CheckReturnValue;
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
+import javax.annotation.*;
 
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.game.UnoGame;
@@ -33,13 +30,14 @@ public class UnoGameUtils {
 	 *            the ongoing {@link UnoGame}
 	 * @param card
 	 *            the {@link UnoCard} to check
+	 *
 	 * @return whether the given card can be placed on top of the discard pile
 	 */
 	@SuppressWarnings("null")
 	public static boolean canPlaceCard(@Nonnull UnoPlayer placer, @Nonnull UnoGame game, @Nonnull UnoCard card) {
 		return !UnoRuleUtils
-				.combinedPlacementAnalysis(game.getTopCard(), Arrays.asList(card), game.getRules(), placer.getHand())
-				.isEmpty();
+			.combinedPlacementAnalysis(game.getTopCard(), Arrays.asList(card), game.getRules(), placer.getHand())
+			.isEmpty();
 	}
 
 	/**
@@ -53,7 +51,9 @@ public class UnoGameUtils {
 	 *            the {@link UnoGame} to get the discard and the draw piles from
 	 * @param amount
 	 *            the amount of cards to draw
+	 *
 	 * @return {@link List} of drawn {@link UnoCard}s
+	 *
 	 * @throws IllegalStateException
 	 *             in case there are not enough cards in neither the draw nor discard
 	 *             pile to satisfy the requested amount
@@ -81,6 +81,7 @@ public class UnoGameUtils {
 	 *            the {@link UnoPlayer} placing the card
 	 * @param toPlace
 	 *            the {@link UnoCard} to place
+	 *
 	 * @return whether the card was placed or not. Returns {@code false} in case
 	 *         {@link #canPlaceCard(UnoPlayer, UnoGame, UnoCard)} returns {@code false}
 	 */

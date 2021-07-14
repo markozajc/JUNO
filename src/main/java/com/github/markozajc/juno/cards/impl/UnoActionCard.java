@@ -2,8 +2,7 @@ package com.github.markozajc.juno.cards.impl;
 
 import javax.annotation.Nonnull;
 
-import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.cards.UnoCardColor;
+import com.github.markozajc.juno.cards.*;
 
 /**
  * A card that comes in two variations and changes the flow of the game and comes in
@@ -36,7 +35,7 @@ public class UnoActionCard extends UnoCard {
 
 		private final String text;
 
-		private UnoAction(String text) {
+		UnoAction(String text) {
 			this.text = text;
 		}
 

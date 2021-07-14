@@ -11,7 +11,8 @@ public class UnoConsolePlayer extends UnoStreamPlayer {
 	/**
 	 * Creates a new {@link UnoStreamPlayer}.
 	 *
-	 * @param name hand's name
+	 * @param name
+	 *            hand's name
 	 */
 	@SuppressWarnings("null")
 	public UnoConsolePlayer(String name) {

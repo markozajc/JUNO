@@ -1,8 +1,6 @@
 package com.github.markozajc.juno.decks;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 import javax.annotation.Nonnull;
 
@@ -26,6 +24,7 @@ public class UnoDeck {
 	 *
 	 * @param cards
 	 *            {@link Collection} of {@link UnoCard} to clone
+	 *
 	 * @return modifiable {@link List} of cloned {@link UnoCard}s
 	 */
 	@Nonnull

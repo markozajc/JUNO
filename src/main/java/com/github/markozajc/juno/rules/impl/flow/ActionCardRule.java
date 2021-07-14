@@ -5,8 +5,7 @@ import com.github.markozajc.juno.cards.impl.UnoActionCard;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
-import com.github.markozajc.juno.rules.types.flow.UnoInitializationConclusion;
-import com.github.markozajc.juno.rules.types.flow.UnoPhaseConclusion;
+import com.github.markozajc.juno.rules.types.flow.*;
 
 /**
  * The game flow rule responsible for handling {@link UnoActionCard}s.

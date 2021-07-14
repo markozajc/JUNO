@@ -1,24 +1,16 @@
 package com.github.markozajc.juno.rules.pack.impl;
 
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.rules.UnoRuleConflictException;
-import com.github.markozajc.juno.rules.impl.flow.ActionCardRule;
-import com.github.markozajc.juno.rules.impl.flow.CardDrawingRule;
-import com.github.markozajc.juno.rules.impl.flow.CardPlacementRule;
-import com.github.markozajc.juno.rules.impl.flow.ColorChoosingRule;
-import com.github.markozajc.juno.rules.impl.placement.ActionPlacementRules;
-import com.github.markozajc.juno.rules.impl.placement.ColorPlacementRules;
-import com.github.markozajc.juno.rules.impl.placement.DrawPlacementRules;
-import com.github.markozajc.juno.rules.impl.placement.NumericPlacementRules;
+import com.github.markozajc.juno.rules.impl.flow.*;
+import com.github.markozajc.juno.rules.impl.placement.*;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
-import com.github.markozajc.juno.rules.pack.impl.house.UnoProgressiveRulePack;
-import com.github.markozajc.juno.rules.pack.impl.house.UnoSevenORulePack;
+import com.github.markozajc.juno.rules.pack.impl.house.*;
 
 /**
  * Placement rules for {@link UnoDrawCard}.
@@ -55,7 +47,7 @@ public class UnoOfficialRules {
 		private final UnoRulePack pack;
 		private final String name;
 
-		private UnoHouseRule(UnoRulePack pack, String name) {
+		UnoHouseRule(UnoRulePack pack, String name) {
 			this.pack = pack;
 			this.name = name;
 		}
@@ -82,8 +74,9 @@ public class UnoOfficialRules {
 
 	private static void createPack() {
 		pack = UnoRulePack.ofPacks(ActionPlacementRules.getPack(), ColorPlacementRules.getPack(),
-			DrawPlacementRules.getPack(), NumericPlacementRules.getPack(), new UnoRulePack(new CardDrawingRule(),
-					new CardPlacementRule(), new ColorChoosingRule(), new ActionCardRule()));
+								   DrawPlacementRules.getPack(), NumericPlacementRules.getPack(),
+								   new UnoRulePack(new CardDrawingRule(), new CardPlacementRule(),
+												   new ColorChoosingRule(), new ActionCardRule()));
 	}
 
 	/**
@@ -103,6 +96,7 @@ public class UnoOfficialRules {
 	 *
 	 * @param houseRules
 	 *            house rules
+	 *
 	 * @return {@link UnoRulePack} of the official UNO rules with house rules
 	 */
 	@SuppressWarnings("null")
@@ -116,6 +110,7 @@ public class UnoOfficialRules {
 	 *
 	 * @param houseRules
 	 *            house rules
+	 *
 	 * @return {@link UnoRulePack} of the official UNO rules with house rules
 	 */
 	@SuppressWarnings("null")
@@ -123,7 +118,7 @@ public class UnoOfficialRules {
 	public static UnoRulePack getPack(@Nonnull Collection<UnoHouseRule> houseRules) {
 		try {
 			return getPack().addPacks(houseRules.stream().map(UnoHouseRule::getPack).collect(Collectors.toList()))
-					.resolveConflicts();
+				.resolveConflicts();
 		} catch (UnoRuleConflictException e) {
 			// Shouldn't happen, all house rule packs mustn't have a failing conflict resolution
 			return getPack();

@@ -1,8 +1,6 @@
 package com.github.markozajc.juno.rules.pack.impl.house;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import javax.annotation.Nonnull;
 
@@ -19,10 +17,8 @@ import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule;
 import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
-import com.github.markozajc.juno.rules.types.flow.UnoInitializationConclusion;
-import com.github.markozajc.juno.rules.types.flow.UnoPhaseConclusion;
-import com.github.markozajc.juno.utils.UnoGameUtils;
-import com.github.markozajc.juno.utils.UnoRuleUtils;
+import com.github.markozajc.juno.rules.types.flow.*;
+import com.github.markozajc.juno.utils.*;
 
 /**
  * A house {@link UnoRulePack} that implements the official Progressive UNO house
@@ -60,7 +56,9 @@ public class UnoProgressiveRulePack {
 	 *            card to check
 	 * @param drawMark
 	 *            draw amount on the previous draw cards
+	 *
 	 * @return whether the card is still relevant or not
+	 *
 	 * @see #getConsecutiveDraw()
 	 */
 	private static boolean isRelevant(UnoCard card, int drawMark) {
@@ -91,6 +89,7 @@ public class UnoProgressiveRulePack {
 	 *
 	 * @param discard
 	 *            {@link UnoDiscardPile} to search through
+	 *
 	 * @return {@link List} of consecutive cards
 	 */
 	public static List<UnoDrawCard> getConsecutive(UnoDiscardPile discard) {
@@ -128,7 +127,7 @@ public class UnoProgressiveRulePack {
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
 			if (target instanceof UnoDrawCard && target.isOpen()) {
 				if (card instanceof UnoDrawCard
-						&& ((UnoDrawCard) card).getAmount() == ((UnoDrawCard) target).getAmount())
+					&& ((UnoDrawCard) card).getAmount() == ((UnoDrawCard) target).getAmount())
 					return PlacementClearance.ALLOWED;
 
 				return PlacementClearance.PROHIBITED;
@@ -179,7 +178,7 @@ public class UnoProgressiveRulePack {
 				// Draw all cards to the hand
 
 				game.onEvent(DRAW_CARDS, player.getName(), consecutive.size() * consecutive.get(0).getAmount(),
-					consecutive.size(), consecutive.get(0).toString(), consecutive.size() == 1 ? "" : "s");
+							 consecutive.size(), consecutive.get(0).toString(), consecutive.size() == 1 ? "" : "s");
 
 			} else {
 				// If the top card is not a draw card
@@ -189,9 +188,9 @@ public class UnoProgressiveRulePack {
 				// Draw a single card to the hand
 
 				if (UnoGameUtils.canPlaceCard(player, game, drawn)
-						&& player.shouldPlayDrawnCard(game, drawn, game.nextPlayer(player))) {
+					&& player.shouldPlayDrawnCard(game, drawn, game.nextPlayer(player))) {
 					UnoRuleUtils.filterRuleKind(game.getRules().getRules(), UnoGameFlowRule.class)
-							.forEach(gfr -> gfr.decisionPhase(player, game, drawn));
+						.forEach(gfr -> gfr.decisionPhase(player, game, drawn));
 				}
 				// Allow the player to place the card (if possible)
 			}

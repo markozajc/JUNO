@@ -6,9 +6,7 @@ import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.cards.impl.UnoNumericCard;
 import com.github.markozajc.juno.piles.impl.UnoDiscardPile;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class UnoHandTest {
 

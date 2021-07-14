@@ -2,11 +2,9 @@ package com.github.markozajc.juno.rules.pack;
 
 import org.junit.jupiter.api.Test;
 
-import com.github.markozajc.juno.rules.UnoRule;
-import com.github.markozajc.juno.rules.UnoRuleConflictException;
+import com.github.markozajc.juno.rules.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class UnoRulePackTest {
 

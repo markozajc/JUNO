@@ -1,25 +1,19 @@
 package com.github.markozajc.juno.decks.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
+import javax.annotation.*;
 
-import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.cards.UnoCardColor;
-import com.github.markozajc.juno.cards.impl.UnoActionCard;
+import com.github.markozajc.juno.cards.*;
+import com.github.markozajc.juno.cards.impl.*;
 import com.github.markozajc.juno.cards.impl.UnoActionCard.UnoAction;
-import com.github.markozajc.juno.cards.impl.UnoDrawCard;
-import com.github.markozajc.juno.cards.impl.UnoNumericCard;
-import com.github.markozajc.juno.cards.impl.UnoWildCard;
 import com.github.markozajc.juno.decks.UnoDeck;
 
 /**
  * A singleton class containing the official {@link UnoDeck} of UNO cards.
  *
  * @author Marko Zajc
+ *
  * @see <a href="https://en.wikipedia.org/wiki/File:UNO_cards_deck.svg">Reference
  *      vector graphic of a UNO deck</a>
  */
@@ -66,11 +60,11 @@ public class UnoStandardDeck {
 		// Adds colored (non-wild) cards
 
 		cards.addAll(Arrays.asList(
-			// 4 wild draw four cards
-			new UnoDrawCard(), new UnoDrawCard(), new UnoDrawCard(), new UnoDrawCard(),
+								   // 4 wild draw four cards
+								   new UnoDrawCard(), new UnoDrawCard(), new UnoDrawCard(), new UnoDrawCard(),
 
-			// 4 wild cards
-			new UnoWildCard(), new UnoWildCard(), new UnoWildCard(), new UnoWildCard()));
+								   // 4 wild cards
+								   new UnoWildCard(), new UnoWildCard(), new UnoWildCard(), new UnoWildCard()));
 		// Adds generic cards
 
 		deck = new UnoDeck(cards);

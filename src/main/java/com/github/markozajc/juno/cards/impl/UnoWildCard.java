@@ -1,7 +1,6 @@
 package com.github.markozajc.juno.cards.impl;
 
-import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.cards.UnoCardColor;
+import com.github.markozajc.juno.cards.*;
 
 /**
  * A card that can be placed onto anything and allows its placer to change it to any

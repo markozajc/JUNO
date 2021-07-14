@@ -1,28 +1,22 @@
 package com.github.markozajc.juno.utils;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
 import com.github.markozajc.juno.TestUtils;
 import com.github.markozajc.juno.TestUtils.CheckState;
-import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.cards.UnoCardColor;
+import com.github.markozajc.juno.cards.*;
 import com.github.markozajc.juno.cards.impl.UnoNumericCard;
 import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.decks.impl.UnoStandardDeck;
 import com.github.markozajc.juno.game.UnoGame;
-import com.github.markozajc.juno.piles.impl.UnoDiscardPile;
-import com.github.markozajc.juno.piles.impl.UnoDrawPile;
+import com.github.markozajc.juno.piles.impl.*;
 import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class UnoGameUtilsTest {
 
@@ -35,7 +29,7 @@ class UnoGameUtilsTest {
 		@SuppressWarnings("null")
 		public FakeUnoGame(UnoDrawPile draw, UnoDiscardPile discard, CheckState checker) {
 			super(TestUtils.getDummyPlayer(Collections.emptyList()), TestUtils.getDummyPlayer(Collections.emptyList()),
-					UnoStandardDeck.getDeck(), 0, UnoOfficialRules.getPack());
+				  UnoStandardDeck.getDeck(), 0, UnoOfficialRules.getPack());
 
 			this.checker = checker;
 			this.draw = draw;
@@ -81,8 +75,8 @@ class UnoGameUtilsTest {
 		 * Cards: Red 0
 		 */
 
-		List<UnoCard> toDiscard = Arrays.<UnoCard>asList(new UnoNumericCard(UnoCardColor.GREEN, 1),
-			new UnoNumericCard(UnoCardColor.BLUE, 2));
+		List<UnoCard> toDiscard =
+			Arrays.<UnoCard>asList(new UnoNumericCard(UnoCardColor.GREEN, 1), new UnoNumericCard(UnoCardColor.BLUE, 2));
 		/*
 		 * Cards: Green 1, Blue 2
 		 */
@@ -104,9 +98,9 @@ class UnoGameUtilsTest {
 		// #discardIntoDraw should not have been called at this point
 
 		assertTrue(toDiscard.stream()
-				.map(UnoCard::getColor)
-				.collect(Collectors.toList())
-				.contains(UnoGameUtils.drawCards(game, 1).get(0).getColor()));
+			.map(UnoCard::getColor)
+			.collect(Collectors.toList())
+			.contains(UnoGameUtils.drawCards(game, 1).get(0).getColor()));
 		// Checks whether the drawn card is the right one (by color)
 
 		assertTrue(checker.getState());

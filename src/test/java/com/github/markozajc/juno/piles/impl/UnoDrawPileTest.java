@@ -1,18 +1,15 @@
 package com.github.markozajc.juno.piles.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 
-import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.cards.UnoCardColor;
+import com.github.markozajc.juno.cards.*;
 import com.github.markozajc.juno.cards.impl.UnoNumericCard;
 import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.decks.impl.UnoStandardDeck;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class UnoDrawPileTest {
 
@@ -31,8 +28,8 @@ class UnoDrawPileTest {
 	@SuppressWarnings("null")
 	@Test
 	void testShuffle() {
-		UnoDeck deck = new UnoDeck(
-				Arrays.asList(new UnoNumericCard(UnoCardColor.RED, 0), new UnoNumericCard(UnoCardColor.GREEN, 1),
+		UnoDeck deck = new UnoDeck(Arrays
+			.asList(new UnoNumericCard(UnoCardColor.RED, 0), new UnoNumericCard(UnoCardColor.GREEN, 1),
 					new UnoNumericCard(UnoCardColor.BLUE, 2), new UnoNumericCard(UnoCardColor.YELLOW, 3),
 					new UnoNumericCard(UnoCardColor.RED, 4), new UnoNumericCard(UnoCardColor.GREEN, 5),
 					new UnoNumericCard(UnoCardColor.BLUE, 6), new UnoNumericCard(UnoCardColor.YELLOW, 7),

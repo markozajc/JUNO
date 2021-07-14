@@ -1,7 +1,6 @@
 package com.github.markozajc.juno.rules.impl.placement;
 
-import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.cards.UnoCardColor;
+import com.github.markozajc.juno.cards.*;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.types.UnoCardPlacementRule;
