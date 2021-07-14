@@ -62,7 +62,7 @@ public abstract class UnoGame {
 	 *            the {@link UnoRulePack} for this {@link UnoGame}
 	 */
 	protected UnoGame(@Nonnull UnoPlayer first, @Nonnull UnoPlayer second, @Nonnull UnoDeck deck,
-				   @Nonnegative int cardAmount, @Nonnull UnoRulePack rules) {
+					  @Nonnegative int cardAmount, @Nonnull UnoRulePack rules) {
 		this.first = first;
 		this.second = second;
 		this.deck = deck;
@@ -362,6 +362,7 @@ public abstract class UnoGame {
 	 *
 	 * @see #getSecondPlayer()
 	 */
+	@Nonnull
 	public UnoPlayer getFirstPlayer() {
 		return this.first;
 	}
@@ -371,6 +372,7 @@ public abstract class UnoGame {
 	 *
 	 * @see #getFirstPlayer()
 	 */
+	@Nonnull
 	public UnoPlayer getSecondPlayer() {
 		return this.second;
 	}

@@ -17,7 +17,7 @@ import com.github.markozajc.juno.players.impl.*;
  * what color to assign to wild cards ({@link #chooseColor(UnoGame)}). A
  * {@link UnoPlayer} can either be autonomous (an example of that would be
  * {@link UnoStrategicPlayer}) or controlled by a human being (for example
- * {@link UnoStreamPlayer} and {@link UnoConsolePlayer})
+ * {@link UnoStreamPlayer} and {@link UnoConsolePlayer}).
  *
  * @author Marko Zajc
  */
