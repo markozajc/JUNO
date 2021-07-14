@@ -89,6 +89,7 @@ public class UnoStreamPlayer extends UnoPlayer {
 
 			i++;
 		}
+		this.ps.println("q - Quit");
 
 		while (true) {
 			String nextLine = this.scanner.nextLine();
@@ -99,6 +100,11 @@ public class UnoStreamPlayer extends UnoPlayer {
 					.map(r -> r.getClass().getSimpleName())
 					.collect(Collectors.joining(", ")));
 				continue;
+			}
+
+			if ("q".equalsIgnoreCase(nextLine)) {
+				game.endGame();
+				return null;
 			}
 
 			int choice;

@@ -79,6 +79,10 @@ public abstract class UnoControlledGame extends UnoGame {
 
 			UnoCard decision = player.playCard(game, game.getNextPlayer(player));
 
+			if (game.isEndRequested())
+				return;
+			// No need to continue
+
 			for (UnoGameFlowRule rule : rules) {
 				UnoPhaseConclusion fpc = rule.decisionPhase(player, game, decision);
 				if (fpc.shouldRepeat())
