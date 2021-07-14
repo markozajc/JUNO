@@ -76,9 +76,9 @@ public class UnoStreamPlayer extends UnoPlayer {
 		int i = 1;
 		for (UnoCard card : this.getHand().getCards()) {
 			if (possible.contains(card)) {
-				this.ps.println(i + " - " + card + "");
+				this.ps.println(i + " \u2022 " + card);
 			} else {
-				this.ps.println(i + " - \t" + card);
+				this.ps.println(i + " - " + card);
 			}
 
 			try {
