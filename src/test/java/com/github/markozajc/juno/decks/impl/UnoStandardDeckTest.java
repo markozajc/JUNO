@@ -1,34 +1,35 @@
 package com.github.markozajc.juno.decks.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.util.Collections;
 
 import org.junit.jupiter.api.Test;
 
 import com.github.markozajc.juno.TestUtils;
-import com.github.markozajc.juno.cards.UnoStandardDeck;
+import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.players.UnoPlayer;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class UnoStandardDeckTest {
 
 	@Test
 	void testSize() {
-		UnoDeck deck = new UnoStandardDeck();
-		assertEquals(deck.getExpectedSize(), deck.getCards().size(),
-			"Invalid UNO deck; the standard UNO deck actual size does not match the expected one.");
+		UnoDeck deck = UnoStandardDeck.getDeck();
+		assertEquals(UnoStandardDeck.getExpectedSize(), deck.getCards().size(),
+					 "Invalid UNO deck; the standard UNO deck actual size does not match the expected one.");
 	}
 
 	@SuppressWarnings("null")
 	@Test
 	void testCloning() {
-		UnoDeck deck = new UnoStandardDeck();
+		UnoDeck deck = UnoStandardDeck.getDeck();
 		UnoPlayer hand = TestUtils.getDummyPlayer(Collections.emptyList());
 		deck.getCards().get(0).setPlacer(hand);
 
-		assertThrows(IllegalStateException.class, () -> deck.getCards().get(0).getPlacer());
+		UnoCard card = deck.getCards().get(0);
+		assertThrows(IllegalStateException.class,
+					 card::getPlacer, "getPlacer() doesn't throw, but the placer was never set.");
 	}
 
 }

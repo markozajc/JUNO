@@ -3,19 +3,18 @@ package com.github.markozajc.juno.game;
 import java.io.PrintStream;
 import java.util.List;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import javax.annotation.*;
 
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.decks.UnoDeck;
-import com.github.markozajc.juno.hands.UnoHand;
-import com.github.markozajc.juno.piles.impl.UnoDiscardPile;
-import com.github.markozajc.juno.piles.impl.UnoDrawPile;
+import com.github.markozajc.juno.game.UnoWinner.UnoEndReason;
+import com.github.markozajc.juno.piles.impl.*;
 import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.UnoRule;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule;
+import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
+import com.github.markozajc.juno.rules.types.flow.UnoFinishConclusion;
 import com.github.markozajc.juno.utils.UnoRuleUtils;
 
 /**
@@ -32,6 +31,8 @@ public abstract class UnoGame {
 	private final UnoPlayer first;
 	@Nonnull
 	private final UnoPlayer second;
+	@Nullable
+	private UnoPlayer last;
 	@Nonnegative
 	private final int cardAmount;
 	@Nonnull
@@ -44,18 +45,7 @@ public abstract class UnoGame {
 	private UnoCard topCard;
 	private UnoDrawPile draw;
 	private List<UnoHouseRule> houseRules;
-
-	/**
-	 * Returns the other {@link UnoPlayer}.
-	 *
-	 * @param player
-	 *            the {@link UnoPlayer} to reverse
-	 * @return the other {@link UnoPlayer}
-	 */
-	@Nonnull
-	private UnoPlayer reversePlayer(UnoPlayer player) {
-		return player.equals(this.first) ? this.second : this.first;
-	}
+	private boolean endRequested;
 
 	/**
 	 * Creates a new UNO game.
@@ -71,8 +61,8 @@ public abstract class UnoGame {
 	 * @param rules
 	 *            the {@link UnoRulePack} for this {@link UnoGame}
 	 */
-	public UnoGame(@Nonnull UnoPlayer first, @Nonnull UnoPlayer second, @Nonnull UnoDeck deck,
-			@Nonnegative int cardAmount, @Nonnull UnoRulePack rules) {
+	protected UnoGame(@Nonnull UnoPlayer first, @Nonnull UnoPlayer second, @Nonnull UnoDeck deck,
+					  @Nonnegative int cardAmount, @Nonnull UnoRulePack rules) {
 		this.first = first;
 		this.second = second;
 		this.deck = deck;
@@ -84,24 +74,21 @@ public abstract class UnoGame {
 		this.draw = new UnoDrawPile(this.deck);
 		// Creates the draw pile
 
-		this.discard.clear();
-		this.first.getHand().clear();
-		this.second.getHand().clear();
+		this.getDiscard().clear();
+		this.getFirstPlayer().getHand().clear();
+		this.getSecondPlayer().getHand().clear();
 		// Clears every other pile
 
-		this.discard.add(this.draw.drawInitalCard());
+		this.getDiscard().add(this.draw.drawInitalCard());
 		// Draws the initial card
 
-		this.first.getHand().draw(this, this.cardAmount);
-		this.second.getHand().draw(this, this.cardAmount);
+		this.getFirstPlayer().getHand().draw(this, this.cardAmount);
+		this.getSecondPlayer().getHand().draw(this, this.cardAmount);
 		// Deals the cards
 	}
 
-	/**
-	 * Updates the {@link UnoCard} returned by {@link #getTopCard()}.
-	 */
 	private void updateTopCard() {
-		this.topCard = this.discard.getTop();
+		this.topCard = this.getDiscard().getTop();
 	}
 
 	/**
@@ -109,7 +96,7 @@ public abstract class UnoGame {
 	 * implementation when the draw pile gets empty.
 	 */
 	public void discardIntoDraw() {
-		this.draw.mergeResetShuffle(this.discard.createDrawPile());
+		this.getDraw().mergeResetShuffle(this.getDiscard().createDrawPile());
 	}
 
 	/**
@@ -121,43 +108,18 @@ public abstract class UnoGame {
 	 */
 	protected abstract void turn(@Nonnull UnoPlayer player);
 
-	/**
-	 * Checks whether a {@link UnoPlayer} has won. Criteria for winning in UNO is
-	 * <ul>
-	 * <li>Having no more cards ({@link UnoHand#getSize()} {@code == 0})
-	 * <li>The top {@link UnoCard} being closed ({@link UnoCard#isOpen()} needs to be
-	 * {@code false}
-	 * </ul>
-	 *
-	 * @param player
-	 *            the {@link UnoPlayer} to check
-	 * @param discard
-	 *            the discard pile
-	 * @return
-	 */
 	private static boolean checkVictory(UnoPlayer player, UnoDiscardPile discard) {
 		return player.getHand().getSize() == 0 && !discard.getTop().isOpen();
 	}
 
-	/**
-	 * Used as a last resort case when both the {@link UnoDiscardPile} and the
-	 * {@link UnoDrawPile} are empty. Either indicates a catastrophic failure in the card
-	 * economy (the least likely), that the {@link UnoGame} implementation handled the
-	 * two piles improperly (unlikely), that both of the {@link UnoPlayer}s'
-	 * {@link UnoHand}s malfunctioned (unlikely) or that both {@link UnoPlayer}s'
-	 * {@link UnoHand}s were intentionally made to just draw cards (the most likely).
-	 *
-	 * @return the fallback winner or {@code null} if it's a tie (very, very unlikely,
-	 *         but still worth mentioning)
-	 */
 	@Nullable
 	private final UnoPlayer fallbackVictory() {
-		if (this.first.getHand().getSize() < this.second.getHand().getSize()) {
-			return this.first;
+		if (this.getFirstPlayer().getHand().getSize() < this.getSecondPlayer().getHand().getSize()) {
+			return this.getFirstPlayer();
 			// P1 has less cards
 
-		} else if (this.second.getHand().getSize() < this.first.getHand().getSize()) {
-			return this.second;
+		} else if (this.getSecondPlayer().getHand().getSize() < this.getFirstPlayer().getHand().getSize()) {
+			return this.getSecondPlayer();
 			// P2 has less cards
 		} else {
 			return null;
@@ -168,30 +130,43 @@ public abstract class UnoGame {
 	/**
 	 * Plays a game of UNO.
 	 *
-	 * @return the victorious {@link UnoPlayer} or {@code null} if it's a tie (very, very
-	 *         unlikely, but still worth mentioning)
+	 * @return the winning {@link UnoPlayer} or {@code null} in case of a tie
+	 *
+	 * @deprecated Use {@link #play()} instead
 	 */
-	@SuppressWarnings("null")
+	@Deprecated
 	@Nullable
 	public UnoPlayer playGame() {
+		return play().getWinner();
+	}
+
+	/**
+	 * Plays a game of UNO.
+	 *
+	 * @return the UnoWinner
+	 */
+	@SuppressWarnings("null")
+	@Nonnull
+	public UnoWinner play() {
 		init();
 		// Initiates game
 
-		UnoPlayer winner = null;
-		UnoPlayer[] players = new UnoPlayer[] {
-				this.first, this.second
-		};
+		UnoPlayer winnerPlayer = null;
+		UnoPlayer[] players = new UnoPlayer[] { this.getFirstPlayer(), this.getSecondPlayer() };
 
 		boolean fallback = false;
-		for (UnoPlayer player = players[0]; winner == null && !fallback; player = reversePlayer(player)) {
-			UnoPlayer reversePlayer = reversePlayer(player);
+		for (UnoPlayer player = players[0]; winnerPlayer == null && !fallback && !this.endRequested; player =
+			getNextPlayer(player)) {
+			UnoPlayer nextPlayer = getNextPlayer(player);
 			// Gets the other player
 
-			winner = playAndCheckPlayer(player, reversePlayer);
+			this.last = player;
+
+			winnerPlayer = playAndCheckPlayers(player, nextPlayer);
 			// Gives the players a turn and checks both
 
-			if (this.discard.getSize() <= 1 && this.draw.getSize() == 0) {
-				winner = fallbackVictory();
+			if (this.getDiscard().getSize() <= 1 && this.getDraw().getSize() == 0) {
+				winnerPlayer = fallbackVictory();
 				fallback = true;
 			}
 			// Fallback method used in the case of both piles getting empty. Do note that the
@@ -200,31 +175,64 @@ public abstract class UnoGame {
 		}
 		// Iterates over all players until a winner is declared
 
+		UnoEndReason reason = determineEndReason(winnerPlayer, fallback);
+		UnoWinner winner = new UnoWinner(winnerPlayer, reason);
+		checkWinnerObjections(winner);
+
 		return winner;
 	}
 
-	/**
-	 * Gives a {@link UnoPlayer} a turn and check whether either of the
-	 * {@link UnoPlayer}s has won.
-	 *
-	 * @param player
-	 *            the {@link UnoPlayer} to give the turn to
-	 * @param foe
-	 *            the other {@link UnoPlayer}
-	 * @return the victor or {@code null} if nobody has won yet
-	 */
-	private UnoPlayer playAndCheckPlayer(@Nonnull UnoPlayer player, @Nonnull UnoPlayer foe) {
+	@Nonnull
+	private UnoEndReason determineEndReason(@Nullable UnoPlayer winnerPlayer, boolean fallback) {
+		if (fallback) {
+			return UnoEndReason.FALLBACK;
+		} else if (winnerPlayer != null) {
+			return UnoEndReason.VICTORY;
+		} else if (this.endRequested) {
+			return UnoEndReason.REQUESTED;
+		} else {
+			return UnoEndReason.UNKNOWN;
+		}
+	}
+
+	private void checkWinnerObjections(@Nonnull UnoWinner winner) {
+		UnoPlayer newWinner = null;
+		boolean winnerObjected = false;
+		boolean objectionsConflict = false;
+		for (UnoRule rule : this.rules.getRules()) {
+			if (rule instanceof UnoGameFlowRule) {
+				UnoFinishConclusion conclusion = ((UnoGameFlowRule) rule).finishPhase(winner, this);
+				if (conclusion.doesObjectWinner()) {
+					if (winnerObjected && newWinner == conclusion.getNewWinner()) {
+						objectionsConflict = true;
+						break;
+					} else {
+						winnerObjected = true;
+						newWinner = conclusion.getNewWinner();
+					}
+				}
+			}
+		}
+
+		if (objectionsConflict) {
+			winner.setNewWinner(null);
+		} else if (winnerObjected) {
+			winner.setNewWinner(newWinner);
+		}
+	}
+
+	private UnoPlayer playAndCheckPlayers(@Nonnull UnoPlayer player, @Nonnull UnoPlayer foe) {
 		updateTopCard();
 		// Updates the top card
 
 		turn(player);
 		// Plays player's hand
 
-		if (checkVictory(player, this.discard))
+		if (checkVictory(player, this.getDiscard()))
 			return player;
 		// Checks whether whether player has won
 
-		if (checkVictory(foe, this.discard))
+		if (checkVictory(foe, this.getDiscard()))
 			return foe;
 		// Checks whether whether the foe has won (only ran if the top card was a draw card
 		// and player
@@ -276,8 +284,7 @@ public abstract class UnoGame {
 	public UnoDrawPile getDraw() {
 		UnoDrawPile drawPile = this.draw;
 		if (drawPile == null)
-			throw new IllegalStateException(
-					"The draw pile is null - please play at least one round to initialize the piles.");
+			throw new IllegalStateException("The draw pile is null - please play at least one round to initialize the piles.");
 
 		return drawPile;
 	}
@@ -308,32 +315,74 @@ public abstract class UnoGame {
 	 *
 	 * @param player
 	 *            the {@link UnoPlayer}
+	 *
+	 * @return the {@link UnoPlayer} after {@code player}
+	 *
+	 * @deprecated Use {@link #getNextPlayer(UnoPlayer)} instead
+	 */
+	@Nonnull
+	@Deprecated
+	public final UnoPlayer nextPlayer(UnoPlayer player) {
+		return getNextPlayer(player);
+	}
+
+	/**
+	 * Returns the {@link UnoPlayer} to get the turn after the provided {@link UnoPlayer}
+	 *
+	 * @param player
+	 *            the {@link UnoPlayer}
+	 *
 	 * @return the {@link UnoPlayer} after {@code player}
 	 */
-	public final UnoPlayer nextPlayer(UnoPlayer player) {
-		if (player.equals(this.first)) {
-			return this.second;
-		} else if (player.equals(this.second)) {
-			return this.first;
+	@Nonnull
+	public final UnoPlayer getNextPlayer(UnoPlayer player) {
+		if (player == this.getFirstPlayer()) {
+			return this.getSecondPlayer();
+
+		} else if (player == this.getSecondPlayer()) {
+			return this.getFirstPlayer();
+
 		} else {
 			throw new IllegalArgumentException("The provided UnoPlayer is not a part of this UnoGame.");
 		}
 	}
 
 	/**
+	 * Returns the {@link UnoPlayer} to get the next turn.
+	 *
+	 * @return the next {@link UnoPlayer}
+	 */
+	@Nonnull
+	public final UnoPlayer getNextPlayer() {
+		return getNextPlayer(this.last);
+	}
+
+	/**
 	 * @return the first {@link UnoPlayer}. This is the player to get the turn first
+	 *
 	 * @see #getSecondPlayer()
 	 */
+	@Nonnull
 	public UnoPlayer getFirstPlayer() {
 		return this.first;
 	}
 
 	/**
 	 * @return the second {@link UnoPlayer}
+	 *
 	 * @see #getFirstPlayer()
 	 */
+	@Nonnull
 	public UnoPlayer getSecondPlayer() {
 		return this.second;
+	}
+
+	/**
+	 * @return the last {@link UnoPlayer} to have played
+	 */
+	@Nullable
+	public UnoPlayer getLastPlayer() {
+		return this.last;
 	}
 
 	/**
@@ -348,6 +397,14 @@ public abstract class UnoGame {
 			this.houseRules = UnoRuleUtils.getHouseRules(getRules());
 
 		return this.houseRules;
+	}
+
+	public void endGame() {
+		this.endRequested = true;
+	}
+
+	public boolean isEndRequested() {
+		return this.endRequested;
 	}
 
 }

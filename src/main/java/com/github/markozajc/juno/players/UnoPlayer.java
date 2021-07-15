@@ -2,16 +2,12 @@ package com.github.markozajc.juno.players;
 
 import java.util.List;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import javax.annotation.*;
 
-import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.cards.UnoCardColor;
+import com.github.markozajc.juno.cards.*;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
-import com.github.markozajc.juno.players.impl.UnoConsolePlayer;
-import com.github.markozajc.juno.players.impl.UnoStrategicPlayer;
-import com.github.markozajc.juno.players.impl.UnoStreamPlayer;
+import com.github.markozajc.juno.players.impl.*;
 
 /**
  * A class representing a player in UNO. A UNO player owns {@link UnoHand}s and
@@ -21,7 +17,7 @@ import com.github.markozajc.juno.players.impl.UnoStreamPlayer;
  * what color to assign to wild cards ({@link #chooseColor(UnoGame)}). A
  * {@link UnoPlayer} can either be autonomous (an example of that would be
  * {@link UnoStrategicPlayer}) or controlled by a human being (for example
- * {@link UnoStreamPlayer} and {@link UnoConsolePlayer})
+ * {@link UnoStreamPlayer} and {@link UnoConsolePlayer}).
  *
  * @author Marko Zajc
  */
@@ -38,7 +34,7 @@ public abstract class UnoPlayer {
 	 * @param name
 	 *            this {@link UnoPlayer}'s name
 	 */
-	public UnoPlayer(@Nonnull String name) {
+	protected UnoPlayer(@Nonnull String name) {
 		this.hand = new UnoHand();
 		this.name = name;
 	}
@@ -90,6 +86,7 @@ public abstract class UnoPlayer {
 	 *            the ongoing {@link UnoGame}
 	 * @param next
 	 *            the next {@link UnoPlayer}
+	 *
 	 * @return the {@link UnoCard} to place or {@code null} if the hand wants to draw a
 	 *         card
 	 */
@@ -101,6 +98,7 @@ public abstract class UnoPlayer {
 	 *
 	 * @param game
 	 *            the ongoing {@link UnoGame}
+	 *
 	 * @return a {@link UnoCardColor}
 	 */
 	@Nonnull
@@ -117,6 +115,7 @@ public abstract class UnoPlayer {
 	 *            the just-drawn {@link UnoCard}
 	 * @param next
 	 *            the next {@link UnoPlayer}
+	 *
 	 * @return whether the card should be placed
 	 */
 	public abstract boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard, UnoPlayer next);

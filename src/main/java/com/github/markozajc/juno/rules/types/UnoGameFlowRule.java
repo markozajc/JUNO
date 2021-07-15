@@ -1,16 +1,13 @@
 package com.github.markozajc.juno.rules.types;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import javax.annotation.*;
 
 import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.game.UnoControlledGame;
-import com.github.markozajc.juno.game.UnoGame;
+import com.github.markozajc.juno.game.*;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.UnoRule;
-import com.github.markozajc.juno.rules.types.flow.UnoInitializationConclusion;
-import com.github.markozajc.juno.rules.types.flow.UnoPhaseConclusion;
+import com.github.markozajc.juno.rules.types.flow.*;
 
 /**
  * A rule type that controls the flow of the game in {@link UnoControlledGame}. Flow
@@ -40,10 +37,11 @@ public interface UnoGameFlowRule extends UnoRule {
 	 *            {@link UnoPlayer} of this turn
 	 * @param game
 	 *            the ongoing {@link UnoGame}
+	 *
 	 * @return a {@link UnoInitializationConclusion}
 	 */
 	@SuppressWarnings("unused")
-	public default UnoInitializationConclusion initializationPhase(@Nonnull UnoPlayer player, @Nonnull UnoGame game) {
+	default UnoInitializationConclusion initializationPhase(@Nonnull UnoPlayer player, @Nonnull UnoGame game) {
 		return UnoInitializationConclusion.NOTHING;
 	}
 
@@ -61,11 +59,29 @@ public interface UnoGameFlowRule extends UnoRule {
 	 * @param decidedCard
 	 *            the {@link UnoCard} the hand has decided to place (or {@code null} -
 	 *            request to draw a card)
+	 *
 	 * @return a {@link UnoPhaseConclusion}
 	 */
 	@SuppressWarnings("unused")
-	public default UnoPhaseConclusion decisionPhase(@Nonnull UnoPlayer player, @Nonnull UnoGame game, @Nullable UnoCard decidedCard) {
+	default UnoPhaseConclusion decisionPhase(@Nonnull UnoPlayer player, @Nonnull UnoGame game,
+											 @Nullable UnoCard decidedCard) {
 		return UnoPhaseConclusion.NOTHING;
+	}
+
+	/**
+	 * The phase that is called after the game is ended for any reason. This phase is
+	 * meant for altering the winner of the game chosen by the default game behaviour.
+	 *
+	 * @param winner
+	 *            the chosen {@link UnoWinner}
+	 * @param game
+	 *            the ongoing {@link UnoGame}
+	 *
+	 * @return a {@link UnoFinishConclusion}
+	 */
+	@SuppressWarnings("unused")
+	default UnoFinishConclusion finishPhase(@Nonnull UnoWinner winner, @Nonnull UnoGame game) {
+		return UnoFinishConclusion.NOTHING;
 	}
 
 }

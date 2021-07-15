@@ -11,8 +11,7 @@ import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule;
 import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
-import com.github.markozajc.juno.rules.types.flow.UnoInitializationConclusion;
-import com.github.markozajc.juno.rules.types.flow.UnoPhaseConclusion;
+import com.github.markozajc.juno.rules.types.flow.*;
 
 /**
  * A house {@link UnoRulePack} that implements the official SevenO house rule. The
@@ -33,26 +32,21 @@ public class UnoSevenORulePack {
 	private static UnoRulePack pack;
 
 	private static void createPack() {
-		pack = new UnoRulePack(new HandSwappingRule());
+		pack = new UnoRulePack(new FlowRule());
 	}
 
-	/**
-	 * The hand swapping flow rule that implements the core SevenO idea.
-	 *
-	 * @author Marko Zajc
-	 */
-	public static class HandSwappingRule implements UnoGameFlowRule {
+	static class FlowRule implements UnoGameFlowRule {
 
 		@Override
 		public UnoInitializationConclusion initializationPhase(UnoPlayer player, UnoGame game) {
 			if (game.getTopCard() instanceof UnoNumericCard && game.getTopCard().isOpen()
-					&& (((UnoNumericCard) game.getTopCard()).getNumber() == 0
-							|| ((UnoNumericCard) game.getTopCard()).getNumber() == 7)) {
+				&& (((UnoNumericCard) game.getTopCard()).getNumber() == 0
+					|| ((UnoNumericCard) game.getTopCard()).getNumber() == 7)) {
 				// If the top card is a numeric card with a seven or a zero
 
 				game.getTopCard().markClosed();
 
-				UnoPlayer foe = game.nextPlayer(player);
+				UnoPlayer foe = game.getNextPlayer(player);
 				UnoHand playerHand = player.getHand();
 				UnoHand foeHand = foe.getHand();
 				player.setHand(foeHand);
@@ -68,8 +62,8 @@ public class UnoSevenORulePack {
 		@Override
 		public UnoPhaseConclusion decisionPhase(UnoPlayer player, UnoGame game, UnoCard decidedCard) {
 			if (decidedCard instanceof UnoNumericCard && !decidedCard.isOpen()
-					&& (((UnoNumericCard) decidedCard).getNumber() == 0
-							|| ((UnoNumericCard) decidedCard).getNumber() == 7)) {
+				&& (((UnoNumericCard) decidedCard).getNumber() == 0
+					|| ((UnoNumericCard) decidedCard).getNumber() == 7)) {
 				decidedCard.markOpen();
 			}
 

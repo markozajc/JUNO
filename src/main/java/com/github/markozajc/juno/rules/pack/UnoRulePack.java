@@ -1,17 +1,12 @@
 package com.github.markozajc.juno.rules.pack;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import javax.annotation.CheckReturnValue;
-import javax.annotation.Nonnull;
+import javax.annotation.*;
 
-import com.github.markozajc.juno.rules.UnoRule;
+import com.github.markozajc.juno.rules.*;
 import com.github.markozajc.juno.rules.UnoRule.ConflictResolution;
-import com.github.markozajc.juno.rules.UnoRuleConflictException;
 
 /**
  * A pack of {@link UnoRule}s. Multiple {@link UnoRulePack}s can be combined into one
@@ -51,6 +46,7 @@ public class UnoRulePack {
 	 *
 	 * @param packs
 	 *            the {@link UnoRulePack}s
+	 *
 	 * @return the combined {@link UnoRulePack}
 	 */
 	@SuppressWarnings("null")
@@ -65,6 +61,7 @@ public class UnoRulePack {
 	 *
 	 * @param packs
 	 *            the {@link UnoRulePack}s
+	 *
 	 * @return the combined {@link UnoRulePack}
 	 */
 	@SuppressWarnings("null")
@@ -87,6 +84,7 @@ public class UnoRulePack {
 	 *
 	 * @param packs
 	 *            {@link Collection} of {@link UnoRulePack}s to include
+	 *
 	 * @return the combined {@link UnoRulePack}
 	 */
 	@CheckReturnValue
@@ -104,6 +102,7 @@ public class UnoRulePack {
 	 *
 	 * @param packs
 	 *            {@link UnoRulePack}s to include
+	 *
 	 * @return the combined {@link UnoRulePack}
 	 */
 	@CheckReturnValue
@@ -118,8 +117,10 @@ public class UnoRulePack {
 	 * {@link UnoRule}s in a new {@link UnoRulePack}.
 	 *
 	 * @return the {@link UnoRulePack} with resolved conflicts
+	 *
 	 * @throws UnoRuleConflictException
 	 *             in case a {@link ConflictResolution#FAIL} is returned at any time
+	 *
 	 * @see UnoRule#conflictsWith(UnoRule)
 	 */
 	@CheckReturnValue
@@ -145,7 +146,7 @@ public class UnoRulePack {
 					switch (conflict) {
 						case FAIL:
 							throw new UnoRuleConflictException(rule, checkRule);
-							// Fails if there need be
+						// Fails if there need be
 
 						case BACKOFF:
 							conflicting.add(rule);

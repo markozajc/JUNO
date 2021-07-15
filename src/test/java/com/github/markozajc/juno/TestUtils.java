@@ -1,13 +1,11 @@
 package com.github.markozajc.juno;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.cards.UnoCardColor;
+import com.github.markozajc.juno.cards.*;
 import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
@@ -15,11 +13,41 @@ import com.github.markozajc.juno.players.UnoPlayer;
 
 /**
  * This is not actually a test class. Instead it provides shared utility methods to
- * the tests themselves.
+ * the tests themselves. Acquired with {@link #createCheckState()}.
  *
  * @author Marko Zajc
  */
 public class TestUtils {
+
+	/**
+	 * A class storing a boolean state
+	 *
+	 * @author Marko Zajc
+	 */
+	public static class CheckState {
+
+		private boolean state = false;
+
+		CheckState() {}
+
+		/**
+		 * @return the state
+		 */
+		public boolean getState() {
+			return this.state;
+		}
+
+		/**
+		 * Sets the state
+		 *
+		 * @param state
+		 *            the new state
+		 */
+		public void setState(boolean state) {
+			this.state = state;
+		}
+
+	}
 
 	private static class DummyUnoPlayer extends UnoPlayer {
 
@@ -40,31 +68,9 @@ public class TestUtils {
 
 		@Override
 		public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard, UnoPlayer next) {
-			throw new UnsupportedOperationException(
-					"DummyUnoHand can not decide whether it should play drawn cards or not.");
+			throw new UnsupportedOperationException("DummyUnoHand can not decide whether it should play drawn cards or not.");
 		}
 
-	}
-
-	private static class DummyUnoDeck implements UnoDeck {
-
-		@Nonnull
-		private final List<UnoCard> cards;
-
-		public DummyUnoDeck(@Nonnull List<UnoCard> cards) {
-			this.cards = cards;
-		}
-
-		@Override
-		public int getExpectedSize() {
-			return this.cards.size();
-		}
-
-		@Override
-		public List<UnoCard> getCards() {
-			return this.cards;
-			// Doesn't actually make a clone. A production deck should always make a clone here.
-		}
 	}
 
 	/**
@@ -76,14 +82,16 @@ public class TestUtils {
 	 *            collection number one
 	 * @param collection2
 	 *            collection number two
+	 *
 	 * @return whether the collection contain equal items or not
 	 */
-	public static <T> boolean listEqualsUnordered(Collection<? extends T> collection1, Collection<? extends T> collection2) {
+	public static <T> boolean listEqualsUnordered(Collection<? extends T> collection1,
+												  Collection<? extends T> collection2) {
 		System.out.println("[= COMPARING COLLECTIONS /unordered =]");
-		System.out.println(
-			"Collection 1: " + collection1.stream().map(Object::toString).collect(Collectors.joining(",")));
-		System.out.println(
-			"Collection 2: " + collection2.stream().map(Object::toString).collect(Collectors.joining(",")));
+		System.out
+			.println("Collection 1: " + collection1.stream().map(Object::toString).collect(Collectors.joining(",")));
+		System.out
+			.println("Collection 2: " + collection2.stream().map(Object::toString).collect(Collectors.joining(",")));
 		return collection1.size() == collection2.size() && collection1.containsAll(collection2);
 	}
 
@@ -97,6 +105,7 @@ public class TestUtils {
 	 * @param cards
 	 *            {@link Collection} of {@link UnoCard}s the {@link UnoHand} should
 	 *            contain
+	 *
 	 * @return the created {@link UnoPlayer}
 	 */
 	@Nonnull
@@ -106,16 +115,28 @@ public class TestUtils {
 
 	/**
 	 * Returns a dummy {@link UnoDeck} containing a preferred {@link List} of cards.
-	 * {@link UnoDeck#getExpectedSize()} will contain the size of the provided
-	 * {@link List}.
 	 *
 	 * @param cards
 	 *            {@link List} of {@link UnoCard}s the {@link UnoDeck} should contain
+	 *
 	 * @return the built {@link UnoDeck}
+	 *
+	 * @deprecated no longer of any use as {@link UnoDeck}s can be made using their
+	 *             constructor
 	 */
+	@Deprecated
 	@Nonnull
-	public static DummyUnoDeck getDummyDeck(@Nonnull List<UnoCard> cards) {
-		return new DummyUnoDeck(cards);
+	public static UnoDeck getDummyDeck(@Nonnull List<UnoCard> cards) {
+		return new UnoDeck(cards);
+	}
+
+	/**
+	 * Creates a new {@link CheckState}.
+	 *
+	 * @return the new {@link CheckState}
+	 */
+	public static CheckState createCheckState() {
+		return new CheckState();
 	}
 
 }

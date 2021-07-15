@@ -2,8 +2,7 @@ package com.github.markozajc.juno.game;
 
 import java.util.List;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
+import javax.annotation.*;
 
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.decks.UnoDeck;
@@ -11,8 +10,7 @@ import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.UnoRule;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
-import com.github.markozajc.juno.rules.types.flow.UnoInitializationConclusion;
-import com.github.markozajc.juno.rules.types.flow.UnoPhaseConclusion;
+import com.github.markozajc.juno.rules.types.flow.*;
 import com.github.markozajc.juno.utils.UnoRuleUtils;
 
 /**
@@ -37,8 +35,8 @@ public abstract class UnoControlledGame extends UnoGame {
 	 * @param rules
 	 *            the {@link UnoRulePack} for this {@link UnoGame}
 	 */
-	public UnoControlledGame(@Nonnull UnoPlayer first, @Nonnull UnoPlayer second, @Nonnull UnoDeck unoDeck,
-			@Nonnegative int cardAmount, @Nonnull UnoRulePack rules) {
+	protected UnoControlledGame(@Nonnull UnoPlayer first, @Nonnull UnoPlayer second, @Nonnull UnoDeck unoDeck,
+								@Nonnegative int cardAmount, @Nonnull UnoRulePack rules) {
 		super(first, second, unoDeck, cardAmount, rules);
 	}
 
@@ -53,7 +51,8 @@ public abstract class UnoControlledGame extends UnoGame {
 
 	}
 
-	private static boolean initializationPhase(@Nonnull UnoPlayer player, @Nonnull UnoGame game, @Nonnull List<UnoGameFlowRule> rules) {
+	private static boolean initializationPhase(@Nonnull UnoPlayer player, @Nonnull UnoGame game,
+											   @Nonnull List<UnoGameFlowRule> rules) {
 		boolean repeat = true;
 		boolean loseATurn = false;
 		while (repeat) {
@@ -72,12 +71,17 @@ public abstract class UnoControlledGame extends UnoGame {
 		return loseATurn;
 	}
 
-	private static void decisionPhase(@Nonnull UnoPlayer player, @Nonnull UnoGame game, @Nonnull List<UnoGameFlowRule> rules) {
+	private static void decisionPhase(@Nonnull UnoPlayer player, @Nonnull UnoGame game,
+									  @Nonnull List<UnoGameFlowRule> rules) {
 		boolean repeatDecision = true;
 		while (repeatDecision) {
 			repeatDecision = false;
 
-			UnoCard decision = player.playCard(game, game.nextPlayer(player));
+			UnoCard decision = player.playCard(game, game.getNextPlayer(player));
+
+			if (game.isEndRequested())
+				return;
+			// No need to continue
 
 			for (UnoGameFlowRule rule : rules) {
 				UnoPhaseConclusion fpc = rule.decisionPhase(player, game, decision);

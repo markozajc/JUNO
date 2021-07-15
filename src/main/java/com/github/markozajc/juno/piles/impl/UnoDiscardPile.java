@@ -1,8 +1,6 @@
 package com.github.markozajc.juno.piles.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import javax.annotation.Nonnull;
 

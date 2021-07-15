@@ -1,10 +1,8 @@
 package com.github.markozajc.juno.cards.impl;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
+import javax.annotation.*;
 
-import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.cards.UnoCardColor;
+import com.github.markozajc.juno.cards.*;
 
 /**
  * A class representing a numeric card in UNO. There are 2 cards for each number from
@@ -25,6 +23,7 @@ public class UnoNumericCard extends UnoCard {
 	 *            a number in the range of 0-9
 	 * @param color
 	 *            any color except for {@link UnoCardColor#WILD}
+	 *
 	 * @throws IllegalArgumentException
 	 *             if {@code number} is not in the allowed range or {@code color} is
 	 *             equal to {@link UnoCardColor#WILD}
@@ -32,7 +31,7 @@ public class UnoNumericCard extends UnoCard {
 	public UnoNumericCard(@Nonnull UnoCardColor color, @Nonnegative int number) {
 		super(color);
 
-		if (color.equals(UnoCardColor.WILD))
+		if (color == UnoCardColor.WILD)
 			throw new IllegalArgumentException("The wild card color is not allowed!");
 
 		if (number > 9 || number < 0)

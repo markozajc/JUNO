@@ -1,15 +1,12 @@
 package com.github.markozajc.juno.players.impl;
 
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.util.List;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.cards.UnoCardColor;
+import com.github.markozajc.juno.cards.*;
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.players.UnoPlayer;
@@ -50,27 +47,38 @@ public class UnoStreamPlayer extends UnoPlayer {
 	@Override
 	public UnoCard playCard(UnoGame game, UnoPlayer next) {
 		UnoCard top = game.getDiscard().getTop();
-		List<UnoCard> possible = UnoRuleUtils.combinedPlacementAnalysis(top, this.getHand().getCards(), game.getRules(),
-			this.getHand());
+		List<UnoCard> possible =
+			UnoRuleUtils.combinedPlacementAnalysis(top, this.getHand().getCards(), game.getRules(), this.getHand());
 
-		this.ps.println("Choose a card: [" + next.getName() + " hand size: " + next.getHand().getSize()
-				+ " | Draw pile size: " + game.getDraw().getSize() + " | Discard pile size: "
-				+ game.getDiscard().getSize() + " | Top card: " + game.getDiscard().getTop() + "]");
+		this.ps.println("Choose a card: [" + next.getName() +
+			" hand size: " +
+			next.getHand().getSize() +
+			" | Draw pile size: " +
+			game.getDraw().getSize() +
+			" | Discard pile size: " +
+			game.getDiscard().getSize() +
+			" | Top card: " +
+			game.getDiscard().getTop() +
+			"]");
 
 		List<UnoDrawCard> drawCards = UnoProgressiveRulePack.getConsecutive(game.getDiscard());
 		if (!drawCards.isEmpty()) {
-			this.ps.println("0 - Draw " + drawCards.size() * drawCards.get(0).getAmount() + " cards from "
-					+ drawCards.size() + " " + top + (drawCards.size() == 1 ? "" : "s"));
+			this.ps.println("0 - Draw " + drawCards.size() * drawCards.get(0).getAmount() +
+				" cards from " +
+				drawCards.size() +
+				" " +
+				top +
+				(drawCards.size() == 1 ? "" : "s"));
 		} else {
-			this.ps.println("0 - Draw");
+			this.ps.println("0 \u2022 Draw");
 		}
 
 		int i = 1;
 		for (UnoCard card : this.getHand().getCards()) {
 			if (possible.contains(card)) {
-				this.ps.println(i + " - " + card + "");
+				this.ps.println(i + " \u2022 " + card);
 			} else {
-				this.ps.println(i + " - \t" + card);
+				this.ps.println(i + " - " + card);
 			}
 
 			try {
@@ -81,16 +89,22 @@ public class UnoStreamPlayer extends UnoPlayer {
 
 			i++;
 		}
+		this.ps.println("q \u2022 Quit");
 
 		while (true) {
 			String nextLine = this.scanner.nextLine();
 			if (nextLine.equalsIgnoreCase("rules")) {
 				this.ps.println("Active rules: " + game.getRules()
-						.getRules()
-						.stream()
-						.map(r -> r.getClass().getSimpleName())
-						.collect(Collectors.joining(", ")));
+					.getRules()
+					.stream()
+					.map(r -> r.getClass().getSimpleName())
+					.collect(Collectors.joining(", ")));
 				continue;
+			}
+
+			if ("q".equalsIgnoreCase(nextLine)) {
+				game.endGame();
+				return null;
 			}
 
 			int choice;
@@ -124,10 +138,10 @@ public class UnoStreamPlayer extends UnoPlayer {
 	public UnoCardColor chooseColor(UnoGame game) {
 		this.ps.println("Choose a color:");
 
-		this.ps.println("0 - Yellow");
-		this.ps.println("1 - Red");
-		this.ps.println("2 - Green");
-		this.ps.println("3 - Blue");
+		this.ps.println("0 \u2022 Yellow");
+		this.ps.println("1 \u2022 Red");
+		this.ps.println("2 \u2022 Green");
+		this.ps.println("3 \u2022 Blue");
 
 		while (true) {
 			int choice;

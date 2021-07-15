@@ -5,19 +5,13 @@
 
 	<groupId>com.github.markozajc</groupId>
 	<artifactId>juno</artifactId>
-	<version>2.0</version>
+	<version>2.0.1</version>
 
 	<name>JUNO</name>
 	<description>A UNO library for Java</description>
 	<url>https://github.com/markozajc/JUNO</url>
 
 	<inceptionYear>2019</inceptionYear>
-
-	<scm>
-		<url>https://github.com/markozajc/JUNO</url>
-		<connection>scm:git:git://github.com/markozajc/JUNO.git</connection>
-		<developerConnection>scm:git:ssh://github.com:markozajc/JUNO.git</developerConnection>
-	</scm>
 
 	<licenses>
 		<license>
@@ -29,75 +23,64 @@
 	<developers>
 		<developer>
 			<name>Marko Zajc</name>
-			<email>marko.zajc@protonmail.com</email>
+			<email>marko@zajc.eu.org</email>
 			<url>https://github.com/markozajc</url>
 		</developer>
 	</developers>
+
+	<scm>
+		<url>https://github.com/markozajc/JUNO</url>
+		<connection>scm:git:git://github.com/markozajc/JUNO.git</connection>
+		<developerConnection>scm:git:ssh://github.com:markozajc/JUNO.git</developerConnection>
+	</scm>
 
 	<issueManagement>
 		<url>https://github.com/markozajc/JUNO/issues</url>
 	</issueManagement>
 
-	<distributionManagement>
-
-		<repository>
-			<id>bintray</id>
-			<name>Bintray Repo</name>
-			<url>https://api.bintray.com/maven/iareas/Libraries/JUNO/;publish=1</url>
-		</repository>
-
-	</distributionManagement>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven.compiler.source>8</maven.compiler.source>
+		<maven.compiler.target>8</maven.compiler.target>
 	</properties>
+
+	<dependencies>
+
+		<!-- Tests -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.7.2</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Anotations -->
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+			<version>3.0.2</version>
+		</dependency>
+
+	</dependencies>
 
 	<build>
 		<plugins>
 
+			<!-- mvn run support -->
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.0</version>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.0.0</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<mainClass>com.github.markozajc.juno.game.impl.UnoConsoleGame</mainClass>
 				</configuration>
 			</plugin>
 
+			<!-- Unit tests -->
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>3.0.1</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.0.1</version>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.22.1</version>
+				<version>2.22.2</version>
 				<executions>
 					<execution>
 						<id>test</id>
@@ -108,33 +91,96 @@
 				</executions>
 			</plugin>
 
+			<!-- Version checker -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.6.0</version>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>2.8.1</version>
 				<configuration>
-					<mainClass>com.github.markozajc.juno.game.impl.UnoConsoleGame</mainClass>
+					<rulesUri>file://${project.basedir}/versions-ruleset.xml</rulesUri>
 				</configuration>
 			</plugin>
 
 		</plugins>
 	</build>
-	<dependencies>
 
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-engine</artifactId>
-			<version>5.2.0</version>
-			<scope>test</scope>
-		</dependency>
-		<!-- Tests -->
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
 
-		<dependency>
-			<groupId>com.google.code.findbugs</groupId>
-			<artifactId>jsr305</artifactId>
-			<version>3.0.2</version>
-		</dependency>
-		<!-- @Nonnull, @Nevernull and such anotations -->
+					<!-- Javadoc -->
+					<plugin>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>3.3.0</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<doclint>none</doclint>
+						</configuration>
+					</plugin>
 
-	</dependencies>
+					<!-- Source -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>3.2.1</version>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+					<!-- Signing -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>3.0.1</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+								<configuration>
+									<keyname>
+										marko@zajc.eu.org
+									</keyname>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<!-- Nexus deployment -->
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<version>1.6.8</version>
+						<extensions>true</extensions>
+						<configuration>
+							<serverId>ossrh</serverId>
+							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+							<autoReleaseAfterClose>false</autoReleaseAfterClose>
+						</configuration>
+					</plugin>
+
+				</plugins>
+			</build>
+		</profile>
+
+	</profiles>
+
+
 </project>

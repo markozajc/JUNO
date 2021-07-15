@@ -1,20 +1,13 @@
 package com.github.markozajc.juno.utils;
 
+import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.cards.UnoCardColor;
-import com.github.markozajc.juno.cards.impl.UnoActionCard;
-import com.github.markozajc.juno.cards.impl.UnoActionCard.UnoAction;
-import com.github.markozajc.juno.cards.impl.UnoDrawCard;
-import com.github.markozajc.juno.cards.impl.UnoNumericCard;
-import com.github.markozajc.juno.cards.impl.UnoWildCard;
+import com.github.markozajc.juno.cards.*;
+import com.github.markozajc.juno.cards.impl.*;
+import com.github.markozajc.juno.cards.impl.UnoActionCard.UnoFlowAction;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.piles.impl.UnoDiscardPile;
@@ -44,8 +37,10 @@ public class UnoUtils {
 	 * @param cards
 	 *            the {@link Collection} of cards to analyze (eg. {@link UnoHand}'s
 	 *            cards)
+	 *
 	 * @return a {@link List} of all possible cards from {@code cards} can be placed on
 	 *         the {@code targetCard}.
+	 *
 	 * @deprecated This method only supports a hard-coded set of rules. Use
 	 *             {@link UnoRuleUtils#combinedPlacementAnalysis(UnoCard, Collection, com.github.markozajc.juno.rules.pack.UnoRulePack, UnoHand)}
 	 *             instead.
@@ -58,9 +53,9 @@ public class UnoUtils {
 			UnoDrawCard castTop = (UnoDrawCard) targetCard;
 
 			result.addAll(UnoUtils.filterKind(UnoDrawCard.class, cards)
-					.stream()
-					.filter(c -> c.getAmount() == castTop.getAmount())
-					.collect(Collectors.toList()));
+				.stream()
+				.filter(c -> c.getAmount() == castTop.getAmount())
+				.collect(Collectors.toList()));
 
 			return result;
 		}
@@ -68,7 +63,7 @@ public class UnoUtils {
 		// case the other player placed a draw card (a progressive UNO thing, similar to the
 		// "check" state in Chess)
 
-		if (targetCard instanceof UnoWildCard && targetCard.getColor().equals(UnoCardColor.WILD))
+		if (targetCard instanceof UnoWildCard && targetCard.getColor() == UnoCardColor.WILD)
 			return Collections.emptyList();
 		// No card can be placed on an unset wild card
 
@@ -76,9 +71,9 @@ public class UnoUtils {
 			UnoNumericCard castTop = (UnoNumericCard) targetCard;
 
 			result.addAll(UnoUtils.filterKind(UnoNumericCard.class, cards)
-					.stream()
-					.filter(c -> c.getNumber() == castTop.getNumber())
-					.collect(Collectors.toList()));
+				.stream()
+				.filter(c -> c.getNumber() == castTop.getNumber())
+				.collect(Collectors.toList()));
 		}
 		// Adds all allowed numerical cards.
 
@@ -86,9 +81,9 @@ public class UnoUtils {
 			UnoActionCard castTop = (UnoActionCard) targetCard;
 
 			result.addAll(UnoUtils.filterKind(UnoActionCard.class, cards)
-					.stream()
-					.filter(c -> c.getAction() == castTop.getAction())
-					.collect(Collectors.toList()));
+				.stream()
+				.filter(c -> c.getFlowAction() == castTop.getFlowAction())
+				.collect(Collectors.toList()));
 		}
 		// Adds all allowed action cards
 
@@ -96,16 +91,16 @@ public class UnoUtils {
 			UnoDrawCard castTop = (UnoDrawCard) targetCard;
 
 			result.addAll(UnoUtils.filterKind(UnoDrawCard.class, cards)
-					.stream()
-					.filter(c -> c.getAmount() == castTop.getAmount())
-					.collect(Collectors.toList()));
+				.stream()
+				.filter(c -> c.getAmount() == castTop.getAmount())
+				.collect(Collectors.toList()));
 		}
 		// Adds all allowed draw cards.
 
 		result.addAll(UnoUtils.getColorCards(UnoCardColor.WILD, cards));
 		// Adds all wild-colored cards. Wild cards can be placed on anything.
 
-		if (!targetCard.getColor().equals(UnoCardColor.WILD)) {
+		if (targetCard.getColor() != UnoCardColor.WILD) {
 			for (UnoCard card : UnoUtils.getColorCards(targetCard.getColor(), cards)) {
 				if (!result.contains(card))
 					result.add(card);
@@ -123,13 +118,14 @@ public class UnoUtils {
 	 *
 	 * @param cards
 	 *            cards to analyze
+	 *
 	 * @return {@link Entry} of quantity and {@link UnoCardColor}
 	 */
 	public static List<Entry<Long, UnoCardColor>> analyzeColors(Collection<UnoCard> cards) {
 		List<Entry<Long, UnoCardColor>> result = new ArrayList<>();
 
 		for (UnoCardColor color : UnoCardColor.values())
-			result.add(new SimpleEntry<>(cards.stream().filter(c -> c.getColor().equals(color)).count(), color));
+			result.add(new SimpleEntry<>(cards.stream().filter(c -> c.getColor() == color).count(), color));
 
 		Collections.sort(result, (v1, v2) -> v2.getKey().compareTo(v1.getKey()));
 		return result;
@@ -144,10 +140,11 @@ public class UnoUtils {
 	 *            {@link UnoCardColor} to search for
 	 * @param cards
 	 *            {@link Collection} of {@link UnoCard}s to search through
+	 *
 	 * @return {@link List} containing only cards of a certain color
 	 */
 	public static <T extends UnoCard> List<T> getColorCards(UnoCardColor color, Collection<T> cards) {
-		return cards.stream().filter(c -> c.getColor().equals(color)).collect(Collectors.toList());
+		return cards.stream().filter(c -> c.getColor() == color).collect(Collectors.toList());
 	}
 
 	/**
@@ -158,12 +155,13 @@ public class UnoUtils {
 	 *            {@link UnoCardColor} to search for
 	 * @param cards
 	 *            {@link Collection} of {@link UnoCard}s to search through
+	 *
 	 * @return {@link List} containing only cards of a certain color
 	 */
-	public static List<UnoActionCard> getActionCards(UnoAction action, Collection<UnoCard> cards) {
+	public static List<UnoActionCard> getActionCards(UnoFlowAction action, Collection<UnoCard> cards) {
 		return filterKind(UnoActionCard.class, cards).stream()
-				.filter(c -> c.getAction().equals(action))
-				.collect(Collectors.toList());
+			.filter(c -> c.getFlowAction() == action)
+			.collect(Collectors.toList());
 	}
 
 	/**
@@ -174,12 +172,13 @@ public class UnoUtils {
 	 *            number to search for
 	 * @param cards
 	 *            {@link List} of {@link UnoCard}s to search through
+	 *
 	 * @return {@link List} containing only cards of a certain color
 	 */
 	public static List<UnoNumericCard> getNumberCards(int number, Collection<UnoCard> cards) {
 		return filterKind(UnoNumericCard.class, cards).stream()
-				.filter(c -> c.getNumber() == number)
-				.collect(Collectors.toList());
+			.filter(c -> c.getNumber() == number)
+			.collect(Collectors.toList());
 	}
 
 	/**
@@ -191,6 +190,7 @@ public class UnoUtils {
 	 *            the {@link Class} of {@link UnoCard} to search for
 	 * @param cards
 	 *            {@link Collection} of {@link UnoCard}s to search through
+	 *
 	 * @return {@link List} of cards of a certain kind
 	 */
 	public static <T extends UnoCard> List<T> filterKind(Class<T> targetKind, Collection<UnoCard> cards) {

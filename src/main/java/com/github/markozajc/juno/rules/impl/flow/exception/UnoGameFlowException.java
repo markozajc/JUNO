@@ -6,6 +6,7 @@ import com.github.markozajc.juno.rules.types.flow.UnoInitializationConclusion;
  * An exception signaling that something went wrong during UNO game flow calculation.
  *
  * @author Marko Zajc
+ *
  * @deprecated Use {@link UnoInitializationConclusion} instead.
  */
 @Deprecated

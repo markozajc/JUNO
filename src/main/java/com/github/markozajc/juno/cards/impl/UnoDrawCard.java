@@ -1,10 +1,8 @@
 package com.github.markozajc.juno.cards.impl;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
+import javax.annotation.*;
 
-import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.cards.UnoCardColor;
+import com.github.markozajc.juno.cards.*;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.players.UnoPlayer;
@@ -32,13 +30,14 @@ public class UnoDrawCard extends UnoCard {
 	 *
 	 * @param color
 	 *            card's color
+	 *
 	 * @throws IllegalArgumentException
 	 *             if {@code color} is equal to {@link UnoCardColor#WILD}
 	 */
 	public UnoDrawCard(@Nonnull UnoCardColor color) {
 		this(color, 2);
 
-		if (color.equals(UnoCardColor.WILD))
+		if (color == UnoCardColor.WILD)
 			throw new IllegalArgumentException("The wild card color is not for draw two cards!");
 	}
 
@@ -55,8 +54,8 @@ public class UnoDrawCard extends UnoCard {
 	}
 
 	/**
-	 * Marks this card as "closed" ("played"). This means that a player has already drawn because of
-	 * it.
+	 * Marks this card as "closed" ("played"). This means that a player has already drawn
+	 * because of it.
 	 *
 	 * @deprecated You shouldn't be using this directly as
 	 *             {@link #drawTo(UnoGame, UnoPlayer)} already does it for you.
@@ -90,6 +89,7 @@ public class UnoDrawCard extends UnoCard {
 	 *            the ongoing {@link UnoGame}
 	 * @param player
 	 *            the owner of the {@link UnoHand} to add the drawn cards to
+	 *
 	 * @throws IllegalStateException
 	 *             in case this card is already marked as closed
 	 */

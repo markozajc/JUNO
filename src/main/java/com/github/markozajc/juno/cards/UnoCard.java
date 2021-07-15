@@ -1,7 +1,6 @@
 package com.github.markozajc.juno.cards;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import javax.annotation.*;
 
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.hands.UnoHand;
@@ -31,7 +30,7 @@ public abstract class UnoCard {
 	 *            be able able to set a color mask using
 	 *            {@link #setColorMask(UnoCardColor)}
 	 */
-	public UnoCard(@Nonnull UnoCardColor color) {
+	protected UnoCard(@Nonnull UnoCardColor color) {
 		this.color = color;
 	}
 
@@ -60,14 +59,23 @@ public abstract class UnoCard {
 
 	/**
 	 * Sets the color mask. A color mask is the color set above the original color and is
-	 * returned on {@link #getColor()} (but not on {@link #getOriginalColor()}).
+	 * returned on {@link #getColor()} (but not on {@link #getOriginalColor()}). A color
+	 * mask can only be set once and can only be reset with {@link #reset()}. Color masks
+	 * can only be applied to cards with the original color of {@link UnoCardColor#WILD}.
 	 *
 	 * @param mask
-	 *            the new color mask or {@code null} to remove the color mask
+	 *            the new color mask
+	 *
+	 * @throws IllegalStateException
+	 *             if this {@link UnoCard}'s {@link #getOriginalColor()} is not
+	 *             {@link UnoCardColor#WILD} or if the color mask has already been set
 	 */
 	public final void setColorMask(@Nullable UnoCardColor mask) {
-		if (!getOriginalColor().equals(UnoCardColor.WILD))
+		if (getOriginalColor() != UnoCardColor.WILD)
 			throw new IllegalStateException("Card's original color must be \"WILD\" if you want to set a color.");
+
+		if (this.mask != null)
+			throw new IllegalStateException("Can't set the color mask more than once.");
 
 		this.mask = mask;
 	}
@@ -78,6 +86,7 @@ public abstract class UnoCard {
 	 *
 	 * @param placer
 	 *            this card's placer
+	 *
 	 * @throws IllegalStateException
 	 *             in case the placer has already been set.
 	 */
@@ -96,6 +105,7 @@ public abstract class UnoCard {
 	 * the hands shouldn't have this value set.
 	 *
 	 * @return this card's placer
+	 *
 	 * @throws IllegalStateException
 	 *             in case this card's placer hasn't been set yet
 	 */
@@ -157,6 +167,7 @@ public abstract class UnoCard {
 	 *
 	 * @throws IllegalStateException
 	 *             if the {@link UnoCard} is already closed
+	 *
 	 * @see #isOpen()
 	 */
 	public void markClosed() {

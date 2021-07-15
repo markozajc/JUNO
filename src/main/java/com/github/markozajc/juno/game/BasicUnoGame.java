@@ -1,16 +1,12 @@
 package com.github.markozajc.juno.game;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import javax.annotation.Nonnull;
 
-import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.cards.UnoCardColor;
-import com.github.markozajc.juno.cards.UnoStandardDeck;
-import com.github.markozajc.juno.cards.impl.UnoActionCard;
-import com.github.markozajc.juno.cards.impl.UnoDrawCard;
-import com.github.markozajc.juno.cards.impl.UnoWildCard;
+import com.github.markozajc.juno.cards.*;
+import com.github.markozajc.juno.cards.impl.*;
+import com.github.markozajc.juno.decks.impl.UnoStandardDeck;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
@@ -24,6 +20,7 @@ import com.github.markozajc.juno.utils.UnoRuleUtils;
  * extend.
  *
  * @author Marko Zajc
+ *
  * @deprecated Only supports a hard-coded set of rules and does not utilize some of
  *             the newer utilities. Use {@link UnoControlledGame} instead.
  */
@@ -102,12 +99,12 @@ public abstract class BasicUnoGame extends UnoGame {
 	 * @param second
 	 *            the second {@link UnoPlayer}
 	 */
-	public BasicUnoGame(@Nonnull UnoPlayer first, @Nonnull UnoPlayer second) {
-		super(first, second, new UnoStandardDeck(), 7, UnoOfficialRules.getPack());
+	protected BasicUnoGame(@Nonnull UnoPlayer first, @Nonnull UnoPlayer second) {
+		super(first, second, UnoStandardDeck.getDeck(), 7, UnoOfficialRules.getPack());
 	}
 
 	private void changeColor(UnoPlayer player, UnoCard card) {
-		if (!card.getColor().equals(UnoCardColor.WILD))
+		if (card.getColor() != UnoCardColor.WILD)
 			return;
 
 		UnoCardColor color = player.chooseColor(this);
@@ -132,7 +129,7 @@ public abstract class BasicUnoGame extends UnoGame {
 
 			boolean drawn = false;
 			while (true) {
-				UnoCard card = player.playCard(this, nextPlayer(player));
+				UnoCard card = player.playCard(this, getNextPlayer(player));
 
 				if (card == null && !drawn) {
 					// In case hand throws nothing
@@ -155,8 +152,8 @@ public abstract class BasicUnoGame extends UnoGame {
 					List<UnoCard> drawnCards = player.getHand().draw(this, draw);
 					onDrawCards(player, draw);
 					if (drawnCards.size() == 1 && UnoRuleUtils
-							.combinedPlacementAnalysis(topCard, drawnCards, this.getRules(), player.getHand())
-							.size() == 1) {
+						.combinedPlacementAnalysis(topCard, drawnCards, this.getRules(), player.getHand())
+						.size() == 1) {
 						drawn = true;
 						continue;
 					}
@@ -167,8 +164,8 @@ public abstract class BasicUnoGame extends UnoGame {
 				}
 
 				if (UnoRuleUtils
-						.combinedPlacementAnalysis(topCard, Arrays.asList(card), this.getRules(), player.getHand())
-						.isEmpty() || !player.getHand().getCards().remove(card)) {
+					.combinedPlacementAnalysis(topCard, Arrays.asList(card), this.getRules(), player.getHand())
+					.isEmpty() || !player.getHand().getCards().remove(card)) {
 					// Should be checked by Hand implementation in the first place
 					onInvalidCard(player, card);
 					continue;

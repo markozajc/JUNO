@@ -3,8 +3,8 @@ package com.github.markozajc.juno.rules.types.flow;
 import com.github.markozajc.juno.hands.UnoHand;
 
 /**
- * An extension of {@link UnoPhaseConclusion} that also lets you choose whether
- * the {@link UnoHand} loses a turn or not.
+ * An extension of {@link UnoPhaseConclusion} that also lets you choose whether the
+ * {@link UnoHand} loses a turn or not.
  *
  * @author Marko Zajc
  */
@@ -18,8 +18,7 @@ public class UnoInitializationConclusion extends UnoPhaseConclusion {
 	private final boolean shouldLoseATurn;
 
 	/**
-	 * Creates a new {@link UnoInitializationConclusion} that doesn't change
-	 * anything.
+	 * Creates a new {@link UnoInitializationConclusion} that doesn't change anything.
 	 */
 	public UnoInitializationConclusion() {
 		this(false, false);

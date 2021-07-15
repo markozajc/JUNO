@@ -1,7 +1,6 @@
 package com.github.markozajc.juno.rules;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import javax.annotation.*;
 
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 
@@ -44,11 +43,12 @@ public interface UnoRule {
 	 *
 	 * @param rule
 	 *            {@link UnoRule} to test
+	 *
 	 * @return {@link ConflictResolution} or {@code null} if it does not conflict
 	 */
 	@SuppressWarnings("unused")
 	@Nullable
-	public default ConflictResolution conflictsWith(@Nonnull UnoRule rule) {
+	default ConflictResolution conflictsWith(@Nonnull UnoRule rule) {
 		return null;
 	}
 

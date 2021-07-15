@@ -32,7 +32,7 @@ public class NumericPlacementRules {
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
 			if (target instanceof UnoNumericCard && card instanceof UnoNumericCard
-					&& ((UnoNumericCard) target).getNumber() == ((UnoNumericCard) card).getNumber())
+				&& ((UnoNumericCard) target).getNumber() == ((UnoNumericCard) card).getNumber())
 				return PlacementClearance.ALLOWED;
 			// Checks whether target's number matches card's number
 

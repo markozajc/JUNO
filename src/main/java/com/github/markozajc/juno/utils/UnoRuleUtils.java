@@ -1,9 +1,6 @@
 package com.github.markozajc.juno.utils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -38,20 +35,21 @@ public class UnoRuleUtils {
 	 *            the {@link UnoRulePack} to use
 	 * @param hand
 	 *            the current {@link UnoHand}
+	 *
 	 * @return a {@link List} of {@link UnoCard}s that can be placed atop of the
 	 *         {@code target} {@link UnoCard}
 	 */
 	@SuppressWarnings("null")
 	@Nonnull
-	public static List<UnoCard> combinedPlacementAnalysis(@Nonnull UnoCard target, @Nonnull Collection<UnoCard> cards, @Nonnull UnoRulePack pack, @Nonnull UnoHand hand) {
+	public static List<UnoCard> combinedPlacementAnalysis(@Nonnull UnoCard target, @Nonnull Collection<UnoCard> cards,
+														  @Nonnull UnoRulePack pack, @Nonnull UnoHand hand) {
 		List<UnoCardPlacementRule> rules = filterRuleKind(pack.getRules(), UnoCardPlacementRule.class);
 		List<UnoCard> result = new ArrayList<>();
 
 		for (UnoCard card : cards) {
 			// Iterates over all cards
-			List<PlacementClearance> clearance = rules.stream()
-					.map(r -> r.canBePlaced(target, card, hand))
-					.collect(Collectors.toList());
+			List<PlacementClearance> clearance =
+				rules.stream().map(r -> r.canBePlaced(target, card, hand)).collect(Collectors.toList());
 			// Gets the PlacementClearance-s for this card
 
 			if (clearance.contains(PlacementClearance.ALLOWED) && !clearance.contains(PlacementClearance.PROHIBITED))
@@ -72,11 +70,13 @@ public class UnoRuleUtils {
 	 * @param kind
 	 *            kind of the {@link UnoRule} to search for (a {@link Class}, required by
 	 *            Java to cast objects).
+	 *
 	 * @return a {@link List} containing the requested kind of {@link UnoRule}s
 	 */
 	@SuppressWarnings("null")
 	@Nonnull
-	public static <T extends UnoRule> List<T> filterRuleKind(@Nonnull Collection<UnoRule> rules, @Nonnull Class<T> kind) {
+	public static <T extends UnoRule> List<T> filterRuleKind(@Nonnull Collection<UnoRule> rules,
+															 @Nonnull Class<T> kind) {
 		return rules.stream().filter(kind::isInstance).map(kind::cast).collect(Collectors.toList());
 	}
 
@@ -87,15 +87,16 @@ public class UnoRuleUtils {
 	 *
 	 * @param pack
 	 *            the {@link UnoRulePack} to scan
+	 *
 	 * @return all complete {@link UnoHouseRule}s included in this pack
 	 */
 	@SuppressWarnings("null")
 	@Nonnull
 	public static List<UnoHouseRule> getHouseRules(UnoRulePack pack) {
 		return Arrays.asList(UnoHouseRule.values())
-				.stream()
-				.filter(hr -> pack.getRules().containsAll(hr.getPack().getRules()))
-				.collect(Collectors.toList());
+			.stream()
+			.filter(hr -> pack.getRules().containsAll(hr.getPack().getRules()))
+			.collect(Collectors.toList());
 	}
 
 }
