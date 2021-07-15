@@ -70,7 +70,7 @@ public class UnoStreamPlayer extends UnoPlayer {
 				top +
 				(drawCards.size() == 1 ? "" : "s"));
 		} else {
-			this.ps.println("0 - Draw");
+			this.ps.println("0 \u2022 Draw");
 		}
 
 		int i = 1;
@@ -89,7 +89,7 @@ public class UnoStreamPlayer extends UnoPlayer {
 
 			i++;
 		}
-		this.ps.println("q - Quit");
+		this.ps.println("q \u2022 Quit");
 
 		while (true) {
 			String nextLine = this.scanner.nextLine();
@@ -138,10 +138,10 @@ public class UnoStreamPlayer extends UnoPlayer {
 	public UnoCardColor chooseColor(UnoGame game) {
 		this.ps.println("Choose a color:");
 
-		this.ps.println("0 - Yellow");
-		this.ps.println("1 - Red");
-		this.ps.println("2 - Green");
-		this.ps.println("3 - Blue");
+		this.ps.println("0 \u2022 Yellow");
+		this.ps.println("1 \u2022 Red");
+		this.ps.println("2 \u2022 Green");
+		this.ps.println("3 \u2022 Blue");
 
 		while (true) {
 			int choice;
