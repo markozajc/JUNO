@@ -1,5 +1,5 @@
-[![Download](https://img.shields.io/maven-central/v/com.github.markozajc/juno.svg?label=Maven%20Central) ](https://bintray.com/iareas/Libraries/JUNO/_latestVersion)
-[![Build Status](https://travis-ci.com/markozajc/JUNO.svg?branch=master)](https://travis-ci.org/markozajc/JUNO)
+[![Latest](https://img.shields.io/maven-central/v/com.github.markozajc/juno.svg?label=Maven%20Central) ]
+[![Build Status](https://travis-ci.com/markozajc/JUNO.svg?branch=master)](https://travis-ci.com/markozajc/JUNO)
 [![Discord](https://discord.com/api/guilds/323031870088675328/widget.png)](https://discord.gg/asDUrbR)
 # JUNO
 JUNO is a UNO library for Java with lots of extensibility and flow control that comes bundled with several implementation of cards, rules and more.
@@ -7,7 +7,7 @@ JUNO is a UNO library for Java with lots of extensibility and flow control that 
 It is built on top of the official UNO rules (can be found [here](https://service.mattel.com/instruction_sheets/UNO%20Basic%20IS.pdf)) and thus only comes preloaded with the official deck, rules and cards. You can, however, add your own rules and cards with its powerful systems and utilities. 
 
 ## Download and installation
-Latest version: [![Download](https://api.bintray.com/packages/iareas/Libraries/JUNO/images/download.svg) ](https://bintray.com/iareas/Libraries/JUNO/_latestVersion).
+Latest version: [![Latest](https://img.shields.io/maven-central/v/com.github.markozajc/juno.svg?label=Maven%20Central) ].
 
 JUNO is published to the Maven central and can thus be easily obtained with multiple build tools. Remember to replace `VERSION` with the version provided above.
 
@@ -116,7 +116,7 @@ UnoCards represent cards in a game of UNO. JUNO comes preloaded with the officia
 	mvn compile exec:java
 ```
 
-* You can try it out on Discord using LiBot, a Discord bot that implements JUNO in its `*uno` command. You can get the bot [here](https://discordapp.com/oauth2/authorize?client_id=324989005550583808&scope=bot&permissions=3165248) or you can try it out in its official support server [![Discord](https://discordapp.com/api/guilds/323031870088675328/widget.png)](https://discord.gg/asDUrbR)
+* You can try it out on Discord using LiBot, a Discord bot that implements JUNO in its `*uno` command. You can get the bot [here](https://discordapp.com/oauth2/authorize?client_id=324989005550583808&scope=bot&permissions=3165248) or you can try it out in its official support server [![Discord](https://discord.com/api/guilds/323031870088675328/widget.png)](https://discord.gg/asDUrbR)
 
 ## Glossary
 A list of common terms used in the code and its documentation:
