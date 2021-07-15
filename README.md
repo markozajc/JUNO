@@ -1,5 +1,5 @@
 [![Download](https://img.shields.io/maven-central/v/com.github.markozajc/juno.svg?label=Maven%20Central) ](https://bintray.com/iareas/Libraries/JUNO/_latestVersion)
-[![Build Status](https://travis-ci.org/markozajc/JUNO.svg?branch=master)](https://travis-ci.org/markozajc/JUNO)
+[![Build Status](https://travis-ci.com/markozajc/JUNO.svg?branch=master)](https://travis-ci.org/markozajc/JUNO)
 [![Discord](https://discord.com/api/guilds/323031870088675328/widget.png)](https://discord.gg/asDUrbR)
 # JUNO
 JUNO is a UNO library for Java with lots of extensibility and flow control that comes bundled with several implementation of cards, rules and more.
