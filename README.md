@@ -1,13 +1,18 @@
+[central]: https://img.shields.io/maven-central/v/com.github.markozajc/juno.svg?label=Maven%20Central
+[travis]: https://travis-ci.com/markozajc/JUNO.svg?branch=master
+[discord]: https://discord.com/api/guilds/323031870088675328/widget.png
+[![travis]](https://travis-ci.com/markozajc/JUNO)
+![central]
 [![Latest](https://img.shields.io/maven-central/v/com.github.markozajc/juno.svg?label=Maven%20Central) ]
 [![Build Status](https://travis-ci.com/markozajc/JUNO.svg?branch=master)](https://travis-ci.com/markozajc/JUNO)
-[![Discord](https://discord.com/api/guilds/323031870088675328/widget.png)](https://discord.gg/asDUrbR)
+[!
 # JUNO
 JUNO is a UNO library for Java with lots of extensibility and flow control that comes bundled with several implementation of cards, rules and more.
 
 It is built on top of the official UNO rules (can be found [here](https://service.mattel.com/instruction_sheets/UNO%20Basic%20IS.pdf)) and thus only comes preloaded with the official deck, rules and cards. You can, however, add your own rules and cards with its powerful systems and utilities. 
 
 ## Download and installation
-Latest version: [![Latest](https://img.shields.io/maven-central/v/com.github.markozajc/juno.svg?label=Maven%20Central) ].
+Latest version: ![Latest].
 
 JUNO is published to the Maven central and can thus be easily obtained with multiple build tools. Remember to replace `VERSION` with the version provided above.
 
@@ -92,11 +97,15 @@ A UnoRule defines rules in the game. Rules also control the flow of the game its
 A UnoCardPlacement rule defines what cards can be placed on top of what cards. It works in all UnoGame implementations that use `UnoRuleUtils.combinedPlacementAnalysis(UnoCard, Collection<UnoCard>, UnoRulePack, UnoHand)`. Implementing it is pretty simple - the only thing you need to override is `#canBePlaced(UnoCard, UnoCard, UnoHand)`. This method returns a PlacementClearance enum, which decides whether the second UnoCard (card) can be placed on top of the first one (target). PlacementClearance has 3 values - ALLOWED, NEUTRAL and PROHIBITED (look at their respective javadocs for more information about them).
 
 #### UnoGameFlowRule
-A UnoGameFlowRule defines the flow of the game. It is a bit trickier to implement than UnoCardPlacementRule as it requires a more direct connection with the UnoHand. This rule type will only work in a UnoControlledGame and its implementations. You can override two methods, each of them representing a phase in a turn - `initializationPhase(UnoPlayer, UnoGame)` and `decisionPhase(UnoPlayer, UnoGame, UnoCard)`.
+A UnoGameFlowRule defines the flow of the game. It is a bit trickier to implement than UnoCardPlacementRule as it requires a more direct connection with the UnoHand. This rule type will only work in a UnoControlledGame and its implementations. You can override two methods, each of them representing a phase in a turn - `initializationPhase(UnoPlayer, UnoGame)`, `decisionPhase(UnoPlayer, UnoGame, UnoCard)`, and `finishPhase(UnoWinner, UnoGame)`.
 
 The initialization phase is used for closing and executing open cards as well as for other initialization tasks. Its return type is a UnoInitializationConclusion which allows you to repeat the whole phase again (in case something goes wrong) or skip the player's turn.
 
 The decision place is used to get the decided card to the discard pile as well as some other stuff. You need to be careful not to conflict with other rules here as the order in which they are executed is not guaranteed.
+
+The finish place is used to change the winner of the game.
+
+A game's state should not be changed directly in a rule - the return value should be used to influence it instead.
 
 #### UnoRule conflicts
 UnoRule also has a conflict system with a few different conflict resolution options. To make use of it, override `UnoRule#conflictsWith(UnoRule)`, then check whether the first argument is an instance of the UnoRule your rule conflicts with. If it is, return your preferred ConflictResolution - FAIL, REPLACE or BACKOFF (look at each of the values' javadoc for more details on what each of them does). You must also make sure to call `UnoRulePack#resolveConflicts` and use the returned rule pack to resolve conflicts in your rule pack.
