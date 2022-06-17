@@ -1,12 +1,11 @@
 package com.github.markozajc.juno;
 
-import java.util.*;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.*;
-import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.players.UnoPlayer;
@@ -111,23 +110,6 @@ public class TestUtils {
 	@Nonnull
 	public static DummyUnoPlayer getDummyPlayer(@Nonnull Collection<UnoCard> cards) {
 		return new DummyUnoPlayer(cards);
-	}
-
-	/**
-	 * Returns a dummy {@link UnoDeck} containing a preferred {@link List} of cards.
-	 *
-	 * @param cards
-	 *            {@link List} of {@link UnoCard}s the {@link UnoDeck} should contain
-	 *
-	 * @return the built {@link UnoDeck}
-	 *
-	 * @deprecated no longer of any use as {@link UnoDeck}s can be made using their
-	 *             constructor
-	 */
-	@Deprecated
-	@Nonnull
-	public static UnoDeck getDummyDeck(@Nonnull List<UnoCard> cards) {
-		return new UnoDeck(cards);
 	}
 
 	/**

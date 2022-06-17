@@ -48,7 +48,7 @@ class UnoControlledGameTest {
 
 		for (int i = 0; i < ROUNDS; i++) {
 			try {
-				game.playGame();
+				game.play();
 
 				assertEquals(game.getDiscard().getSize() + game.getDraw().getSize()
 					+ game.getFirstPlayer().getHand().getSize() + game.getSecondPlayer().getHand().getSize(),
