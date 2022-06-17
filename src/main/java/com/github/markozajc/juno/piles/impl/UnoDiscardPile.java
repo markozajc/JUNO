@@ -5,7 +5,6 @@ import java.util.*;
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.piles.UnoPile;
@@ -19,23 +18,6 @@ public class UnoDiscardPile implements UnoPile {
 
 	@Nonnull
 	private final List<UnoCard> cards = new ArrayList<>();
-
-	/**
-	 * Marks the top {@link UnoCard} as closed (if possible).
-	 *
-	 * @deprecated Uses a deprecated way of changing the card, does not let you know
-	 *             whether the card has actually been deprecated and requires you
-	 *             hardcode in the methods for each {@link UnoCard}. Overall a method you
-	 *             shouldn't be using.
-	 */
-	@Deprecated
-	public void markTopPlayed() {
-		UnoCard top = getTop();
-		if (!(top instanceof UnoDrawCard))
-			return;
-
-		((UnoDrawCard) top).setPlayed();
-	}
 
 	@Override
 	public List<UnoCard> getCards() {

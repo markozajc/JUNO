@@ -130,19 +130,6 @@ public abstract class UnoGame {
 	/**
 	 * Plays a game of UNO.
 	 *
-	 * @return the winning {@link UnoPlayer} or {@code null} in case of a tie
-	 *
-	 * @deprecated Use {@link #play()} instead
-	 */
-	@Deprecated
-	@Nullable
-	public UnoPlayer playGame() {
-		return play().getWinner();
-	}
-
-	/**
-	 * Plays a game of UNO.
-	 *
 	 * @return the UnoWinner
 	 */
 	@SuppressWarnings("null")
@@ -308,22 +295,6 @@ public abstract class UnoGame {
 	@Nonnull
 	public UnoDeck getDeck() {
 		return this.deck;
-	}
-
-	/**
-	 * Returns the {@link UnoPlayer} to get the turn after the provided {@link UnoPlayer}
-	 *
-	 * @param player
-	 *            the {@link UnoPlayer}
-	 *
-	 * @return the {@link UnoPlayer} after {@code player}
-	 *
-	 * @deprecated Use {@link #getNextPlayer(UnoPlayer)} instead
-	 */
-	@Nonnull
-	@Deprecated
-	public final UnoPlayer nextPlayer(UnoPlayer player) {
-		return getNextPlayer(player);
 	}
 
 	/**

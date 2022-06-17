@@ -64,17 +64,6 @@ public class UnoActionCard extends UnoCard {
 
 	/**
 	 * @return card's {@link UnoFlowAction}
-	 *
-	 * @deprecated Use {@link #getFlowAction()} instead
-	 */
-	@Nonnull
-	@Deprecated
-	public UnoFlowAction getAction() {
-		return getFlowAction();
-	}
-
-	/**
-	 * @return card's {@link UnoFlowAction}
 	 */
 	@Nonnull
 	public UnoFlowAction getFlowAction() {

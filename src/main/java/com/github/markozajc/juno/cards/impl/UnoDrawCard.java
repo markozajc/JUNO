@@ -54,18 +54,6 @@ public class UnoDrawCard extends UnoCard {
 	}
 
 	/**
-	 * Marks this card as "closed" ("played"). This means that a player has already drawn
-	 * because of it.
-	 *
-	 * @deprecated You shouldn't be using this directly as
-	 *             {@link #drawTo(UnoGame, UnoPlayer)} already does it for you.
-	 */
-	@Deprecated
-	public void setPlayed() {
-		markClosed();
-	}
-
-	/**
 	 * The "draw amount" of this card. {@link UnoDrawCard} supports draw four and draw
 	 * two cards so this is either {@code 2} or {@code 4}.
 	 *
