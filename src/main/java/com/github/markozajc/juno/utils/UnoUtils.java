@@ -33,7 +33,7 @@ public class UnoUtils {
 	public static List<Entry<Long, UnoCardColor>> analyzeColors(Collection<UnoCard> cards) {
 		List<Entry<Long, UnoCardColor>> result = new ArrayList<>();
 
-		for (UnoCardColor color : UnoCardColor.values())
+		for (var color : UnoCardColor.values())
 			result.add(new SimpleEntry<>(cards.stream().filter(c -> c.getColor() == color).count(), color));
 
 		sort(result, (v1, v2) -> v2.getKey().compareTo(v1.getKey()));

@@ -14,7 +14,6 @@ import com.github.markozajc.juno.rules.UnoRule;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule;
 import com.github.markozajc.juno.rules.types.UnoCardPlacementRule;
-import com.github.markozajc.juno.rules.types.UnoCardPlacementRule.PlacementClearance;
 
 /**
  * {@link UnoRule}-specific utilities.
@@ -46,13 +45,12 @@ public class UnoRuleUtils {
 	@SuppressWarnings("null")
 	public static List<UnoCard> combinedPlacementAnalysis(@Nonnull UnoCard target, @Nonnull Collection<UnoCard> cards,
 														  @Nonnull UnoRulePack pack, @Nonnull UnoHand hand) {
-		List<UnoCardPlacementRule> rules = filterRuleKind(pack.getRules(), UnoCardPlacementRule.class);
-		List<UnoCard> result = new ArrayList<>();
+		var rules = filterRuleKind(pack.getRules(), UnoCardPlacementRule.class);
+		var result = new ArrayList<UnoCard>(cards.size());
 
-		for (UnoCard card : cards) {
+		for (var card : cards) {
 			// Iterates over all cards
-			List<PlacementClearance> clearance =
-				rules.stream().map(r -> r.canBePlaced(target, card, hand)).collect(toList());
+			var clearance = rules.stream().map(r -> r.canBePlaced(target, card, hand)).collect(toList());
 			// Gets the PlacementClearance-s for this card
 
 			if (clearance.contains(ALLOWED) && !clearance.contains(PROHIBITED))

@@ -16,7 +16,6 @@ import com.github.markozajc.juno.rules.UnoRule;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule;
 import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
-import com.github.markozajc.juno.rules.types.flow.UnoFinishConclusion;
 import com.github.markozajc.juno.utils.UnoRuleUtils;
 
 /**
@@ -190,14 +189,14 @@ public abstract class UnoGame {
 		boolean objectionsConflict = false;
 		for (UnoRule rule : this.rules.getRules()) {
 			if (rule instanceof UnoGameFlowRule) {
-				UnoFinishConclusion conclusion = ((UnoGameFlowRule) rule).finishPhase(winner, this);
-				if (conclusion.doesObjectWinner()) {
-					if (winnerObjected && newWinner == conclusion.getNewWinner()) {
+				var result = ((UnoGameFlowRule) rule).finishPhase(winner, this);
+				if (result.doesObjectWinner()) {
+					if (winnerObjected && newWinner == result.getNewWinner()) {
 						objectionsConflict = true;
 						break;
 					} else {
 						winnerObjected = true;
-						newWinner = conclusion.getNewWinner();
+						newWinner = result.getNewWinner();
 					}
 				}
 			}

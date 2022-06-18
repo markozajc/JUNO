@@ -1,6 +1,7 @@
 package com.github.markozajc.juno.piles.impl;
 
 import static com.github.markozajc.juno.utils.UnoUtils.filterKind;
+import static java.util.Collections.unmodifiableList;
 
 import java.util.*;
 
@@ -140,11 +141,11 @@ public class UnoDrawPile implements UnoPile {
 		if (amount > this.getSize())
 			throw new IllegalStateException("There aren't enough cards in this pile!");
 
-		List<UnoCard> result = new ArrayList<>(amount);
+		var result = new ArrayList<UnoCard>(amount);
 		for (int i = 0; i < amount; i++)
 			result.add(this.cards.poll());
 
-		return Collections.unmodifiableList(result);
+		return unmodifiableList(result);
 	}
 
 	/**
@@ -168,7 +169,7 @@ public class UnoDrawPile implements UnoPile {
 	 * Shuffles the entire pile.
 	 */
 	public void shuffle() {
-		List<UnoCard> cardsCopy = new ArrayList<>(getCards());
+		var cardsCopy = new ArrayList<>(getCards());
 		Collections.shuffle(cardsCopy, this.random);
 		this.cards.clear();
 		this.cards.addAll(cardsCopy);

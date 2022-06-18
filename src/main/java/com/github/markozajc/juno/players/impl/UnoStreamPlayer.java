@@ -8,12 +8,11 @@ import static java.lang.Thread.*;
 import static java.util.stream.Collectors.joining;
 
 import java.io.*;
-import java.util.*;
+import java.util.Scanner;
 
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.*;
-import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.players.UnoPlayer;
 
@@ -51,8 +50,7 @@ public class UnoStreamPlayer extends UnoPlayer {
 	@Override
 	public UnoCard playCard(UnoGame game, UnoPlayer next) {
 		UnoCard top = game.getDiscard().getTop();
-		List<UnoCard> possible =
-			combinedPlacementAnalysis(top, this.getHand().getCards(), game.getRules(), this.getHand());
+		var possible = combinedPlacementAnalysis(top, this.getHand().getCards(), game.getRules(), this.getHand());
 
 		this.ps.println("Choose a card: [" + next.getName() +
 			" hand size: " +
@@ -65,7 +63,7 @@ public class UnoStreamPlayer extends UnoPlayer {
 			game.getDiscard().getTop() +
 			"]");
 
-		List<UnoDrawCard> drawCards = getConsecutive(game.getDiscard());
+		var drawCards = getConsecutive(game.getDiscard());
 		if (!drawCards.isEmpty()) {
 			this.ps.println("0 - Draw " + drawCards.size() * drawCards.get(0).getAmount() +
 				" cards from " +
@@ -78,7 +76,7 @@ public class UnoStreamPlayer extends UnoPlayer {
 		}
 
 		int i = 1;
-		for (UnoCard card : this.getHand().getCards()) {
+		for (var card : this.getHand().getCards()) {
 			if (possible.contains(card)) {
 				this.ps.println(i + " \u2022 " + card);
 			} else {

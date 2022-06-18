@@ -39,7 +39,7 @@ public class UnoStrategicPlayer extends UnoPlayer {
 
 	@Nullable
 	private static List<UnoNumericCard> sevenoFilter(List<UnoCard> cards) {
-		List<UnoNumericCard> applicable = new ArrayList<>(filterKind(UnoNumericCard.class, cards));
+		var applicable = new ArrayList<>(filterKind(UnoNumericCard.class, cards));
 		applicable.removeIf(r -> r.getNumber() == 0 || r.getNumber() == 7);
 		return applicable;
 	}
@@ -135,7 +135,7 @@ public class UnoStrategicPlayer extends UnoPlayer {
 			return null;
 		// Draws a card if no other option is possible
 
-		List<Entry<Long, UnoCardColor>> colorAnalysis = UnoUtils.analyzeColors(getCards());
+		List<Entry<Long, UnoCardColor>> colorAnalysis = analyzeColors(getCards());
 		// Analyzes the colors
 		if (game.getHouseRules().contains(SEVENO)) {
 			UnoNumericCard sevenoCard = sevenoStrategy(possible, colorAnalysis, this, next);
@@ -181,8 +181,7 @@ public class UnoStrategicPlayer extends UnoPlayer {
 	@SuppressWarnings("null")
 	@Override
 	public UnoCardColor chooseColor(UnoGame game) {
-		return UnoUtils.analyzeColors(this.getCards())
-			.stream()
+		return analyzeColors(this.getCards()).stream()
 			.filter(p -> p.getValue() != WILD)
 			.findFirst()
 			.orElseThrow(() -> new IllegalStateException("Couldn't choose a color (UnoUtils malfunctioned!)"))

@@ -1,6 +1,7 @@
 package com.github.markozajc.juno.game.impl;
 
 import static java.lang.System.*;
+import static java.lang.Thread.*;
 
 import java.util.*;
 
@@ -25,11 +26,11 @@ public class UnoConsoleGame extends UnoControlledGame {
 	@SuppressWarnings({ "resource", "null" })
 	@Nonnull
 	private static UnoRulePack getRulePack() {
-		List<UnoHouseRule> rules = new ArrayList<>();
+		var rules = new ArrayList<UnoHouseRule>();
 		Scanner s = new Scanner(in);
-		for (UnoHouseRule rule : UnoHouseRule.values()) {
+		for (var rule : UnoHouseRule.values()) {
 			out.print("Activate the " + rule.getName() + " house rule? [y/n] ");
-			if (s.nextLine().equalsIgnoreCase("y"))
+			if ("y".equalsIgnoreCase(s.nextLine()))
 				rules.add(rule);
 		}
 
@@ -56,12 +57,11 @@ public class UnoConsoleGame extends UnoControlledGame {
 
 		UnoWinner winner = game.play();
 		UnoPlayer winnerPlayer = winner.getWinner();
-		if (winnerPlayer == null) {
+		if (winnerPlayer == null)
 			out.println("It's a draw!");
-
-		} else {
+		else
 			out.println(winnerPlayer.getName() + " won!");
-		}
+
 		out.print("Reason: ");
 		switch (winner.getEndReason()) {
 			case REQUESTED:
@@ -86,9 +86,9 @@ public class UnoConsoleGame extends UnoControlledGame {
 		out.printf(format, arguments);
 		out.println();
 		try {
-			Thread.sleep(500);
+			sleep(500);
 		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
+			currentThread().interrupt();
 		}
 	}
 

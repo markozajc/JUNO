@@ -31,8 +31,8 @@ public class UnoStandardDeck {
 	private static void generateDeck() {
 		List<UnoCard> cards = new ArrayList<>();
 
-		for (UnoFlowAction action : UnoFlowAction.values()) {
-			for (UnoCardColor color : UnoCardColor.values()) {
+		for (var action : UnoFlowAction.values()) {
+			for (var color : UnoCardColor.values()) {
 				if (color == WILD)
 					continue;
 
@@ -42,7 +42,7 @@ public class UnoStandardDeck {
 		}
 		// Adds the action cards
 
-		for (UnoCardColor color : UnoCardColor.values()) {
+		for (var color : UnoCardColor.values()) {
 			if (color == WILD)
 				continue;
 
