@@ -151,8 +151,8 @@ public class UnoProgressiveRulePack {
 			player.getHand().draw(game, amount);
 		}
 
-		private static final String DRAW_CARDS = "%s drew %s cards from %s %s%s.";
-		private static final String DRAW_CARD = "%s drew a card.";
+		private static final String DRAW_CARDS = "%s draws %s cards from %s %s%s.";
+		private static final String DRAW_CARD = "%s draws a card.";
 
 		@SuppressWarnings("null")
 		private static final void drawDeterminedCards(@Nonnull UnoGame game, @Nonnull UnoPlayer player) {

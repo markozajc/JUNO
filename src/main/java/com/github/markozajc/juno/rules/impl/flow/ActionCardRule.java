@@ -14,7 +14,7 @@ import com.github.markozajc.juno.rules.types.flow.*;
  */
 public class ActionCardRule implements UnoGameFlowRule {
 
-	private static final String LOST_A_TURN = "%s lost a turn.";
+	private static final String LOST_A_TURN = "%s loses a turn.";
 
 	@Override
 	public UnoInitializationConclusion initializationPhase(UnoPlayer player, UnoGame game) {

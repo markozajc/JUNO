@@ -3,7 +3,7 @@
 
 	<groupId>com.github.markozajc</groupId>
 	<artifactId>juno</artifactId>
-	<version>2.2</version>
+	<version>2.2.1</version>
 
 	<name>JUNO</name>
 	<description>A UNO library for Java</description>
@@ -22,7 +22,7 @@
 		<developer>
 			<name>Marko Zajc</name>
 			<email>marko@zajc.eu.org</email>
-			<url>https://github.com/markozajc</url>
+			<url>https://zajc.eu.org/</url>
 		</developer>
 	</developers>
 
