@@ -1,6 +1,9 @@
 package com.github.markozajc.juno.utils;
 
-import java.util.*;
+import static com.github.markozajc.juno.utils.UnoRuleUtils.combinedPlacementAnalysis;
+import static java.util.Arrays.asList;
+
+import java.util.List;
 
 import javax.annotation.*;
 
@@ -35,9 +38,7 @@ public class UnoGameUtils {
 	 */
 	@SuppressWarnings("null")
 	public static boolean canPlaceCard(@Nonnull UnoPlayer placer, @Nonnull UnoGame game, @Nonnull UnoCard card) {
-		return !UnoRuleUtils
-			.combinedPlacementAnalysis(game.getTopCard(), Arrays.asList(card), game.getRules(), placer.getHand())
-			.isEmpty();
+		return !combinedPlacementAnalysis(game.getTopCard(), asList(card), game.getRules(), placer.getHand()).isEmpty();
 	}
 
 	/**

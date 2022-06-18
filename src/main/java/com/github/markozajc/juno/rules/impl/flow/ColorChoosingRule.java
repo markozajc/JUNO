@@ -1,5 +1,8 @@
 package com.github.markozajc.juno.rules.impl.flow;
 
+import static com.github.markozajc.juno.cards.UnoCardColor.WILD;
+import static com.github.markozajc.juno.rules.types.flow.UnoInitializationConclusion.NOTHING;
+
 import com.github.markozajc.juno.cards.*;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.players.UnoPlayer;
@@ -14,16 +17,15 @@ import com.github.markozajc.juno.rules.types.flow.UnoInitializationConclusion;
  */
 public class ColorChoosingRule implements UnoGameFlowRule {
 
-	private static final String INVALID_COLOR = "%s tried to set an invalid color.";
-	private static final String COLOR_CHANGED = "%s set the color to %s.";
+	private static final String INVALID_COLOR = "%s tries to set an invalid color.";
+	private static final String COLOR_CHANGED = "%s sets the color to %s.";
 
 	@Override
 	public UnoInitializationConclusion initializationPhase(UnoPlayer player, UnoGame game) {
-		if (game.getTopCard() != null && game.getTopCard().getColor() == UnoCardColor.WILD
-			&& !game.getTopCard().isOpen()) {
+		if (game.getTopCard() != null && game.getTopCard().getColor() == WILD && !game.getTopCard().isOpen()) {
 			UnoCardColor color = game.getTopCard().getPlacer().chooseColor(game);
 
-			if (color == UnoCardColor.WILD) {
+			if (color == WILD) {
 				game.onEvent(INVALID_COLOR, game.getTopCard().getPlacer().getName());
 				return new UnoInitializationConclusion(true, false);
 			}
@@ -32,7 +34,7 @@ public class ColorChoosingRule implements UnoGameFlowRule {
 			game.onEvent(COLOR_CHANGED, game.getTopCard().getPlacer().getName(), color.toString());
 		}
 
-		return UnoInitializationConclusion.NOTHING;
+		return NOTHING;
 	}
 
 }

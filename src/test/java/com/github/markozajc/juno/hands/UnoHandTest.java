@@ -1,8 +1,9 @@
 package com.github.markozajc.juno.hands;
 
+import static com.github.markozajc.juno.cards.UnoCardColor.*;
+
 import org.junit.jupiter.api.Test;
 
-import com.github.markozajc.juno.cards.UnoCardColor;
 import com.github.markozajc.juno.cards.impl.UnoNumericCard;
 import com.github.markozajc.juno.piles.impl.UnoDiscardPile;
 
@@ -14,7 +15,7 @@ class UnoHandTest {
 	@Test
 	void testAddToDiscard() {
 		UnoHand hand = new UnoHand();
-		UnoNumericCard card = new UnoNumericCard(UnoCardColor.RED, 0);
+		UnoNumericCard card = new UnoNumericCard(RED, 0);
 		hand.getCards().add(card);
 		// Adds a card to the hand
 
@@ -36,10 +37,10 @@ class UnoHandTest {
 	void testClear() {
 		UnoHand hand = new UnoHand();
 
-		hand.getCards().add(new UnoNumericCard(UnoCardColor.RED, 0));
-		hand.getCards().add(new UnoNumericCard(UnoCardColor.BLUE, 1));
-		hand.getCards().add(new UnoNumericCard(UnoCardColor.GREEN, 2));
-		hand.getCards().add(new UnoNumericCard(UnoCardColor.YELLOW, 3));
+		hand.getCards().add(new UnoNumericCard(RED, 0));
+		hand.getCards().add(new UnoNumericCard(BLUE, 1));
+		hand.getCards().add(new UnoNumericCard(GREEN, 2));
+		hand.getCards().add(new UnoNumericCard(YELLOW, 3));
 		// Adds a some cards to the hand
 
 		assertEquals(4, hand.getSize());

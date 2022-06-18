@@ -46,8 +46,8 @@ public interface UnoRule {
 	 *
 	 * @return {@link ConflictResolution} or {@code null} if it does not conflict
 	 */
-	@SuppressWarnings("unused")
 	@Nullable
+	@SuppressWarnings("unused")
 	default ConflictResolution conflictsWith(@Nonnull UnoRule rule) {
 		return null;
 	}

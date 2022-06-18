@@ -1,5 +1,7 @@
 package com.github.markozajc.juno.players.impl;
 
+import static java.lang.System.*;
+
 /**
  * A wrapper for the {@link UnoStreamPlayer} that passes {@link System#in} and
  * {@link System#out} by default (making the game console-based).
@@ -16,6 +18,6 @@ public class UnoConsolePlayer extends UnoStreamPlayer {
 	 */
 	@SuppressWarnings("null")
 	public UnoConsolePlayer(String name) {
-		super(name, System.in, System.out); // NOSONAR
+		super(name, in, out); // NOSONAR
 	}
 }

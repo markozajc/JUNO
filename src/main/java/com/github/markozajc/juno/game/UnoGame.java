@@ -1,5 +1,7 @@
 package com.github.markozajc.juno.game;
 
+import static com.github.markozajc.juno.game.UnoWinner.UnoEndReason.*;
+
 import java.io.PrintStream;
 import java.util.List;
 
@@ -132,8 +134,8 @@ public abstract class UnoGame {
 	 *
 	 * @return the UnoWinner
 	 */
-	@SuppressWarnings("null")
 	@Nonnull
+	@SuppressWarnings("null")
 	public UnoWinner play() {
 		init();
 		// Initiates game
@@ -172,13 +174,13 @@ public abstract class UnoGame {
 	@Nonnull
 	private UnoEndReason determineEndReason(@Nullable UnoPlayer winnerPlayer, boolean fallback) {
 		if (fallback) {
-			return UnoEndReason.FALLBACK;
+			return FALLBACK;
 		} else if (winnerPlayer != null) {
-			return UnoEndReason.VICTORY;
+			return VICTORY;
 		} else if (this.endRequested) {
-			return UnoEndReason.REQUESTED;
+			return REQUESTED;
 		} else {
-			return UnoEndReason.UNKNOWN;
+			return UNKNOWN;
 		}
 	}
 
@@ -370,10 +372,17 @@ public abstract class UnoGame {
 		return this.houseRules;
 	}
 
+	/**
+	 * Requests the game to be ended on the next turn. The {@link UnoEndReason} reported
+	 * will be {@link UnoEndReason#REQUESTED}.
+	 */
 	public void endGame() {
 		this.endRequested = true;
 	}
 
+	/**
+	 * @return whether {@link #endGame()} has been called
+	 */
 	public boolean isEndRequested() {
 		return this.endRequested;
 	}

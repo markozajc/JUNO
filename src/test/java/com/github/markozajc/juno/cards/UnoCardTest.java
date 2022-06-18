@@ -1,10 +1,11 @@
 package com.github.markozajc.juno.cards;
 
-import java.util.Collections;
+import static com.github.markozajc.juno.TestUtils.getDummyPlayer;
+import static com.github.markozajc.juno.cards.UnoCardColor.*;
+import static java.util.Collections.emptyList;
 
 import org.junit.jupiter.api.Test;
 
-import com.github.markozajc.juno.TestUtils;
 import com.github.markozajc.juno.cards.impl.*;
 import com.github.markozajc.juno.players.UnoPlayer;
 
@@ -17,40 +18,40 @@ class UnoCardTest {
 		UnoCard wild = new UnoWildCard();
 		// Creates a new wild-colored card
 
-		wild.setColorMask(UnoCardColor.RED);
+		wild.setColorMask(RED);
 		// Set the color mask to red
 
-		assertEquals(UnoCardColor.RED, wild.getColor());
+		assertEquals(RED, wild.getColor());
 		// Test the color mask
 
-		assertEquals(UnoCardColor.WILD, wild.getOriginalColor());
+		assertEquals(WILD, wild.getOriginalColor());
 		// Test the original color
 
-		assertThrows(IllegalStateException.class, () -> wild.setColorMask(UnoCardColor.GREEN));
+		assertThrows(IllegalStateException.class, () -> wild.setColorMask(GREEN));
 		// Test the multicall prevention
 
 		///////////////////////////////////////////////////////////////////////////////////
 
-		UnoCard nonWild = new UnoNumericCard(UnoCardColor.RED, 0);
+		UnoCard nonWild = new UnoNumericCard(RED, 0);
 		// Creates a new red-colored card
 
-		assertThrows(IllegalStateException.class, () -> nonWild.setColorMask(UnoCardColor.GREEN));
+		assertThrows(IllegalStateException.class, () -> nonWild.setColorMask(GREEN));
 		// Test the non-wild color mask block
 
-		assertEquals(UnoCardColor.RED, nonWild.getColor());
+		assertEquals(RED, nonWild.getColor());
 		// Test if the color is still red
 	}
 
-	@SuppressWarnings("null")
 	@Test
+	@SuppressWarnings("null")
 	void testPlacer() {
-		UnoCard card = new UnoNumericCard(UnoCardColor.RED, 0);
+		UnoCard card = new UnoNumericCard(RED, 0);
 		// Creates a new numeric card
 
 		assertThrows(IllegalStateException.class, () -> card.getPlacer());
 		// Test the no-placer getCall exception
 
-		UnoPlayer placer = TestUtils.getDummyPlayer(Collections.emptyList());
+		UnoPlayer placer = getDummyPlayer(emptyList());
 		// Create a new dummy player
 
 		card.setPlacer(placer);
@@ -63,14 +64,14 @@ class UnoCardTest {
 		// Test the multicall prevention
 	}
 
-	@SuppressWarnings("null")
 	@Test
+	@SuppressWarnings("null")
 	void testReset() {
 		UnoCard card = new UnoWildCard();
 		// Creates a new numeric card
 
-		card.setPlacer(TestUtils.getDummyPlayer(Collections.emptyList()));
-		card.setColorMask(UnoCardColor.GREEN);
+		card.setPlacer(getDummyPlayer(emptyList()));
+		card.setColorMask(GREEN);
 		card.markOpen();
 		// Sets the card's state
 
@@ -78,7 +79,7 @@ class UnoCardTest {
 		// Reset the card
 
 		assertThrows(IllegalStateException.class, () -> card.getPlacer());
-		assertEquals(UnoCardColor.WILD, card.getColor());
+		assertEquals(WILD, card.getColor());
 		assertFalse(card.isOpen());
 		// Test the state
 

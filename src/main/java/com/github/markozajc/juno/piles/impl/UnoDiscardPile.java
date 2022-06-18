@@ -1,5 +1,7 @@
 package com.github.markozajc.juno.piles.impl;
 
+import static java.util.Collections.emptyList;
+
 import java.util.*;
 
 import javax.annotation.Nonnull;
@@ -77,7 +79,7 @@ public class UnoDiscardPile implements UnoPile {
 	@SuppressWarnings("null")
 	public UnoDrawPile createDrawPile() {
 		if (this.cards.isEmpty())
-			return new UnoDrawPile(Collections.emptyList(), false);
+			return new UnoDrawPile(emptyList(), false);
 
 		UnoCard top = this.cards.remove(0);
 

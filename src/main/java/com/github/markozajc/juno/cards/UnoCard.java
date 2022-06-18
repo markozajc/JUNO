@@ -1,5 +1,7 @@
 package com.github.markozajc.juno.cards;
 
+import static com.github.markozajc.juno.cards.UnoCardColor.WILD;
+
 import javax.annotation.*;
 
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
@@ -71,7 +73,7 @@ public abstract class UnoCard {
 	 *             {@link UnoCardColor#WILD} or if the color mask has already been set
 	 */
 	public final void setColorMask(@Nullable UnoCardColor mask) {
-		if (getOriginalColor() != UnoCardColor.WILD)
+		if (getOriginalColor() != WILD)
 			throw new IllegalStateException("Card's original color must be \"WILD\" if you want to set a color.");
 
 		if (this.mask != null)
@@ -124,13 +126,8 @@ public abstract class UnoCard {
 	 */
 	public void reset() {
 		this.mask = null;
-		// Unsets the color mask
-
 		this.placer = null;
-		// Unsets the placer
-
 		this.open = false;
-		// Mark as closed
 	}
 
 	/**

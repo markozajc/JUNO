@@ -20,11 +20,11 @@ public enum UnoCardColor {
 	 */
 	BLUE("Blue"),
 	/**
-	 * The red card color.
+	 * The yellow card color.
 	 */
 	YELLOW("Yellow"),
 	/**
-	 * The wild card color.
+	 * The wild (any) card color.
 	 */
 	WILD("Wild");
 

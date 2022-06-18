@@ -1,5 +1,7 @@
 package com.github.markozajc.juno.game;
 
+import static com.github.markozajc.juno.utils.UnoRuleUtils.filterRuleKind;
+
 import java.util.List;
 
 import javax.annotation.*;
@@ -11,7 +13,6 @@ import com.github.markozajc.juno.rules.UnoRule;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
 import com.github.markozajc.juno.rules.types.flow.*;
-import com.github.markozajc.juno.utils.UnoRuleUtils;
 
 /**
  * An implementation of {@link UnoGame} that lets you control most of the things with
@@ -42,7 +43,7 @@ public abstract class UnoControlledGame extends UnoGame {
 
 	@Override
 	protected void turn(UnoPlayer player) {
-		List<UnoGameFlowRule> rules = UnoRuleUtils.filterRuleKind(this.getRules().getRules(), UnoGameFlowRule.class);
+		List<UnoGameFlowRule> rules = filterRuleKind(this.getRules().getRules(), UnoGameFlowRule.class);
 
 		boolean skip = initializationPhase(player, this, rules);
 

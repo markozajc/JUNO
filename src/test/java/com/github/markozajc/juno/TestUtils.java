@@ -1,7 +1,9 @@
 package com.github.markozajc.juno;
 
+import static java.lang.System.*;
+import static java.util.stream.Collectors.joining;
+
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -51,7 +53,7 @@ public class TestUtils {
 	private static class DummyUnoPlayer extends UnoPlayer {
 
 		public DummyUnoPlayer(@Nonnull Collection<UnoCard> cards) {
-			super("DummyUnoPlayer-" + System.currentTimeMillis());
+			super("DummyUnoPlayer-" + currentTimeMillis());
 			this.getHand().getCards().addAll(cards);
 		}
 
@@ -86,11 +88,9 @@ public class TestUtils {
 	 */
 	public static <T> boolean listEqualsUnordered(Collection<? extends T> collection1,
 												  Collection<? extends T> collection2) {
-		System.out.println("[= COMPARING COLLECTIONS /unordered =]");
-		System.out
-			.println("Collection 1: " + collection1.stream().map(Object::toString).collect(Collectors.joining(",")));
-		System.out
-			.println("Collection 2: " + collection2.stream().map(Object::toString).collect(Collectors.joining(",")));
+		out.println("[= COMPARING COLLECTIONS /unordered =]");
+		out.println("Collection 1: " + collection1.stream().map(Object::toString).collect(joining(",")));
+		out.println("Collection 2: " + collection2.stream().map(Object::toString).collect(joining(",")));
 		return collection1.size() == collection2.size() && collection1.containsAll(collection2);
 	}
 

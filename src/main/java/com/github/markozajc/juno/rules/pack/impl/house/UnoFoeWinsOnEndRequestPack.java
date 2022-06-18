@@ -42,8 +42,8 @@ public class UnoFoeWinsOnEndRequestPack {
 	/**
 	 * @return the "Foe Wins on End Request" house {@link UnoRulePack}
 	 */
-	@SuppressWarnings("null")
 	@Nonnull
+	@SuppressWarnings("null")
 	public static UnoRulePack getPack() {
 		if (pack == null)
 			createPack();

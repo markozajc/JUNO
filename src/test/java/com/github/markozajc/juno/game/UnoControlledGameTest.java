@@ -1,5 +1,8 @@
 package com.github.markozajc.juno.game;
 
+import static java.lang.String.format;
+import static java.lang.System.out;
+
 import javax.annotation.*;
 
 import org.junit.jupiter.api.Test;
@@ -33,14 +36,14 @@ class UnoControlledGameTest {
 		"\nDebug information: EXT:%s,EXM:%s,RDN:%s,H1C:%s,H2C:%s,DRC:%s,DIC:%s,TCR:%s";
 
 	private static final String gatherDebugInfo(UnoGame game, int i, Exception e) {
-		return String.format(DEBUG_FORMAT, e.getClass().getSimpleName(), e.getMessage(), i,
-							 game.getFirstPlayer().getHand().getSize(), game.getSecondPlayer().getHand().getSize(),
-							 game.getDraw().getSize(), game.getDiscard().getSize(), game.getTopCard());
+		return format(DEBUG_FORMAT, e.getClass().getSimpleName(), e.getMessage(), i,
+					  game.getFirstPlayer().getHand().getSize(), game.getSecondPlayer().getHand().getSize(),
+					  game.getDraw().getSize(), game.getDiscard().getSize(), game.getTopCard());
 	}
 
 	@Test
 	void testStress() {
-		System.out.println("[==== INITIATING THE STRESS TEST ====]");
+		out.println("[==== INITIATING THE STRESS TEST ====]");
 
 		UnoGame game =
 			new UnoStressTestGame(new UnoStrategicPlayer("P1"), new UnoStrategicPlayer("P2"), UnoStandardDeck.getDeck(),
@@ -59,6 +62,6 @@ class UnoControlledGameTest {
 			}
 		}
 
-		System.out.println("[==== STRESS TEST PLAYED " + ROUNDS + " ROUNDS ====]");
+		out.println("[==== STRESS TEST PLAYED " + ROUNDS + " ROUNDS ====]");
 	}
 }

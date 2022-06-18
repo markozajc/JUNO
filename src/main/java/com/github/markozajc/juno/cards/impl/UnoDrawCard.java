@@ -1,5 +1,7 @@
 package com.github.markozajc.juno.cards.impl;
 
+import static com.github.markozajc.juno.cards.UnoCardColor.WILD;
+
 import javax.annotation.*;
 
 import com.github.markozajc.juno.cards.*;
@@ -37,7 +39,7 @@ public class UnoDrawCard extends UnoCard {
 	public UnoDrawCard(@Nonnull UnoCardColor color) {
 		this(color, 2);
 
-		if (color == UnoCardColor.WILD)
+		if (color == WILD)
 			throw new IllegalArgumentException("The wild card color is not for draw two cards!");
 	}
 
@@ -45,7 +47,7 @@ public class UnoDrawCard extends UnoCard {
 	 * Creates a new draw four card.
 	 */
 	public UnoDrawCard() {
-		this(UnoCardColor.WILD, 4);
+		this(WILD, 4);
 	}
 
 	private UnoDrawCard(@Nonnull UnoCardColor color, @Nonnegative int amount) {
