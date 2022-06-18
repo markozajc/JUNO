@@ -1,6 +1,8 @@
 package com.github.markozajc.juno.cards.impl;
 
-import com.github.markozajc.juno.cards.*;
+import static com.github.markozajc.juno.cards.UnoCardColor.WILD;
+
+import com.github.markozajc.juno.cards.UnoCard;
 
 /**
  * A card that can be placed onto anything and allows its placer to change it to any
@@ -14,7 +16,7 @@ public class UnoWildCard extends UnoCard {
 	 * Creates a new {@link UnoWildCard}.
 	 */
 	public UnoWildCard() {
-		super(UnoCardColor.WILD);
+		super(WILD);
 	}
 
 	@Override

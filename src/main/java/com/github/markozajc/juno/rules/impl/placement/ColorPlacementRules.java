@@ -1,5 +1,8 @@
 package com.github.markozajc.juno.rules.impl.placement;
 
+import static com.github.markozajc.juno.cards.UnoCardColor.WILD;
+import static com.github.markozajc.juno.rules.types.UnoCardPlacementRule.PlacementClearance.*;
+
 import com.github.markozajc.juno.cards.*;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
@@ -31,9 +34,9 @@ public class ColorPlacementRules {
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
 			if (target.getColor() == card.getColor())
-				return PlacementClearance.ALLOWED;
+				return ALLOWED;
 
-			return PlacementClearance.NEUTRAL;
+			return NEUTRAL;
 		}
 
 	}
@@ -48,10 +51,10 @@ public class ColorPlacementRules {
 
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
-			if (card.getOriginalColor() == UnoCardColor.WILD)
-				return PlacementClearance.ALLOWED;
+			if (card.getOriginalColor() == WILD)
+				return ALLOWED;
 
-			return PlacementClearance.NEUTRAL;
+			return NEUTRAL;
 		}
 
 	}

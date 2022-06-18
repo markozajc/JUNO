@@ -1,12 +1,13 @@
 package com.github.markozajc.juno;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import static java.lang.System.*;
+import static java.util.stream.Collectors.joining;
+
+import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.*;
-import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.players.UnoPlayer;
@@ -52,7 +53,7 @@ public class TestUtils {
 	private static class DummyUnoPlayer extends UnoPlayer {
 
 		public DummyUnoPlayer(@Nonnull Collection<UnoCard> cards) {
-			super("DummyUnoPlayer-" + System.currentTimeMillis());
+			super("DummyUnoPlayer-" + currentTimeMillis());
 			this.getHand().getCards().addAll(cards);
 		}
 
@@ -87,11 +88,9 @@ public class TestUtils {
 	 */
 	public static <T> boolean listEqualsUnordered(Collection<? extends T> collection1,
 												  Collection<? extends T> collection2) {
-		System.out.println("[= COMPARING COLLECTIONS /unordered =]");
-		System.out
-			.println("Collection 1: " + collection1.stream().map(Object::toString).collect(Collectors.joining(",")));
-		System.out
-			.println("Collection 2: " + collection2.stream().map(Object::toString).collect(Collectors.joining(",")));
+		out.println("[= COMPARING COLLECTIONS /unordered =]");
+		out.println("Collection 1: " + collection1.stream().map(Object::toString).collect(joining(",")));
+		out.println("Collection 2: " + collection2.stream().map(Object::toString).collect(joining(",")));
 		return collection1.size() == collection2.size() && collection1.containsAll(collection2);
 	}
 
@@ -111,23 +110,6 @@ public class TestUtils {
 	@Nonnull
 	public static DummyUnoPlayer getDummyPlayer(@Nonnull Collection<UnoCard> cards) {
 		return new DummyUnoPlayer(cards);
-	}
-
-	/**
-	 * Returns a dummy {@link UnoDeck} containing a preferred {@link List} of cards.
-	 *
-	 * @param cards
-	 *            {@link List} of {@link UnoCard}s the {@link UnoDeck} should contain
-	 *
-	 * @return the built {@link UnoDeck}
-	 *
-	 * @deprecated no longer of any use as {@link UnoDeck}s can be made using their
-	 *             constructor
-	 */
-	@Deprecated
-	@Nonnull
-	public static UnoDeck getDummyDeck(@Nonnull List<UnoCard> cards) {
-		return new UnoDeck(cards);
 	}
 
 	/**

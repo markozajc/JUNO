@@ -1,10 +1,13 @@
 package com.github.markozajc.juno.rules.pack.impl.house;
 
+import static com.github.markozajc.juno.cards.UnoCardColor.RED;
+import static com.github.markozajc.juno.rules.pack.impl.house.UnoProgressiveRulePack.getConsecutive;
+
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import com.github.markozajc.juno.cards.*;
+import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.impl.*;
 import com.github.markozajc.juno.piles.impl.UnoDiscardPile;
 
@@ -24,7 +27,7 @@ class UnoProgressiveRulePackTest {
 		discard.getCards().forEach(UnoCard::markOpen);
 		// Adds 4 open draw four cards
 
-		List<UnoDrawCard> consecutive = UnoProgressiveRulePack.getConsecutive(discard);
+		List<UnoDrawCard> consecutive = getConsecutive(discard);
 		assertEquals(16, consecutive.size() * consecutive.get(0).getAmount(),
 					 "4 draw four cards do not produce a consecutive draw of 16");
 		// That is a consecutive draw of 16 cards
@@ -39,23 +42,23 @@ class UnoProgressiveRulePackTest {
 		discard.getCards().get(3).markClosed();
 		// Sets the bottom card as closed
 
-		consecutive = UnoProgressiveRulePack.getConsecutive(discard);
+		consecutive = getConsecutive(discard);
 		assertEquals(12, consecutive.size() * consecutive.get(0).getAmount(),
 					 "3 draw four cards do not produce a consecutive draw of 16");
 		// That is a consecutive draw of 12 cards
 
-		discard.add(new UnoNumericCard(UnoCardColor.RED, 0));
+		discard.add(new UnoNumericCard(RED, 0));
 		// Adds an irrelevant color to the top
 
-		consecutive = UnoProgressiveRulePack.getConsecutive(discard);
+		consecutive = getConsecutive(discard);
 		assertTrue(consecutive.isEmpty());
 		// That is a consecutive draw of 0 cards
 
-		discard.add(new UnoDrawCard(UnoCardColor.RED));
+		discard.add(new UnoDrawCard(RED));
 		discard.getTop().markOpen();
 		// Adds a single open draw two card
 
-		consecutive = UnoProgressiveRulePack.getConsecutive(discard);
+		consecutive = getConsecutive(discard);
 		assertEquals(2, consecutive.size() * consecutive.get(0).getAmount(),
 					 "1 draw two cards do not produce a consecutive draw of 2");
 		// That is a consecutive draw of 2 cards

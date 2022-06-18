@@ -1,9 +1,11 @@
 package com.github.markozajc.juno.utils;
 
+import static java.util.Collections.sort;
+import static java.util.stream.Collectors.toList;
+
 import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
 
 import com.github.markozajc.juno.cards.*;
 import com.github.markozajc.juno.cards.impl.*;
@@ -31,10 +33,10 @@ public class UnoUtils {
 	public static List<Entry<Long, UnoCardColor>> analyzeColors(Collection<UnoCard> cards) {
 		List<Entry<Long, UnoCardColor>> result = new ArrayList<>();
 
-		for (UnoCardColor color : UnoCardColor.values())
+		for (var color : UnoCardColor.values())
 			result.add(new SimpleEntry<>(cards.stream().filter(c -> c.getColor() == color).count(), color));
 
-		Collections.sort(result, (v1, v2) -> v2.getKey().compareTo(v1.getKey()));
+		sort(result, (v1, v2) -> v2.getKey().compareTo(v1.getKey()));
 		return result;
 	}
 
@@ -51,7 +53,7 @@ public class UnoUtils {
 	 * @return {@link List} containing only cards of a certain color
 	 */
 	public static <T extends UnoCard> List<T> getColorCards(UnoCardColor color, Collection<T> cards) {
-		return cards.stream().filter(c -> c.getColor() == color).collect(Collectors.toList());
+		return cards.stream().filter(c -> c.getColor() == color).collect(toList());
 	}
 
 	/**
@@ -68,7 +70,7 @@ public class UnoUtils {
 	public static List<UnoActionCard> getActionCards(UnoFlowAction action, Collection<UnoCard> cards) {
 		return filterKind(UnoActionCard.class, cards).stream()
 			.filter(c -> c.getFlowAction() == action)
-			.collect(Collectors.toList());
+			.collect(toList());
 	}
 
 	/**
@@ -83,9 +85,7 @@ public class UnoUtils {
 	 * @return {@link List} containing only cards of a certain color
 	 */
 	public static List<UnoNumericCard> getNumberCards(int number, Collection<UnoCard> cards) {
-		return filterKind(UnoNumericCard.class, cards).stream()
-			.filter(c -> c.getNumber() == number)
-			.collect(Collectors.toList());
+		return filterKind(UnoNumericCard.class, cards).stream().filter(c -> c.getNumber() == number).collect(toList());
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class UnoUtils {
 	 * @return {@link List} of cards of a certain kind
 	 */
 	public static <T extends UnoCard> List<T> filterKind(Class<T> targetKind, Collection<UnoCard> cards) {
-		return cards.stream().filter(targetKind::isInstance).map(targetKind::cast).collect(Collectors.toList());
+		return cards.stream().filter(targetKind::isInstance).map(targetKind::cast).collect(toList());
 	}
 
 }

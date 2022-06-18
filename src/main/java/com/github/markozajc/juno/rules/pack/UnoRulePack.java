@@ -1,7 +1,9 @@
 package com.github.markozajc.juno.rules.pack;
 
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
+
 import java.util.*;
-import java.util.stream.Collectors;
 
 import javax.annotation.*;
 
@@ -30,14 +32,14 @@ public class UnoRulePack {
 	}
 
 	/**
-	 * Creates a new {@link UnoRulePack} from a vararg of {@link UnoRule}s.
+	 * Creates a new {@link UnoRulePack} from {@link UnoRule}s.
 	 *
 	 * @param rules
 	 *            the {@link UnoRule}s
 	 */
 	@SuppressWarnings("null")
 	public UnoRulePack(@Nonnull UnoRule... rules) {
-		this(Arrays.asList(rules));
+		this(asList(rules));
 	}
 
 	/**
@@ -49,15 +51,15 @@ public class UnoRulePack {
 	 *
 	 * @return the combined {@link UnoRulePack}
 	 */
-	@SuppressWarnings("null")
 	@Nonnull
+	@SuppressWarnings("null")
 	public static UnoRulePack ofPacks(@Nonnull Collection<UnoRulePack> packs) {
-		return new UnoRulePack(packs.stream().flatMap(p -> p.getRules().stream()).collect(Collectors.toList()));
+		return new UnoRulePack(packs.stream().flatMap(p -> p.getRules().stream()).collect(toList()));
 		// Lambda magic to flatten a list of UnoRulePack-s
 	}
 
 	/**
-	 * Creates a new {@link UnoRulePack} from a vararg of {@link UnoRulePack}s
+	 * Creates a new {@link UnoRulePack} from {@link UnoRulePack}s
 	 *
 	 * @param packs
 	 *            the {@link UnoRulePack}s
@@ -67,7 +69,7 @@ public class UnoRulePack {
 	@SuppressWarnings("null")
 	@Nonnull
 	public static UnoRulePack ofPacks(@Nonnull UnoRulePack... packs) {
-		return ofPacks(Arrays.asList(packs));
+		return ofPacks(asList(packs));
 	}
 
 	/**
@@ -105,11 +107,11 @@ public class UnoRulePack {
 	 *
 	 * @return the combined {@link UnoRulePack}
 	 */
-	@CheckReturnValue
 	@Nonnull
+	@CheckReturnValue
 	@SuppressWarnings("null")
 	public UnoRulePack addPacks(@Nonnull UnoRulePack... packs) {
-		return this.addPacks(Arrays.asList(packs));
+		return this.addPacks(asList(packs));
 	}
 
 	/**
@@ -138,7 +140,7 @@ public class UnoRulePack {
 					continue;
 				// Skips the same rule
 
-				ConflictResolution conflict = rule.conflictsWith(checkRule);
+				var conflict = rule.conflictsWith(checkRule);
 				// Analyzes the conflicts
 
 				if (conflict != null) {

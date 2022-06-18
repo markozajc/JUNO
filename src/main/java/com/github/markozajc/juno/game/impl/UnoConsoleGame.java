@@ -1,5 +1,8 @@
 package com.github.markozajc.juno.game.impl;
 
+import static java.lang.System.*;
+import static java.lang.Thread.*;
+
 import java.util.*;
 
 import javax.annotation.Nonnull;
@@ -23,11 +26,11 @@ public class UnoConsoleGame extends UnoControlledGame {
 	@SuppressWarnings({ "resource", "null" })
 	@Nonnull
 	private static UnoRulePack getRulePack() {
-		List<UnoHouseRule> rules = new ArrayList<>();
-		Scanner s = new Scanner(System.in);
-		for (UnoHouseRule rule : UnoHouseRule.values()) {
-			System.out.print("Activate the " + rule.getName() + " house rule? [y/n] ");
-			if (s.nextLine().equalsIgnoreCase("y"))
+		var rules = new ArrayList<UnoHouseRule>();
+		Scanner s = new Scanner(in);
+		for (var rule : UnoHouseRule.values()) {
+			out.print("Activate the " + rule.getName() + " house rule? [y/n] ");
+			if ("y".equalsIgnoreCase(s.nextLine()))
 				rules.add(rule);
 		}
 
@@ -54,25 +57,24 @@ public class UnoConsoleGame extends UnoControlledGame {
 
 		UnoWinner winner = game.play();
 		UnoPlayer winnerPlayer = winner.getWinner();
-		if (winnerPlayer == null) {
-			System.out.println("It's a draw!");
+		if (winnerPlayer == null)
+			out.println("It's a draw!");
+		else
+			out.println(winnerPlayer.getName() + " won!");
 
-		} else {
-			System.out.println(winnerPlayer.getName() + " won!");
-		}
-		System.out.print("Reason: ");
+		out.print("Reason: ");
 		switch (winner.getEndReason()) {
 			case REQUESTED:
-				System.out.println("you quit.");
+				out.println("you quit.");
 				break;
 			case FALLBACK:
-				System.out.println("the draw pile was depleted and there weren't any cards in the discard pile.");
+				out.println("the draw pile was depleted and there weren't any cards in the discard pile.");
 				break;
 			case VICTORY:
-				System.out.println("placed all cards.");
+				out.println("placed all cards.");
 				break;
 			case UNKNOWN:
-				System.out.println("this shouldn't have happened!" +
+				out.println("this shouldn't have happened!" +
 					"Please send a log of the game to https://github.com/markozajc/JUNO/issues.");
 				break;
 
@@ -81,12 +83,12 @@ public class UnoConsoleGame extends UnoControlledGame {
 
 	@Override
 	public void onEvent(String format, Object... arguments) {
-		System.out.printf(format, arguments);
-		System.out.println();
+		out.printf(format, arguments);
+		out.println();
 		try {
-			Thread.sleep(500);
+			sleep(500);
 		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
+			currentThread().interrupt();
 		}
 	}
 

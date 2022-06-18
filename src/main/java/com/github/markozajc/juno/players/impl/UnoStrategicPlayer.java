@@ -1,5 +1,10 @@
 package com.github.markozajc.juno.players.impl;
 
+import static com.github.markozajc.juno.cards.UnoCardColor.WILD;
+import static com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule.*;
+import static com.github.markozajc.juno.utils.UnoRuleUtils.combinedPlacementAnalysis;
+import static com.github.markozajc.juno.utils.UnoUtils.*;
+
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -9,8 +14,7 @@ import com.github.markozajc.juno.cards.*;
 import com.github.markozajc.juno.cards.impl.*;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.players.UnoPlayer;
-import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule;
-import com.github.markozajc.juno.utils.*;
+import com.github.markozajc.juno.utils.UnoUtils;
 
 /**
  * An automated hand that uses actual strategic "thinking" to decide cards and colors
@@ -35,7 +39,7 @@ public class UnoStrategicPlayer extends UnoPlayer {
 
 	@Nullable
 	private static List<UnoNumericCard> sevenoFilter(List<UnoCard> cards) {
-		List<UnoNumericCard> applicable = new ArrayList<>(UnoUtils.filterKind(UnoNumericCard.class, cards));
+		var applicable = new ArrayList<>(filterKind(UnoNumericCard.class, cards));
 		applicable.removeIf(r -> r.getNumber() == 0 || r.getNumber() == 7);
 		return applicable;
 	}
@@ -56,7 +60,7 @@ public class UnoStrategicPlayer extends UnoPlayer {
 											  UnoPlayer next) {
 
 		boolean shouldPlay = false;
-		if (game.getHouseRules().contains(UnoHouseRule.PROGRESSIVE)) {
+		if (game.getHouseRules().contains(PROGRESSIVE)) {
 			// Progressive UNO is enabled
 			shouldPlay = game.getTopCard() instanceof UnoDrawCard || next.getHand().getSize() <= DRAW_CARD_THRESHOLD;
 
@@ -78,7 +82,7 @@ public class UnoStrategicPlayer extends UnoPlayer {
 	private static <T extends UnoCard> T simpleChooseCard(List<UnoCard> possiblePlacements,
 														  List<Entry<Long, UnoCardColor>> colorAnalysis,
 														  Class<T> type) {
-		return chooseBestColorCard(UnoUtils.filterKind(type, possiblePlacements), colorAnalysis);
+		return chooseBestColorCard(filterKind(type, possiblePlacements), colorAnalysis);
 	}
 
 	/**
@@ -106,11 +110,11 @@ public class UnoStrategicPlayer extends UnoPlayer {
 		// In case there's no card of the requested kind
 
 		for (Entry<Long, UnoCardColor> color : colorAnalysis) {
-			if (color.getValue() == UnoCardColor.WILD)
+			if (color.getValue() == WILD)
 				continue;
 			// Skips the wild cards because it might be a good idea to save them for later
 
-			List<T> matches = UnoUtils.getColorCards(color.getValue(), possiblePlacements);
+			List<T> matches = getColorCards(color.getValue(), possiblePlacements);
 			// Gets the cards of
 
 			if (!matches.isEmpty())
@@ -125,16 +129,15 @@ public class UnoStrategicPlayer extends UnoPlayer {
 	@Override
 	public UnoCard playCard(UnoGame game, UnoPlayer next) {
 		UnoCard top = game.getDiscard().getTop();
-		List<UnoCard> possible =
-			UnoRuleUtils.combinedPlacementAnalysis(top, this.getCards(), game.getRules(), this.getHand());
+		List<UnoCard> possible = combinedPlacementAnalysis(top, this.getCards(), game.getRules(), this.getHand());
 
 		if (possible.isEmpty())
 			return null;
 		// Draws a card if no other option is possible
 
-		List<Entry<Long, UnoCardColor>> colorAnalysis = UnoUtils.analyzeColors(getCards());
+		List<Entry<Long, UnoCardColor>> colorAnalysis = analyzeColors(getCards());
 		// Analyzes the colors
-		if (game.getHouseRules().contains(UnoHouseRule.SEVENO)) {
+		if (game.getHouseRules().contains(SEVENO)) {
 			UnoNumericCard sevenoCard = sevenoStrategy(possible, colorAnalysis, this, next);
 			if (sevenoCard != null)
 				return sevenoCard;
@@ -151,8 +154,7 @@ public class UnoStrategicPlayer extends UnoPlayer {
 		// Places an action card if possible
 
 		List<UnoCard> possibleNumeric;
-		if (game.getHouseRules().contains(UnoHouseRule.SEVENO)
-			&& this.getHand().getSize() - 1 >= next.getHand().getSize()) {
+		if (game.getHouseRules().contains(SEVENO) && this.getHand().getSize() - 1 >= next.getHand().getSize()) {
 			possibleNumeric = new ArrayList<>(possible);
 			possibleNumeric.removeAll(sevenoFilter(possible));
 		} else {
@@ -166,7 +168,7 @@ public class UnoStrategicPlayer extends UnoPlayer {
 			return numericCard;
 		// Places a numeric card if possible
 
-		UnoWildCard wild = UnoUtils.filterKind(UnoWildCard.class, possible).stream().findFirst().orElse(null);
+		UnoWildCard wild = filterKind(UnoWildCard.class, possible).stream().findFirst().orElse(null);
 		if (wild != null)
 			return wild;
 		// places a Wild card if available
@@ -179,9 +181,8 @@ public class UnoStrategicPlayer extends UnoPlayer {
 	@SuppressWarnings("null")
 	@Override
 	public UnoCardColor chooseColor(UnoGame game) {
-		return UnoUtils.analyzeColors(this.getCards())
-			.stream()
-			.filter(p -> p.getValue() != UnoCardColor.WILD)
+		return analyzeColors(this.getCards()).stream()
+			.filter(p -> p.getValue() != WILD)
 			.findFirst()
 			.orElseThrow(() -> new IllegalStateException("Couldn't choose a color (UnoUtils malfunctioned!)"))
 			.getValue();

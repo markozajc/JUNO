@@ -1,5 +1,7 @@
 package com.github.markozajc.juno.hands;
 
+import static com.github.markozajc.juno.utils.UnoGameUtils.drawCards;
+
 import java.util.*;
 
 import javax.annotation.*;
@@ -9,7 +11,6 @@ import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.piles.UnoPile;
 import com.github.markozajc.juno.piles.impl.UnoDiscardPile;
 import com.github.markozajc.juno.players.UnoPlayer;
-import com.github.markozajc.juno.utils.UnoGameUtils;
 
 /**
  * A representation of a hand - a container for {@link UnoCard}s that is owned by a
@@ -52,7 +53,7 @@ public class UnoHand implements UnoPile {
 	 */
 	@Nonnull
 	public final List<UnoCard> draw(@Nonnull UnoGame game, @Nonnegative int amount) {
-		List<UnoCard> drawnCards = UnoGameUtils.drawCards(game, amount);
+		var drawnCards = drawCards(game, amount);
 		this.cards.addAll(drawnCards);
 		return drawnCards;
 	}

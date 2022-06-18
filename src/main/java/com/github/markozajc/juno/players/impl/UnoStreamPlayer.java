@@ -1,17 +1,20 @@
 package com.github.markozajc.juno.players.impl;
 
+import static com.github.markozajc.juno.cards.UnoCardColor.*;
+import static com.github.markozajc.juno.rules.pack.impl.house.UnoProgressiveRulePack.getConsecutive;
+import static com.github.markozajc.juno.utils.UnoRuleUtils.combinedPlacementAnalysis;
+import static java.lang.Integer.parseInt;
+import static java.lang.Thread.*;
+import static java.util.stream.Collectors.joining;
+
 import java.io.*;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Scanner;
 
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.*;
-import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.players.UnoPlayer;
-import com.github.markozajc.juno.rules.pack.impl.house.UnoProgressiveRulePack;
-import com.github.markozajc.juno.utils.UnoRuleUtils;
 
 /**
  * A human-driven player that uses a {@link Scanner} to read input and sends the
@@ -47,8 +50,7 @@ public class UnoStreamPlayer extends UnoPlayer {
 	@Override
 	public UnoCard playCard(UnoGame game, UnoPlayer next) {
 		UnoCard top = game.getDiscard().getTop();
-		List<UnoCard> possible =
-			UnoRuleUtils.combinedPlacementAnalysis(top, this.getHand().getCards(), game.getRules(), this.getHand());
+		var possible = combinedPlacementAnalysis(top, this.getHand().getCards(), game.getRules(), this.getHand());
 
 		this.ps.println("Choose a card: [" + next.getName() +
 			" hand size: " +
@@ -61,7 +63,7 @@ public class UnoStreamPlayer extends UnoPlayer {
 			game.getDiscard().getTop() +
 			"]");
 
-		List<UnoDrawCard> drawCards = UnoProgressiveRulePack.getConsecutive(game.getDiscard());
+		var drawCards = getConsecutive(game.getDiscard());
 		if (!drawCards.isEmpty()) {
 			this.ps.println("0 - Draw " + drawCards.size() * drawCards.get(0).getAmount() +
 				" cards from " +
@@ -74,7 +76,7 @@ public class UnoStreamPlayer extends UnoPlayer {
 		}
 
 		int i = 1;
-		for (UnoCard card : this.getHand().getCards()) {
+		for (var card : this.getHand().getCards()) {
 			if (possible.contains(card)) {
 				this.ps.println(i + " \u2022 " + card);
 			} else {
@@ -82,9 +84,9 @@ public class UnoStreamPlayer extends UnoPlayer {
 			}
 
 			try {
-				Thread.sleep(5);
+				sleep(5);
 			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
+				currentThread().interrupt();
 			}
 
 			i++;
@@ -93,12 +95,9 @@ public class UnoStreamPlayer extends UnoPlayer {
 
 		while (true) {
 			String nextLine = this.scanner.nextLine();
-			if (nextLine.equalsIgnoreCase("rules")) {
-				this.ps.println("Active rules: " + game.getRules()
-					.getRules()
-					.stream()
-					.map(r -> r.getClass().getSimpleName())
-					.collect(Collectors.joining(", ")));
+			if ("rules".equalsIgnoreCase(nextLine)) {
+				this.ps.println("Active rules: " +
+					game.getRules().getRules().stream().map(r -> r.getClass().getSimpleName()).collect(joining(", ")));
 				continue;
 			}
 
@@ -109,7 +108,7 @@ public class UnoStreamPlayer extends UnoPlayer {
 
 			int choice;
 			try {
-				choice = Integer.parseInt(nextLine);
+				choice = parseInt(nextLine);
 			} catch (NumberFormatException e) {
 				this.ps.println(INVALID_CHOICE_STRING);
 				continue;
@@ -146,7 +145,7 @@ public class UnoStreamPlayer extends UnoPlayer {
 		while (true) {
 			int choice;
 			try {
-				choice = Integer.parseInt(this.scanner.nextLine());
+				choice = parseInt(this.scanner.nextLine());
 			} catch (NumberFormatException e) {
 				this.ps.println(INVALID_CHOICE_STRING);
 				continue;
@@ -154,13 +153,13 @@ public class UnoStreamPlayer extends UnoPlayer {
 
 			switch (choice) {
 				case 0:
-					return UnoCardColor.YELLOW;
+					return YELLOW;
 				case 1:
-					return UnoCardColor.RED;
+					return RED;
 				case 2:
-					return UnoCardColor.GREEN;
+					return GREEN;
 				case 3:
-					return UnoCardColor.BLUE;
+					return BLUE;
 				default:
 					break;
 			}
@@ -171,8 +170,8 @@ public class UnoStreamPlayer extends UnoPlayer {
 
 	@Override
 	public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard, UnoPlayer next) {
-		this.ps.println("You have drawn a " + drawnCard.toString() + ". Do you want to place it? [y/n]");
-		return this.scanner.nextLine().equals("y");
+		this.ps.println("You have drawn a " + drawnCard.toString() + ". Do you want to place it? [y/N]");
+		return "y".equalsIgnoreCase(this.scanner.nextLine());
 	}
 
 }

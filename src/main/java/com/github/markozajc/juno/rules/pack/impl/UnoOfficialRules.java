@@ -89,8 +89,8 @@ public class UnoOfficialRules {
 	/**
 	 * @return {@link UnoRulePack} of the official UNO rules
 	 */
-	@SuppressWarnings("null")
 	@Nonnull
+	@SuppressWarnings("null")
 	public static UnoRulePack getPack() {
 		if (pack == null)
 			createPack();
@@ -120,8 +120,8 @@ public class UnoOfficialRules {
 	 *
 	 * @return {@link UnoRulePack} of the official UNO rules with house rules
 	 */
-	@SuppressWarnings("null")
 	@Nonnull
+	@SuppressWarnings("null")
 	public static UnoRulePack getPack(@Nonnull Collection<UnoHouseRule> houseRules) {
 		try {
 			return getPack().addPacks(houseRules.stream().map(UnoHouseRule::getPack).collect(Collectors.toList()))

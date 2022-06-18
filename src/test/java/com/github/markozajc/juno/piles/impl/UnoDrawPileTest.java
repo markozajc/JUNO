@@ -1,10 +1,13 @@
 package com.github.markozajc.juno.piles.impl;
 
-import java.util.*;
+import static com.github.markozajc.juno.cards.UnoCardColor.*;
+import static java.util.Arrays.asList;
+
+import java.util.Random;
 
 import org.junit.jupiter.api.Test;
 
-import com.github.markozajc.juno.cards.*;
+import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.impl.*;
 import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.decks.impl.UnoStandardDeck;
@@ -29,12 +32,11 @@ class UnoDrawPileTest {
 	@Test
 	void testShuffle() {
 		@SuppressWarnings("null")
-		UnoDeck deck = new UnoDeck(Arrays
-			.asList(new UnoNumericCard(UnoCardColor.RED, 0), new UnoNumericCard(UnoCardColor.GREEN, 1),
-					new UnoNumericCard(UnoCardColor.BLUE, 2), new UnoNumericCard(UnoCardColor.YELLOW, 3),
-					new UnoNumericCard(UnoCardColor.RED, 4), new UnoNumericCard(UnoCardColor.GREEN, 5),
-					new UnoNumericCard(UnoCardColor.BLUE, 6), new UnoNumericCard(UnoCardColor.YELLOW, 7),
-					new UnoNumericCard(UnoCardColor.RED, 8), new UnoNumericCard(UnoCardColor.GREEN, 9)));
+		UnoDeck deck =
+			new UnoDeck(asList(new UnoNumericCard(RED, 0), new UnoNumericCard(GREEN, 1), new UnoNumericCard(BLUE, 2),
+							   new UnoNumericCard(YELLOW, 3), new UnoNumericCard(RED, 4), new UnoNumericCard(GREEN, 5),
+							   new UnoNumericCard(BLUE, 6), new UnoNumericCard(YELLOW, 7), new UnoNumericCard(RED, 8),
+							   new UnoNumericCard(GREEN, 9)));
 		// Creates a new dummy deck
 
 		UnoDrawPile pile = new UnoDrawPile(deck, new Random(0) /* determinism */);
@@ -48,7 +50,7 @@ class UnoDrawPileTest {
 	@Test
 	void testDrawInitialCard() {
 		@SuppressWarnings("null")
-		UnoDeck deck = new UnoDeck(Arrays.asList(new UnoWildCard(), new UnoNumericCard(UnoCardColor.RED, 0)));
+		UnoDeck deck = new UnoDeck(asList(new UnoWildCard(), new UnoNumericCard(RED, 0)));
 		// Defines the deck to use
 
 		UnoDrawPile pile = new UnoDrawPile(deck, new Random(0) /* determinism, and we get the wild card first */);

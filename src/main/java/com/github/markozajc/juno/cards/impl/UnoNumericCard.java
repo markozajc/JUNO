@@ -1,5 +1,7 @@
 package com.github.markozajc.juno.cards.impl;
 
+import static com.github.markozajc.juno.cards.UnoCardColor.WILD;
+
 import javax.annotation.*;
 
 import com.github.markozajc.juno.cards.*;
@@ -31,7 +33,7 @@ public class UnoNumericCard extends UnoCard {
 	public UnoNumericCard(@Nonnull UnoCardColor color, @Nonnegative int number) {
 		super(color);
 
-		if (color == UnoCardColor.WILD)
+		if (color == WILD)
 			throw new IllegalArgumentException("The wild card color is not allowed!");
 
 		if (number > 9 || number < 0)

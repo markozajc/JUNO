@@ -29,7 +29,7 @@ public class UnoDeck {
 	 */
 	@Nonnull
 	private static List<UnoCard> cloneCards(@Nonnull Collection<UnoCard> cards) {
-		List<UnoCard> result = new ArrayList<>();
+		var result = new ArrayList<UnoCard>(cards.size());
 		for (UnoCard card : cards) {
 			result.add(card.cloneCard());
 		}

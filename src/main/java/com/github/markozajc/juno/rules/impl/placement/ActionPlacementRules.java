@@ -1,5 +1,7 @@
 package com.github.markozajc.juno.rules.impl.placement;
 
+import static com.github.markozajc.juno.rules.types.UnoCardPlacementRule.PlacementClearance.*;
+
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.impl.UnoActionCard;
 import com.github.markozajc.juno.hands.UnoHand;
@@ -33,10 +35,10 @@ public class ActionPlacementRules {
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
 			if (target instanceof UnoActionCard && card instanceof UnoActionCard
 				&& ((UnoActionCard) target).getFlowAction() == ((UnoActionCard) card).getFlowAction())
-				return PlacementClearance.ALLOWED;
+				return ALLOWED;
 			// Checks whether target's action matches card's action
 
-			return PlacementClearance.NEUTRAL;
+			return NEUTRAL;
 		}
 
 	}

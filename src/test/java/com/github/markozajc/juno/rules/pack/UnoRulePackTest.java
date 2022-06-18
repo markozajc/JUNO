@@ -1,5 +1,7 @@
 package com.github.markozajc.juno.rules.pack;
 
+import static com.github.markozajc.juno.rules.UnoRule.ConflictResolution.*;
+
 import org.junit.jupiter.api.Test;
 
 import com.github.markozajc.juno.rules.*;
@@ -15,7 +17,7 @@ class UnoRulePackTest {
 		@Override
 		public ConflictResolution conflictsWith(UnoRule rule) {
 			if (rule instanceof TestRule)
-				return ConflictResolution.REPLACE;
+				return REPLACE;
 
 			return null;
 		}
@@ -27,7 +29,7 @@ class UnoRulePackTest {
 		@Override
 		public ConflictResolution conflictsWith(UnoRule rule) {
 			if (rule instanceof TestRule)
-				return ConflictResolution.BACKOFF;
+				return BACKOFF;
 
 			return null;
 		}
@@ -39,7 +41,7 @@ class UnoRulePackTest {
 		@Override
 		public ConflictResolution conflictsWith(UnoRule rule) {
 			if (rule instanceof TestRule)
-				return ConflictResolution.FAIL;
+				return FAIL;
 
 			return null;
 		}

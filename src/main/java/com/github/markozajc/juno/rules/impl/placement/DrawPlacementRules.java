@@ -1,6 +1,9 @@
 package com.github.markozajc.juno.rules.impl.placement;
 
-import com.github.markozajc.juno.cards.*;
+import static com.github.markozajc.juno.cards.UnoCardColor.WILD;
+import static com.github.markozajc.juno.rules.types.UnoCardPlacementRule.PlacementClearance.*;
+
+import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
@@ -35,10 +38,10 @@ public class DrawPlacementRules {
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
 			if (target instanceof UnoDrawCard && card instanceof UnoDrawCard
 				&& ((UnoDrawCard) target).getAmount() == ((UnoDrawCard) card).getAmount())
-				return PlacementClearance.ALLOWED;
+				return ALLOWED;
 			// Checks whether target's amount matches card's amount
 
-			return PlacementClearance.NEUTRAL;
+			return NEUTRAL;
 		}
 	}
 
@@ -53,14 +56,14 @@ public class DrawPlacementRules {
 
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
-			if (card instanceof UnoDrawCard && target.getOriginalColor() != UnoCardColor.WILD
+			if (card instanceof UnoDrawCard && target.getOriginalColor() != WILD
 				&& ((UnoDrawCard) card).getAmount() == 4
 				&& !UnoUtils.getColorCards(target.getOriginalColor(), hand.getCards()).isEmpty())
-				return PlacementClearance.PROHIBITED;
+				return PROHIBITED;
 			// Prohibits the placement of the wild draw four if the hand possesses a card that
 			// has the same color as the target (assumed to be the top of the discard pile) card.
 
-			return PlacementClearance.NEUTRAL;
+			return NEUTRAL;
 		}
 	}
 
@@ -75,9 +78,9 @@ public class DrawPlacementRules {
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
 			if (target instanceof UnoDrawCard && target.isOpen())
-				return PlacementClearance.PROHIBITED;
+				return PROHIBITED;
 
-			return PlacementClearance.NEUTRAL;
+			return NEUTRAL;
 		}
 
 	}

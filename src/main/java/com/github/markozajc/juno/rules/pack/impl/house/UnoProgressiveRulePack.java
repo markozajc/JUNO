@@ -212,8 +212,8 @@ public class UnoProgressiveRulePack {
 	/**
 	 * @return the Progressive UNO house {@link UnoRulePack}
 	 */
-	@SuppressWarnings("null")
 	@Nonnull
+	@SuppressWarnings("null")
 	public static UnoRulePack getPack() {
 		if (pack == null)
 			createPack();

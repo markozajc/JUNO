@@ -1,5 +1,7 @@
 package com.github.markozajc.juno.rules.pack.impl.house;
 
+import static com.github.markozajc.juno.rules.types.flow.UnoInitializationConclusion.NOTHING;
+
 import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.UnoCard;
@@ -53,10 +55,10 @@ public class UnoSevenORulePack {
 				foe.setHand(playerHand);
 				// Swap hands
 
-				game.onEvent("Swapped cards", (Object[]) null);
+				game.onEvent("Players swap hands", (Object[]) null);
 			}
 
-			return UnoInitializationConclusion.NOTHING;
+			return NOTHING;
 		}
 
 		@Override
@@ -67,7 +69,7 @@ public class UnoSevenORulePack {
 				decidedCard.markOpen();
 			}
 
-			return UnoInitializationConclusion.NOTHING;
+			return NOTHING;
 		}
 
 	}
@@ -75,8 +77,8 @@ public class UnoSevenORulePack {
 	/**
 	 * @return the SevenO house {@link UnoRulePack}
 	 */
-	@SuppressWarnings("null")
 	@Nonnull
+	@SuppressWarnings("null")
 	public static UnoRulePack getPack() {
 		if (pack == null)
 			createPack();

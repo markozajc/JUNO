@@ -1,5 +1,8 @@
 package com.github.markozajc.juno.piles.impl;
 
+import static com.github.markozajc.juno.utils.UnoUtils.filterKind;
+import static java.util.Collections.unmodifiableList;
+
 import java.util.*;
 
 import javax.annotation.*;
@@ -9,7 +12,7 @@ import com.github.markozajc.juno.cards.impl.UnoNumericCard;
 import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.piles.UnoPile;
-import com.github.markozajc.juno.utils.*;
+import com.github.markozajc.juno.utils.UnoGameUtils;
 
 /**
  * A class representing a UNO draw pile. A draw pile behaves as the "entry point" for
@@ -23,7 +26,7 @@ public class UnoDrawPile implements UnoPile {
 
 	@Nonnull
 	private final Queue<UnoCard> cards;
-	private boolean initialDrawn = false;
+	private boolean initialDrawn;
 	@Nonnull
 	private Random random;
 
@@ -129,8 +132,8 @@ public class UnoDrawPile implements UnoPile {
 	 * @throws IllegalArgumentException
 	 *             if {@code amount} is negative
 	 */
-	@SuppressWarnings("null")
 	@Nonnull
+	@SuppressWarnings("null")
 	public List<UnoCard> draw(@Nonnegative int amount) {
 		if (amount < 0)
 			throw new IllegalArgumentException("Can't draw less than 0 cards!");
@@ -138,11 +141,11 @@ public class UnoDrawPile implements UnoPile {
 		if (amount > this.getSize())
 			throw new IllegalStateException("There aren't enough cards in this pile!");
 
-		List<UnoCard> result = new ArrayList<>(amount);
+		var result = new ArrayList<UnoCard>(amount);
 		for (int i = 0; i < amount; i++)
 			result.add(this.cards.poll());
 
-		return Collections.unmodifiableList(result);
+		return unmodifiableList(result);
 	}
 
 	/**
@@ -153,8 +156,8 @@ public class UnoDrawPile implements UnoPile {
 	 * @throws IllegalStateException
 	 *             if the pile is empty
 	 */
-	@SuppressWarnings("null")
 	@Nonnull
+	@SuppressWarnings("null")
 	public UnoCard draw() {
 		if (this.cards.isEmpty())
 			throw new IllegalStateException("There are no more cards to draw!");
@@ -166,7 +169,7 @@ public class UnoDrawPile implements UnoPile {
 	 * Shuffles the entire pile.
 	 */
 	public void shuffle() {
-		List<UnoCard> cardsCopy = new ArrayList<>(getCards());
+		var cardsCopy = new ArrayList<>(getCards());
 		Collections.shuffle(cardsCopy, this.random);
 		this.cards.clear();
 		this.cards.addAll(cardsCopy);
@@ -187,7 +190,7 @@ public class UnoDrawPile implements UnoPile {
 
 		this.initialDrawn = true;
 
-		UnoCard initial = UnoUtils.filterKind(UnoNumericCard.class, this.cards).get(0);
+		UnoCard initial = filterKind(UnoNumericCard.class, this.cards).get(0);
 		this.cards.remove(initial);
 		return initial;
 	}

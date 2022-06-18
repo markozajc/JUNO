@@ -69,7 +69,6 @@ public interface UnoCardPlacementRule extends UnoRule {
 	 *         a card that's the color of the top card - the extra hitch to the Wild draw
 	 *         four that's in the official UNO rules)
 	 */
-	PlacementClearance canBePlaced(@Nonnull UnoCard target, @Nonnull UnoCard card,
-												   @Nonnull UnoHand hand);
+	PlacementClearance canBePlaced(@Nonnull UnoCard target, @Nonnull UnoCard card, @Nonnull UnoHand hand);
 
 }
