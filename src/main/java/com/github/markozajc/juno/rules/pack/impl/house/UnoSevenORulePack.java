@@ -55,7 +55,7 @@ public class UnoSevenORulePack {
 				foe.setHand(playerHand);
 				// Swap hands
 
-				game.onEvent("Players swap hands", (Object[]) null);
+				game.onEvent("Players swap hands.", (Object[]) null);
 			}
 
 			return NOTHING;

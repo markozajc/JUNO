@@ -18,8 +18,8 @@ import com.github.markozajc.juno.rules.types.flow.UnoPhaseConclusion;
  */
 public class CardPlacementRule implements UnoGameFlowRule {
 
-	private static final String CARD_PLACED = "%s placed a %s.";
-	private static final String INVALID_CARD = "%s tried to place an invalid card.";
+	private static final String CARD_PLACED = "%s places a %s.";
+	private static final String INVALID_CARD = "%s tries to place an invalid card.";
 
 	@Override
 	public UnoPhaseConclusion decisionPhase(UnoPlayer player, UnoGame game, UnoCard decidedCard) {
