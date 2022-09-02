@@ -27,7 +27,7 @@ class UnoControlledGameTest {
 
 		public UnoStressTestGame(@Nonnull UnoPlayer first, @Nonnull UnoPlayer second, @Nonnull UnoDeck unoDeck,
 								 @Nonnegative int cardAmount, @Nonnull UnoRulePack rules) {
-			super(first, second, unoDeck, cardAmount, rules);
+			super(unoDeck, cardAmount, rules, first, second);
 		}
 
 		@Override
