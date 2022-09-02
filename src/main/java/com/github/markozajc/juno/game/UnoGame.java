@@ -327,7 +327,7 @@ public abstract class UnoGame {
 			return players.get(0);
 		}
 		else {
-			return players.get(playerIndex);
+			return players.get(playerIndex + 1);
 		}
 	}
 
