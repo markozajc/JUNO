@@ -59,6 +59,7 @@ public abstract class UnoGame {
 	 */
 	protected UnoGame(@Nonnull UnoDeck deck,
 					  @Nonnegative int cardAmount, @Nonnull UnoRulePack rules, UnoPlayer... players) {
+		if (players.length < 2) throw new IndexOutOfBoundsException("Need at least two players for a game of UNO!");
 		this.players.addAll(List.of(players));
 		this.deck = deck;
 		this.cardAmount = cardAmount;
