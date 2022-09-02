@@ -44,6 +44,7 @@ public abstract class UnoGame {
 	private UnoDrawPile draw;
 	private List<UnoHouseRule> houseRules;
 	private boolean endRequested;
+	private boolean reversedDirection;
 
 	/**
 	 * Creates a new UNO game.
@@ -155,9 +156,6 @@ public abstract class UnoGame {
 		boolean fallback = false;
 		for (UnoPlayer player = players[0]; winnerPlayer == null && !fallback && !this.endRequested; player =
 			getNextPlayer(player)) {
-			UnoPlayer nextPlayer = getNextPlayer(player);
-			// Gets the other player
-
 			this.last = player;
 
 			winnerPlayer = playAndCheckPlayers(player, players);
@@ -323,11 +321,19 @@ public abstract class UnoGame {
 		if (playerIndex < 0) {
 			throw new IllegalArgumentException("The provided UnoPlayer is not a part of this UnoGame.");
 		}
-		else if (playerIndex > players.size() - 1) {
-			return players.get(0);
-		}
-		else {
-			return players.get(playerIndex + 1);
+		else if (!reversedDirection) {
+			if (playerIndex > players.size() - 2) {
+				return players.get(0);
+			} else {
+				return players.get(playerIndex + 1);
+			}
+		} else {
+			if (playerIndex < 1) {
+				return players.get(players.size() - 1);
+			}
+			else {
+				return players.get(playerIndex - 1);
+			}
 		}
 	}
 
@@ -370,7 +376,7 @@ public abstract class UnoGame {
 	 * Caution: trying to modify the returned list will result in an {@link UnsupportedOperationException}.
 	 */
 	@Nonnull
-	List<UnoPlayer> getPlayers() {
+	public List<UnoPlayer> getPlayers() {
 		return Collections.unmodifiableList(players);
 	}
 
@@ -409,6 +415,16 @@ public abstract class UnoGame {
 	 */
 	public boolean isEndRequested() {
 		return this.endRequested;
+	}
+
+	/**
+	 * Reverses the direction of this game's current flow. Will cause {@link UnoGame#getNextPlayer(UnoPlayer)} to return
+	 * the previous player in the list instead of the next one.
+	 *
+	 * If only two players are in the game, this will have no effect.
+	 */
+	public void reverseDirection() {
+		reversedDirection = !reversedDirection;
 	}
 
 }

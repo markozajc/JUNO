@@ -105,6 +105,8 @@ public abstract class UnoControlledGame extends UnoGame {
 				var result = rule.decisionPhase(player, game, decision);
 				if (result.shouldRepeat())
 					repeatDecision = true;
+				if (result.shouldReverseDirection())
+					game.reverseDirection();
 			}
 
 		}

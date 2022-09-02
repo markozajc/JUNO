@@ -2,7 +2,6 @@ package com.github.markozajc.juno.utils;
 
 import static com.github.markozajc.juno.TestUtils.*;
 import static com.github.markozajc.juno.cards.UnoCardColor.*;
-import static com.github.markozajc.juno.cards.impl.UnoActionCard.UnoFlowAction.*;
 import static com.github.markozajc.juno.utils.UnoRuleUtils.combinedPlacementAnalysis;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
@@ -33,9 +32,9 @@ class UnoRuleUtilsTest {
 			/* 5 */ new UnoDrawCard(),
 			/* 6 */ new UnoDrawCard(BLUE),
 			/* 7 */ new UnoDrawCard(RED),
-			/* 8 */ new UnoActionCard(YELLOW, SKIP),
-			/* 9 */ new UnoActionCard(GREEN, REVERSE),
-			/* 10 */ new UnoActionCard(BLUE, REVERSE)
+			/* 8 */ new UnoSkipCard(YELLOW),
+			/* 9 */ new UnoReverseCard(GREEN),
+			/* 10 */ new UnoReverseCard(BLUE)
 
 		};
 		// Creates a list of cards to be tested

@@ -1,12 +1,8 @@
 package com.github.markozajc.juno.game;
 
-import static java.lang.String.format;
-import static java.lang.System.out;
-
-import javax.annotation.*;
-
-import org.junit.jupiter.api.Test;
-
+import com.github.markozajc.juno.cards.UnoCardColor;
+import com.github.markozajc.juno.cards.impl.UnoNumericCard;
+import com.github.markozajc.juno.cards.impl.UnoReverseCard;
 import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.decks.impl.UnoStandardDeck;
 import com.github.markozajc.juno.players.UnoPlayer;
@@ -14,9 +10,13 @@ import com.github.markozajc.juno.players.impl.UnoStrategicPlayer;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule;
+import org.junit.jupiter.api.Test;
 
-import java.util.stream.Collectors;
+import javax.annotation.Nonnegative;
+import javax.annotation.Nonnull;
 
+import static java.lang.String.format;
+import static java.lang.System.out;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UnoControlledGameTest {
@@ -71,5 +71,13 @@ class UnoControlledGameTest {
 		}
 
 		out.println("[==== STRESS TEST PLAYED " + ROUNDS + " ROUNDS ====]");
+	}
+
+	@Test
+	void testThreePlayer() {
+		UnoGame game = new UnoTestGame(new UnoStrategicPlayer("P1"), new UnoStrategicPlayer("P2"),
+				new UnoStrategicPlayer("P3"));
+		UnoWinner winner = game.play();
+		assertNotNull(winner);
 	}
 }

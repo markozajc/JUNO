@@ -33,7 +33,7 @@ public class UnoInitializationConclusion extends UnoPhaseConclusion {
 	 *            whether the {@link UnoHand} loses the turn
 	 */
 	public UnoInitializationConclusion(boolean shouldRepeat, boolean shouldLoseATurn) {
-		super(shouldRepeat);
+		super(shouldRepeat, false);
 		this.shouldLoseATurn = shouldLoseATurn;
 	}
 

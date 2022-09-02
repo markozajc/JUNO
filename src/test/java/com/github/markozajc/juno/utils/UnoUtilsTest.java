@@ -2,7 +2,6 @@ package com.github.markozajc.juno.utils;
 
 import static com.github.markozajc.juno.TestUtils.listEqualsUnordered;
 import static com.github.markozajc.juno.cards.UnoCardColor.*;
-import static com.github.markozajc.juno.cards.impl.UnoActionCard.UnoFlowAction.*;
 import static com.github.markozajc.juno.utils.UnoUtils.*;
 import static java.lang.System.out;
 import static java.util.Arrays.asList;
@@ -94,17 +93,17 @@ class UnoUtilsTest {
 	@Test
 	void testGetActionCards() {
 		UnoCard[] cards = new UnoCard[] {
-			/* 0 Reverse */ new UnoActionCard(RED, REVERSE),
-			/* 1 Reverse */ new UnoActionCard(GREEN, REVERSE),
+			/* 0 Reverse */ new UnoReverseCard(RED),
+			/* 1 Reverse */ new UnoReverseCard(GREEN),
 
-			/* 2 Skip */ new UnoActionCard(BLUE, SKIP),
-			/* 3 Skip */ new UnoActionCard(YELLOW, SKIP),
+			/* 2 Skip */ new UnoSkipCard(BLUE),
+			/* 3 Skip */ new UnoSkipCard(YELLOW),
 
 			/* 4 X */ new UnoWildCard(),
 			/* 5 X */ new UnoDrawCard() };
 
-		assertTrue(listEqualsUnordered(getActionCards(REVERSE, asList(cards)), asList(cards[0], cards[1])));
-		assertTrue(listEqualsUnordered(getActionCards(SKIP, asList(cards)), asList(cards[2], cards[3])));
+		assertTrue(listEqualsUnordered(getReverseCards(asList(cards)), asList(cards[0], cards[1])));
+		assertTrue(listEqualsUnordered(getSkipCards(asList(cards)), asList(cards[2], cards[3])));
 	}
 
 	@Test
@@ -134,8 +133,8 @@ class UnoUtilsTest {
 			/* 1 Numeric */ new UnoNumericCard(GREEN, 1),
 			/* 2 Numeric */ new UnoNumericCard(BLUE, 2),
 
-			/* 3 Action */ new UnoActionCard(RED, REVERSE),
-			/* 4 Action */ new UnoActionCard(GREEN, SKIP),
+			/* 3 Action */ new UnoReverseCard(RED),
+			/* 4 Action */ new UnoSkipCard(GREEN),
 
 			/* 5 Draw */ new UnoDrawCard(RED),
 			/* 6 Draw */ new UnoDrawCard(),
@@ -144,7 +143,8 @@ class UnoUtilsTest {
 
 		assertTrue(listEqualsUnordered(filterKind(UnoNumericCard.class, asList(cards)),
 									   asList(cards[0], cards[1], cards[2])));
-		assertTrue(listEqualsUnordered(filterKind(UnoActionCard.class, asList(cards)), asList(cards[3], cards[4])));
+		assertTrue(listEqualsUnordered(filterKind(UnoReverseCard.class, asList(cards)), asList(cards[3])));
+		assertTrue(listEqualsUnordered(filterKind(UnoSkipCard.class, asList(cards)), asList(cards[4])));
 		assertTrue(listEqualsUnordered(filterKind(UnoDrawCard.class, asList(cards)), asList(cards[5], cards[6])));
 		assertTrue(listEqualsUnordered(filterKind(UnoWildCard.class, asList(cards)), asList(cards[7])));
 	}

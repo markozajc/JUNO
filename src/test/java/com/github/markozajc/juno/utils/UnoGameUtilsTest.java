@@ -33,8 +33,8 @@ class UnoGameUtilsTest {
 
 		@SuppressWarnings("null")
 		public FakeUnoGame(UnoDrawPile draw, UnoDiscardPile discard, CheckState checker) {
-			super(TestUtils.getDummyPlayer(Collections.emptyList()), TestUtils.getDummyPlayer(Collections.emptyList()),
-				  UnoStandardDeck.getDeck(), 0, UnoOfficialRules.getPack());
+			super(UnoStandardDeck.getDeck(), 0, UnoOfficialRules.getPack(),
+					TestUtils.getDummyPlayer(Collections.emptyList()), TestUtils.getDummyPlayer(Collections.emptyList()));
 
 			this.checker = checker;
 			this.draw = draw;

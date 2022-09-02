@@ -17,21 +17,24 @@ public class UnoPhaseConclusion {
 
 	private final boolean shouldRepeat;
 
+	private final boolean shouldReverseDirection;
+
 	/**
 	 * Creates a new {@link UnoPhaseConclusion} that doesn't change anything.
 	 */
 	public UnoPhaseConclusion() {
-		this(false);
+		this(false, false);
 	}
 
 	/**
 	 * Creates a new {@link UnoPhaseConclusion}.
 	 *
-	 * @param shouldRepeat
-	 *            whether the entire phase should be repeated
+	 * @param shouldRepeat           whether the entire phase should be repeated
+	 * @param shouldReverseDirection whether direction should be reversed after this phase
 	 */
-	public UnoPhaseConclusion(boolean shouldRepeat) {
+	public UnoPhaseConclusion(boolean shouldRepeat, boolean shouldReverseDirection) {
 		this.shouldRepeat = shouldRepeat;
+		this.shouldReverseDirection = shouldReverseDirection;
 	}
 
 	/**
@@ -41,4 +44,7 @@ public class UnoPhaseConclusion {
 		return this.shouldRepeat;
 	}
 
+	public boolean shouldReverseDirection() {
+		return this.shouldReverseDirection;
+	}
 }

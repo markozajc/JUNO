@@ -148,7 +148,7 @@ public class UnoStrategicPlayer extends UnoPlayer {
 			return drawCard;
 		// Places an action card if possible
 
-		UnoActionCard actionCard = simpleChooseCard(possible, colorAnalysis, UnoActionCard.class);
+		UnoSkipCard actionCard = simpleChooseCard(possible, colorAnalysis, UnoSkipCard.class);
 		if (actionCard != null)
 			return actionCard;
 		// Places an action card if possible

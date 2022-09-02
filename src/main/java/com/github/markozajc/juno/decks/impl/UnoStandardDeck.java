@@ -9,7 +9,6 @@ import javax.annotation.*;
 
 import com.github.markozajc.juno.cards.*;
 import com.github.markozajc.juno.cards.impl.*;
-import com.github.markozajc.juno.cards.impl.UnoActionCard.UnoFlowAction;
 import com.github.markozajc.juno.decks.UnoDeck;
 
 /**
@@ -31,15 +30,13 @@ public class UnoStandardDeck {
 	private static void generateDeck() {
 		List<UnoCard> cards = new ArrayList<>();
 
-		for (var action : UnoFlowAction.values()) {
 			for (var color : UnoCardColor.values()) {
 				if (color == WILD)
 					continue;
 
-				cards.addAll(asList(new UnoActionCard(color, action), new UnoActionCard(color, action)));
+				cards.addAll(asList(new UnoSkipCard(color), new UnoSkipCard(color), new UnoReverseCard(color), new UnoReverseCard(color)));
 				// Adds two of each action cards
 			}
-		}
 		// Adds the action cards
 
 		for (var color : UnoCardColor.values()) {
