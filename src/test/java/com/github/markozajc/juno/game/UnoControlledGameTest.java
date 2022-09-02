@@ -15,6 +15,8 @@ import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule;
 
+import java.util.stream.Collectors;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class UnoControlledGameTest {
@@ -33,12 +35,18 @@ class UnoControlledGameTest {
 	}
 
 	private static final String DEBUG_FORMAT =
-		"\nDebug information: EXT:%s,EXM:%s,RDN:%s,H1C:%s,H2C:%s,DRC:%s,DIC:%s,TCR:%s";
+		"\nDebug information: EXT:%s,EXM:%s,RDN:%s,DRC:%s,DIC:%s,TCR:%s";
+	private static final String HAND_COUNT_FORMAT = ",H%sC:%s";
 
-	private static final String gatherDebugInfo(UnoGame game, int i, Exception e) {
-		return format(DEBUG_FORMAT, e.getClass().getSimpleName(), e.getMessage(), i,
-					  game.getFirstPlayer().getHand().getSize(), game.getSecondPlayer().getHand().getSize(),
-					  game.getDraw().getSize(), game.getDiscard().getSize(), game.getTopCard());
+	private static String gatherDebugInfo(UnoGame game, int i, Exception e) {
+		StringBuilder builder = new StringBuilder();
+		builder.append(format(DEBUG_FORMAT, e.getClass().getSimpleName(), e.getMessage(), i,
+				game.getDraw().getSize(), game.getDiscard().getSize(), game.getTopCard()));
+		for (int p = 0; p < game.getPlayers().size(); p++) {
+			UnoPlayer player = game.getPlayers().get(p);
+			builder.append(format(HAND_COUNT_FORMAT, p, player.getCards().size()));
+		}
+		return builder.toString();
 	}
 
 	@Test
@@ -54,7 +62,7 @@ class UnoControlledGameTest {
 				game.play();
 
 				assertEquals(game.getDiscard().getSize() + game.getDraw().getSize()
-					+ game.getFirstPlayer().getHand().getSize() + game.getSecondPlayer().getHand().getSize(),
+					+ game.getPlayers().stream().mapToInt(player -> player.getCards().size()).sum(),
 							 UnoStandardDeck.getExpectedSize());
 			} catch (Exception e) {
 				e.printStackTrace();
