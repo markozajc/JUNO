@@ -1,6 +1,9 @@
 package com.github.markozajc.juno.game;
 
 import static com.github.markozajc.juno.game.UnoWinner.UnoEndReason.*;
+import static com.github.markozajc.juno.utils.UnoRuleUtils.findHouseRules;
+import static java.util.Arrays.asList;
+import static java.util.Collections.unmodifiableList;
 
 import java.io.PrintStream;
 import java.util.*;
@@ -28,7 +31,8 @@ import com.github.markozajc.juno.utils.UnoRuleUtils;
  */
 public abstract class UnoGame {
 
-	private final List<UnoPlayer> players = new ArrayList<>();
+	@Nonnull
+	private final List<UnoPlayer> players;
 	@Nullable
 	private UnoPlayer last;
 	@Nonnegative
@@ -42,7 +46,6 @@ public abstract class UnoGame {
 	@Nullable
 	private UnoCard topCard;
 	private UnoDrawPile draw;
-	private List<UnoHouseRule> houseRules;
 	private boolean endRequested;
 	private boolean reversedDirection;
 
@@ -56,13 +59,15 @@ public abstract class UnoGame {
 	 * @param rules
 	 *            the {@link UnoRulePack} for this {@link UnoGame}
 	 * @param players
-	 *            the {@link UnoPlayer}s for this {@link UnoGame}
+	 *            the {@link UnoPlayer}s for this {@link UnoGame}. Must have at least 2
+	 *            elements
 	 */
+	@SuppressWarnings("null")
 	protected UnoGame(@Nonnull UnoDeck deck, @Nonnegative int cardAmount, @Nonnull UnoRulePack rules,
-					  UnoPlayer... players) {
+					  @Nonnull UnoPlayer... players) {
 		if (players.length < 2)
 			throw new IndexOutOfBoundsException("Need at least two players for a game of UNO!");
-		this.players.addAll(List.of(players));
+		this.players = unmodifiableList(asList(players.clone()));
 		this.deck = deck;
 		this.cardAmount = cardAmount;
 		this.rules = rules;
@@ -82,10 +87,10 @@ public abstract class UnoGame {
 	 * @param rules
 	 *            the {@link UnoRulePack} for this {@link UnoGame}
 	 *
-	 * @deprecated please use
-	 *             {@link UnoGame#UnoGame(UnoDeck, int, UnoRulePack, UnoPlayer...)}
+	 * @deprecated Use {@link UnoGame#UnoGame(UnoDeck, int, UnoRulePack, UnoPlayer...)}
+	 *             instead
 	 */
-	@Deprecated
+	@Deprecated(since = "2.3", forRemoval = true)
 	protected UnoGame(@Nonnull UnoPlayer first, @Nonnull UnoPlayer second, @Nonnull UnoDeck deck,
 					  @Nonnegative int cardAmount, @Nonnull UnoRulePack rules) {
 		this(deck, cardAmount, rules, first, second);
@@ -133,7 +138,8 @@ public abstract class UnoGame {
 
 	@Nullable
 	private UnoPlayer fallbackVictory() {
-		Optional<UnoPlayer> winner = this.players.stream().min(Comparator.comparingInt(player -> player.getCards().size()));
+		Optional<UnoPlayer> winner =
+			this.players.stream().min(Comparator.comparingInt(player -> player.getCards().size()));
 		if (winner.isPresent() && this.players.stream()
 			.filter(player -> player.getCards().size() == winner.get().getCards().size())
 			.count() == 1) {
@@ -155,15 +161,16 @@ public abstract class UnoGame {
 		// Initiates game
 
 		UnoPlayer winnerPlayer = null;
-		UnoPlayer[] players = this.players.toArray(new UnoPlayer[0]);
 
 		boolean fallback = false;
-		for (UnoPlayer player = players[0]; winnerPlayer == null && !fallback && !this.endRequested; player =
+		for (UnoPlayer player = this.players.get(0); winnerPlayer == null && !fallback && !this.endRequested; player =
 			getNextPlayer(player)) {
 			this.last = player;
 
-			winnerPlayer = playAndCheckPlayers(player, players);
-			// Gives the players a turn and checks both
+			winnerPlayer = playAndCheckPlayers(player);
+			// Gives the players a turn and checks all players. While only the current player
+			// could be checked, certain rules could modify the state of other players, so I'm
+			// opting to check all of them instead.
 
 			if (this.getDiscard().getSize() <= 1 && this.getDraw().getSize() == 0) {
 				winnerPlayer = fallbackVictory();
@@ -184,29 +191,25 @@ public abstract class UnoGame {
 
 	@Nonnull
 	private UnoEndReason determineEndReason(@Nullable UnoPlayer winnerPlayer, boolean fallback) {
-		if (fallback) {
+		if (fallback)
 			return FALLBACK;
-		} else if (winnerPlayer != null) {
+		else if (winnerPlayer != null)
 			return VICTORY;
-		} else if (this.endRequested) {
+		else if (this.endRequested)
 			return REQUESTED;
-		} else {
+		else
 			return UNKNOWN;
-		}
 	}
 
-	private UnoPlayer playAndCheckPlayers(@Nonnull UnoPlayer player, @Nonnull UnoPlayer[] players) {
+	@Nullable
+	private UnoPlayer playAndCheckPlayers(@Nonnull UnoPlayer player) {
 		updateTopCard();
 		// Updates the top card
 
 		turn(player);
 		// Plays player's hand
 
-		if (checkVictory(player, this.getDiscard()))
-			return player;
-		// Checks whether player has won
-
-		for (UnoPlayer otherPlayer : players) {
+		for (UnoPlayer otherPlayer : this.players) {
 			if (checkVictory(otherPlayer, this.getDiscard()))
 				return otherPlayer;
 		}
@@ -257,7 +260,6 @@ public abstract class UnoGame {
 	 *
 	 * @return the {@link UnoCard} that's on top of the discard pile
 	 */
-	@Nullable
 	public UnoCard getTopCard() {
 		return this.topCard;
 	}
@@ -273,7 +275,7 @@ public abstract class UnoGame {
 	 * @param arguments
 	 *            arguments for the format
 	 */
-	public abstract void onEvent(String format, Object... arguments);
+	public abstract void onEvent(@Nonnull String format, @Nonnull Object... arguments);
 
 	/**
 	 * Returns the draw pile. This is where cards are drawn from by hands. The discard
@@ -320,22 +322,23 @@ public abstract class UnoGame {
 	 * @return the {@link UnoPlayer} after {@code player}
 	 */
 	@Nonnull
+	@SuppressWarnings("null")
 	public final UnoPlayer getNextPlayer(UnoPlayer player) {
 		int playerIndex = this.players.indexOf(player);
 		if (playerIndex < 0) {
 			throw new IllegalArgumentException("The provided UnoPlayer is not a part of this UnoGame.");
+
 		} else if (!this.reversedDirection) {
-			if (playerIndex > this.players.size() - 2) {
+			if (playerIndex > this.players.size() - 2)
 				return this.players.get(0);
-			} else {
+			else
 				return this.players.get(playerIndex + 1);
-			}
+
 		} else {
-			if (playerIndex < 1) {
+			if (playerIndex < 1)
 				return this.players.get(this.players.size() - 1);
-			} else {
+			else
 				return this.players.get(playerIndex - 1);
-			}
 		}
 	}
 
@@ -352,10 +355,11 @@ public abstract class UnoGame {
 	/**
 	 * @return the first {@link UnoPlayer}. This is the player to get the turn first.
 	 *
-	 * @deprecated please use {@link UnoGame#getPlayers()}
+	 * @deprecated Use {@link UnoGame#getPlayers()} instead
 	 */
-	@Deprecated
+	@Deprecated(since = "2.3", forRemoval = true)
 	@Nonnull
+	@SuppressWarnings("null")
 	public UnoPlayer getFirstPlayer() {
 		return getPlayers().get(0);
 	}
@@ -363,11 +367,12 @@ public abstract class UnoGame {
 	/**
 	 * @return the second {@link UnoPlayer}. This is the player to get the turn second.
 	 *
-	 * @deprecated if you are still using this method, you are probably making the
-	 *             (incorrect) assumption that a game of UNO can only have two players!
+	 * @deprecated Use {@link UnoGame#getPlayers()} instead. This method makes the
+	 *             now-incorrect assumption that a game of UNO can only have two players!
 	 */
-	@Deprecated
+	@Deprecated(since = "2.3", forRemoval = true)
 	@Nonnull
+	@SuppressWarnings("null")
 	public UnoPlayer getSecondPlayer() {
 		return getPlayers().get(1);
 	}
@@ -380,11 +385,11 @@ public abstract class UnoGame {
 	 */
 	@Nonnull
 	public List<UnoPlayer> getPlayers() {
-		return Collections.unmodifiableList(this.players);
+		return this.players;
 	}
 
 	/**
-	 * @return the last {@link UnoPlayer} to have played
+	 * @return the last {@link UnoPlayer} to have played (drawn or placed a card)
 	 */
 	@Nullable
 	public UnoPlayer getLastPlayer() {
@@ -393,16 +398,14 @@ public abstract class UnoGame {
 
 	/**
 	 * Fetches the {@link UnoHouseRule}s used in this {@link UnoGame}'s
-	 * {@link UnoRulePack} using {@link UnoRuleUtils#getHouseRules(UnoRulePack)}. This is
-	 * a singleton so it will consume more resources when called multiple times.
+	 * {@link UnoRulePack} using {@link UnoRuleUtils#findHouseRules(UnoRulePack)}. This
+	 * is a singleton so it will consume more resources when called multiple times.
 	 *
 	 * @return this {@link UnoGame}'s {@link UnoHouseRule}s
 	 */
+	@Nonnull
 	public List<UnoHouseRule> getHouseRules() {
-		if (this.houseRules == null)
-			this.houseRules = UnoRuleUtils.getHouseRules(getRules());
-
-		return this.houseRules;
+		return findHouseRules(getRules());
 	}
 
 	/**

@@ -82,7 +82,25 @@ public class UnoRuleUtils {
 	}
 
 	/**
-	 * Gets the {@link UnoHouseRule}s from a {@link UnoRulePack}. This will scan the
+	 * Finds {@link UnoHouseRule}s in a {@link UnoRulePack}. This will scan the
+	 * {@link UnoRule}s of that pack and return all {@link UnoHouseRule} of which
+	 * {@link UnoRulePack} share all {@link UnoRule}s.
+	 *
+	 * @param pack
+	 *            the {@link UnoRulePack} to scan
+	 *
+	 * @return all complete {@link UnoHouseRule}s included in this pack
+	 *
+	 * @deprecated Use {@link #findHouseRules(UnoRulePack)} instead
+	 */
+	@Deprecated(since = "2.3", forRemoval = true)
+	@Nonnull
+	public static List<UnoHouseRule> getHouseRules(UnoRulePack pack) {
+		return findHouseRules(pack);
+	}
+
+	/**
+	 * Finds {@link UnoHouseRule}s in a {@link UnoRulePack}. This will scan the
 	 * {@link UnoRule}s of that pack and return all {@link UnoHouseRule} of which
 	 * {@link UnoRulePack} share all {@link UnoRule}s.
 	 *
@@ -93,7 +111,7 @@ public class UnoRuleUtils {
 	 */
 	@Nonnull
 	@SuppressWarnings("null")
-	public static List<UnoHouseRule> getHouseRules(UnoRulePack pack) {
+	public static List<UnoHouseRule> findHouseRules(UnoRulePack pack) {
 		return asList(UnoHouseRule.values()).stream()
 			.filter(hr -> pack.getRules().containsAll(hr.getPack().getRules()))
 			.collect(toList());
