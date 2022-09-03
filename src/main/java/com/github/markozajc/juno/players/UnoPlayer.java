@@ -84,14 +84,12 @@ public abstract class UnoPlayer {
 	 *
 	 * @param game
 	 *            the ongoing {@link UnoGame}
-	 * @param next
-	 *            the next {@link UnoPlayer}
 	 *
 	 * @return the {@link UnoCard} to place or {@code null} if the hand wants to draw a
 	 *         card
 	 */
 	@Nullable
-	public abstract UnoCard playCard(UnoGame game, UnoPlayer next);
+	public abstract UnoCard playCard(UnoGame game);
 
 	/**
 	 * Chooses the {@link UnoCardColor} to set for a wild card.
