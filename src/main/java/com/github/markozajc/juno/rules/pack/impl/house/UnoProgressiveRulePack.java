@@ -1,5 +1,8 @@
 package com.github.markozajc.juno.rules.pack.impl.house;
 
+import static com.github.markozajc.juno.utils.UnoGameUtils.canPlaceCard;
+import static com.github.markozajc.juno.utils.UnoRuleUtils.filterRuleKind;
+
 import java.util.*;
 
 import javax.annotation.Nonnull;
@@ -18,7 +21,6 @@ import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule;
 import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
 import com.github.markozajc.juno.rules.types.flow.*;
-import com.github.markozajc.juno.utils.*;
 
 /**
  * A house {@link UnoRulePack} that implements the official Progressive UNO house
@@ -173,9 +175,8 @@ public class UnoProgressiveRulePack {
 				game.onEvent(DRAW_CARD, player.getName());
 				// Draw a single card to the hand
 
-				if (UnoGameUtils.canPlaceCard(player, game, drawn)
-					&& player.shouldPlayDrawnCard(game, drawn, game.getNextPlayer(player))) {
-					UnoRuleUtils.filterRuleKind(game.getRules().getRules(), UnoGameFlowRule.class)
+				if (canPlaceCard(player, game, drawn) && player.shouldPlayDrawnCard(game, drawn)) {
+					filterRuleKind(game.getRules().getRules(), UnoGameFlowRule.class)
 						.forEach(gfr -> gfr.decisionPhase(player, game, drawn));
 				}
 				// Allow the player to place the card (if possible)

@@ -36,8 +36,8 @@ public class CardDrawingRule implements UnoGameFlowRule {
 		return UnoInitializationConclusion.NOTHING;
 	}
 
-	@SuppressWarnings("null")
 	@Override
+	@SuppressWarnings("null")
 	public UnoPhaseConclusion decisionPhase(UnoPlayer player, UnoGame game, UnoCard decidedCard) {
 		MutableBoolean shouldRepeat = new MutableBoolean();
 		if (decidedCard == null) {

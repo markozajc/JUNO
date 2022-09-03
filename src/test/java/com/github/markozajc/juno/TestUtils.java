@@ -68,7 +68,7 @@ public class TestUtils {
 		}
 
 		@Override
-		public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard, UnoPlayer next) {
+		public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard) {
 			throw new UnsupportedOperationException("DummyUnoHand can not decide whether it should play drawn cards or not.");
 		}
 

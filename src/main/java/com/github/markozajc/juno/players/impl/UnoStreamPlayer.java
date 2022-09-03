@@ -169,7 +169,7 @@ public class UnoStreamPlayer extends UnoPlayer {
 	}
 
 	@Override
-	public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard, UnoPlayer next) {
+	public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard) {
 		this.ps.printf("You have drawn a %s. Do you want to place it? [y/N]%n", drawnCard);
 		return "y".equalsIgnoreCase(this.scanner.nextLine());
 	}

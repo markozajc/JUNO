@@ -257,7 +257,7 @@ public class UnoStrategicPlayer extends UnoPlayer {
 	}
 
 	@Override
-	public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard, UnoPlayer next) {
+	public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard) {
 		return Objects.equals(playCard(game), drawnCard);
 	}
 
