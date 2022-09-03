@@ -17,9 +17,8 @@ import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.utils.UnoUtils;
 
 /**
- * An automated hand that uses actual strategic "thinking" to decide cards and colors
- * to return. Is suitable for production so you may use it as a "CPU" opponent in
- * your code.
+ * An automated hand that uses strategic logic to decide cards and colors to return.
+ * Is suitable for production so you may use it as a "CPU" opponent in your code.
  *
  * @author Marko Zajc
  */
@@ -135,7 +134,7 @@ public class UnoStrategicPlayer extends UnoPlayer {
 			return null;
 		// Draws a card if no other option is possible
 
-		List<Entry<Long, UnoCardColor>> colorAnalysis = analyzeColors(getCards());
+		var colorAnalysis = analyzeColors(getCards());
 		// Analyzes the colors
 		if (game.getHouseRules().contains(SEVENO)) {
 			UnoNumericCard sevenoCard = sevenoStrategy(possible, colorAnalysis, this, next);
@@ -143,15 +142,21 @@ public class UnoStrategicPlayer extends UnoPlayer {
 				return sevenoCard;
 		}
 
-		UnoDrawCard drawCard = chooseDrawCard(possible, colorAnalysis, game, next);
+		var drawCard = chooseDrawCard(possible, colorAnalysis, game, next);
 		if (drawCard != null)
 			return drawCard;
-		// Places an action card if possible
+		// Places a draw card if necessary
 
-		UnoSkipCard actionCard = simpleChooseCard(possible, colorAnalysis, UnoSkipCard.class);
-		if (actionCard != null)
-			return actionCard;
-		// Places an action card if possible
+		if (game.getPlayers().size() == 2) {
+			var skipCard = simpleChooseCard(possible, colorAnalysis, UnoSkipCard.class);
+			if (skipCard != null)
+				return skipCard;
+
+			var reverseCard = simpleChooseCard(possible, colorAnalysis, UnoReverseCard.class);
+			if (reverseCard != null)
+				return skipCard;
+		}
+		// Places an action card (skip or reverse) if there are two players
 
 		List<UnoCard> possibleNumeric;
 		if (game.getHouseRules().contains(SEVENO) && this.getHand().getSize() - 1 >= next.getHand().getSize()) {
@@ -163,14 +168,14 @@ public class UnoStrategicPlayer extends UnoPlayer {
 		// Remove the sevens and zeros from the list of possible cards (numeric card chooser)
 		// if we do not want to place them
 
-		UnoNumericCard numericCard = simpleChooseCard(possibleNumeric, colorAnalysis, UnoNumericCard.class);
+		var numericCard = simpleChooseCard(possibleNumeric, colorAnalysis, UnoNumericCard.class);
 		if (numericCard != null)
 			return numericCard;
 		// Places a numeric card if possible
 
-		UnoWildCard wild = filterKind(UnoWildCard.class, possible).stream().findFirst().orElse(null);
-		if (wild != null)
-			return wild;
+		var wildCard = filterKind(UnoWildCard.class, possible).stream().findFirst().orElse(null);
+		if (wildCard != null)
+			return wildCard;
 		// places a Wild card if available
 
 		return possible.get(0);
