@@ -29,8 +29,10 @@ public class UnoPhaseConclusion {
 	/**
 	 * Creates a new {@link UnoPhaseConclusion}.
 	 *
-	 * @param shouldRepeat           whether the entire phase should be repeated
-	 * @param shouldReverseDirection whether direction should be reversed after this phase
+	 * @param shouldRepeat
+	 *            whether the entire phase should be repeated
+	 * @param shouldReverseDirection
+	 *            whether direction should be reversed after this phase
 	 */
 	public UnoPhaseConclusion(boolean shouldRepeat, boolean shouldReverseDirection) {
 		this.shouldRepeat = shouldRepeat;

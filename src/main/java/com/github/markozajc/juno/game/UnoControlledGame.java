@@ -51,10 +51,10 @@ public abstract class UnoControlledGame extends UnoGame {
 	 * @param rules
 	 *            the {@link UnoRulePack} for this {@link UnoGame}
 	 * @param players
-	 * 			  the {@link UnoPlayer}s for this {@link UnoGame}
+	 *            the {@link UnoPlayer}s for this {@link UnoGame}
 	 */
-	protected UnoControlledGame(@Nonnull UnoDeck unoDeck,
-								@Nonnegative int cardAmount, @Nonnull UnoRulePack rules, UnoPlayer... players) {
+	protected UnoControlledGame(@Nonnull UnoDeck unoDeck, @Nonnegative int cardAmount, @Nonnull UnoRulePack rules,
+								UnoPlayer... players) {
 		super(unoDeck, cardAmount, rules, players);
 	}
 

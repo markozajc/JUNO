@@ -56,11 +56,12 @@ public abstract class UnoGame {
 	 * @param rules
 	 *            the {@link UnoRulePack} for this {@link UnoGame}
 	 * @param players
-	 * 			  the {@link UnoPlayer}s for this {@link UnoGame}
+	 *            the {@link UnoPlayer}s for this {@link UnoGame}
 	 */
-	protected UnoGame(@Nonnull UnoDeck deck,
-					  @Nonnegative int cardAmount, @Nonnull UnoRulePack rules, UnoPlayer... players) {
-		if (players.length < 2) throw new IndexOutOfBoundsException("Need at least two players for a game of UNO!");
+	protected UnoGame(@Nonnull UnoDeck deck, @Nonnegative int cardAmount, @Nonnull UnoRulePack rules,
+					  UnoPlayer... players) {
+		if (players.length < 2)
+			throw new IndexOutOfBoundsException("Need at least two players for a game of UNO!");
 		this.players.addAll(List.of(players));
 		this.deck = deck;
 		this.cardAmount = cardAmount;
@@ -80,7 +81,9 @@ public abstract class UnoGame {
 	 *            the amount of card each player gets initially
 	 * @param rules
 	 *            the {@link UnoRulePack} for this {@link UnoGame}
-	 * @deprecated please use {@link UnoGame#UnoGame(UnoDeck, int, UnoRulePack, UnoPlayer...)}
+	 *
+	 * @deprecated please use
+	 *             {@link UnoGame#UnoGame(UnoDeck, int, UnoRulePack, UnoPlayer...)}
 	 */
 	@Deprecated
 	protected UnoGame(@Nonnull UnoPlayer first, @Nonnull UnoPlayer second, @Nonnull UnoDeck deck,
@@ -130,11 +133,12 @@ public abstract class UnoGame {
 
 	@Nullable
 	private UnoPlayer fallbackVictory() {
-		Optional<UnoPlayer> winner = players.stream().min(Comparator.comparingInt(player -> player.getCards().size()));
-		if (winner.isPresent() && players.stream().filter(player -> player.getCards().size() == winner.get().getCards().size()).count() == 1) {
+		Optional<UnoPlayer> winner = this.players.stream().min(Comparator.comparingInt(player -> player.getCards().size()));
+		if (winner.isPresent() && this.players.stream()
+			.filter(player -> player.getCards().size() == winner.get().getCards().size())
+			.count() == 1) {
 			return winner.get();
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
@@ -317,22 +321,20 @@ public abstract class UnoGame {
 	 */
 	@Nonnull
 	public final UnoPlayer getNextPlayer(UnoPlayer player) {
-		int playerIndex = players.indexOf(player);
+		int playerIndex = this.players.indexOf(player);
 		if (playerIndex < 0) {
 			throw new IllegalArgumentException("The provided UnoPlayer is not a part of this UnoGame.");
-		}
-		else if (!reversedDirection) {
-			if (playerIndex > players.size() - 2) {
-				return players.get(0);
+		} else if (!this.reversedDirection) {
+			if (playerIndex > this.players.size() - 2) {
+				return this.players.get(0);
 			} else {
-				return players.get(playerIndex + 1);
+				return this.players.get(playerIndex + 1);
 			}
 		} else {
 			if (playerIndex < 1) {
-				return players.get(players.size() - 1);
-			}
-			else {
-				return players.get(playerIndex - 1);
+				return this.players.get(this.players.size() - 1);
+			} else {
+				return this.players.get(playerIndex - 1);
 			}
 		}
 	}
@@ -361,8 +363,8 @@ public abstract class UnoGame {
 	/**
 	 * @return the second {@link UnoPlayer}. This is the player to get the turn second.
 	 *
-	 * @deprecated if you are still using this method, you are probably making the (incorrect) assumption that a game
-	 * of UNO can only have two players!
+	 * @deprecated if you are still using this method, you are probably making the
+	 *             (incorrect) assumption that a game of UNO can only have two players!
 	 */
 	@Deprecated
 	@Nonnull
@@ -373,11 +375,12 @@ public abstract class UnoGame {
 	/**
 	 * @return an unmodifiable view of this {@link UnoGame}s {@link UnoPlayer}s.
 	 *
-	 * Caution: trying to modify the returned list will result in an {@link UnsupportedOperationException}.
+	 *         Caution: trying to modify the returned list will result in an
+	 *         {@link UnsupportedOperationException}.
 	 */
 	@Nonnull
 	public List<UnoPlayer> getPlayers() {
-		return Collections.unmodifiableList(players);
+		return Collections.unmodifiableList(this.players);
 	}
 
 	/**
@@ -418,13 +421,14 @@ public abstract class UnoGame {
 	}
 
 	/**
-	 * Reverses the direction of this game's current flow. Will cause {@link UnoGame#getNextPlayer(UnoPlayer)} to return
-	 * the previous player in the list instead of the next one.
+	 * Reverses the direction of this game's current flow. Will cause
+	 * {@link UnoGame#getNextPlayer(UnoPlayer)} to return the previous player in the list
+	 * instead of the next one.
 	 *
 	 * If only two players are in the game, this will have no effect.
 	 */
 	public void reverseDirection() {
-		reversedDirection = !reversedDirection;
+		this.reversedDirection = !this.reversedDirection;
 	}
 
 }

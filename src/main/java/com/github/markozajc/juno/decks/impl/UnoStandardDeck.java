@@ -30,13 +30,14 @@ public class UnoStandardDeck {
 	private static void generateDeck() {
 		List<UnoCard> cards = new ArrayList<>();
 
-			for (var color : UnoCardColor.values()) {
-				if (color == WILD)
-					continue;
+		for (var color : UnoCardColor.values()) {
+			if (color == WILD)
+				continue;
 
-				cards.addAll(asList(new UnoSkipCard(color), new UnoSkipCard(color), new UnoReverseCard(color), new UnoReverseCard(color)));
-				// Adds two of each action cards
-			}
+			cards.addAll(asList(new UnoSkipCard(color), new UnoSkipCard(color), new UnoReverseCard(color),
+								new UnoReverseCard(color)));
+			// Adds two of each action cards
+		}
 		// Adds the action cards
 
 		for (var color : UnoCardColor.values()) {

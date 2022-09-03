@@ -1,6 +1,7 @@
 package com.github.markozajc.juno.rules.pack.impl.house;
 
 import static com.github.markozajc.juno.game.UnoWinner.UnoEndReason.REQUESTED;
+import static com.github.markozajc.juno.rules.types.flow.UnoFinishConclusion.NOTHING;
 
 import javax.annotation.Nonnull;
 
@@ -37,7 +38,7 @@ public class UnoFoeWinsOnEndRequestPack {
 			if (game.getPlayers().size() == 2 && winner.getEndReason() == REQUESTED && lastPlayer != null)
 				return new UnoFinishConclusion(game.getNextPlayer());
 			else
-				return UnoFinishConclusion.NOTHING;
+				return NOTHING;
 		}
 
 	}

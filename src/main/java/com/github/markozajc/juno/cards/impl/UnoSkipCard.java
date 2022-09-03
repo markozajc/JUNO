@@ -19,6 +19,7 @@ public class UnoSkipCard extends UnoCard {
 
 	/**
 	 * Creates a new {@link UnoSkipCard}.
+	 *
 	 * @param color
 	 *            the {@link UnoCardColor}
 	 */
