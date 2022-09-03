@@ -2,6 +2,7 @@ package com.github.markozajc.juno.game;
 
 import static com.github.markozajc.juno.game.UnoWinner.UnoEndReason.*;
 import static com.github.markozajc.juno.utils.UnoRuleUtils.findHouseRules;
+import static java.lang.Math.floorMod;
 import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableList;
 
@@ -11,6 +12,7 @@ import java.util.*;
 import javax.annotation.*;
 
 import com.github.markozajc.juno.cards.UnoCard;
+import com.github.markozajc.juno.cards.impl.*;
 import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.game.UnoWinner.UnoEndReason;
 import com.github.markozajc.juno.piles.impl.*;
@@ -315,41 +317,73 @@ public abstract class UnoGame {
 
 	/**
 	 * Returns the {@link UnoPlayer} to get the turn after the provided {@link UnoPlayer}
+	 * assuming a {@link UnoReverseCard} is not played (in which case
+	 * {@link #getPreviousPlayer()} applies).<br>
+	 * NOTE: this changes based on the output of {@link #isReversedDirection()}
 	 *
 	 * @param player
-	 *            the {@link UnoPlayer}
+	 *            the relative {@link UnoPlayer}
 	 *
 	 * @return the {@link UnoPlayer} after {@code player}
 	 */
 	@Nonnull
 	@SuppressWarnings("null")
 	public final UnoPlayer getNextPlayer(UnoPlayer player) {
-		int playerIndex = this.players.indexOf(player);
-		if (playerIndex < 0) {
-			throw new IllegalArgumentException("The provided UnoPlayer is not a part of this UnoGame.");
+		int playerIndex = getPlayerIndex(player);
 
-		} else if (!this.reversedDirection) {
-			if (playerIndex > this.players.size() - 2)
-				return this.players.get(0);
-			else
-				return this.players.get(playerIndex + 1);
-
-		} else {
-			if (playerIndex < 1)
-				return this.players.get(this.players.size() - 1);
-			else
-				return this.players.get(playerIndex - 1);
-		}
+		return this.players.get(floorMod(playerIndex + (this.reversedDirection ? -1 : 1), this.players.size() - 1));
 	}
 
 	/**
-	 * Returns the {@link UnoPlayer} to get the next turn.
+	 * Returns the {@link UnoPlayer} to get the next turn assuming a
+	 * {@link UnoReverseCard} is not played (in which case {@link #getPreviousPlayer()}
+	 * applies).<br>
+	 * NOTE: this changes based on the output of {@link #isReversedDirection()}
 	 *
 	 * @return the next {@link UnoPlayer}
 	 */
 	@Nonnull
 	public final UnoPlayer getNextPlayer() {
 		return getNextPlayer(this.last);
+	}
+
+	/**
+	 * Returns the {@link UnoPlayer} to get the turn if a {@link UnoReverseCard} is
+	 * played by the given {@link UnoPlayer}. This does not return the last player to get
+	 * a turn, use {@link #getLastPlayer()} for that.<br>
+	 * NOTE: this changes based on the output of {@link #isReversedDirection()}
+	 *
+	 * @param player
+	 *            the relative {@link UnoPlayer}
+	 *
+	 * @return the {@link UnoPlayer} after {@code player}
+	 */
+	@Nonnull
+	@SuppressWarnings("null")
+	public final UnoPlayer getPreviousPlayer(UnoPlayer player) {
+		int playerIndex = getPlayerIndex(player);
+
+		return this.players.get(floorMod(playerIndex + (this.reversedDirection ? 1 : -1), this.players.size() - 1));
+	}
+
+	/**
+	 * Returns the {@link UnoPlayer} to get turn if a {@link UnoReverseCard} is played by
+	 * the current {@link UnoPlayer} ({@link #getLastPlayer()}). This does not return the
+	 * last player to get a turn, use {@link #getLastPlayer()} for that.<br>
+	 * NOTE: this changes based on the output of {@link #isReversedDirection()}
+	 *
+	 * @return the next {@link UnoPlayer}
+	 */
+	@Nonnull
+	public final UnoPlayer getPreviousPlayer() {
+		return getNextPlayer(this.last);
+	}
+
+	private int getPlayerIndex(UnoPlayer player) {
+		int playerIndex = this.players.indexOf(player);
+		if (playerIndex < 0)
+			throw new IllegalArgumentException("The provided UnoPlayer is not a part of this UnoGame.");
+		return playerIndex;
 	}
 
 	/**
@@ -432,6 +466,15 @@ public abstract class UnoGame {
 	 */
 	public void reverseDirection() {
 		this.reversedDirection = !this.reversedDirection;
+	}
+
+	/**
+	 * @return whether the game flow has been reversed with a {@link UnoReverseCard}.
+	 *         This will always be {@code false} in two-player games as
+	 *         {@link UnoReverseCard} acts as {@link UnoSkipCard}.
+	 */
+	public boolean isReversedDirection() {
+		return this.reversedDirection;
 	}
 
 }

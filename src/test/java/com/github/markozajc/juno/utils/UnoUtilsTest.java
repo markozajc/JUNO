@@ -91,22 +91,6 @@ class UnoUtilsTest {
 	}
 
 	@Test
-	void testGetActionCards() {
-		UnoCard[] cards = new UnoCard[] {
-			/* 0 Reverse */ new UnoReverseCard(RED),
-			/* 1 Reverse */ new UnoReverseCard(GREEN),
-
-			/* 2 Skip */ new UnoSkipCard(BLUE),
-			/* 3 Skip */ new UnoSkipCard(YELLOW),
-
-			/* 4 X */ new UnoWildCard(),
-			/* 5 X */ new UnoDrawCard() };
-
-		assertTrue(listEqualsUnordered(getReverseCards(asList(cards)), asList(cards[0], cards[1])));
-		assertTrue(listEqualsUnordered(getSkipCards(asList(cards)), asList(cards[2], cards[3])));
-	}
-
-	@Test
 	void testGetNumberCards() {
 		UnoCard[] cards = new UnoCard[] {
 			/* 0 3 */ new UnoNumericCard(RED, 3),

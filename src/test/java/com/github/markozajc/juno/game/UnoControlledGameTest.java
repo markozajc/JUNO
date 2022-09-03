@@ -62,8 +62,7 @@ class UnoControlledGameTest {
 	@SuppressWarnings("null")
 	private static void stress(int playerCount) {
 		var players = IntStream.rangeClosed(1, playerCount)
-			.mapToObj(Integer::toString)
-			.map(i -> String.format("P%d"))
+			.mapToObj(i -> format("P%d", i))
 			.map(UnoStrategicPlayer::new)
 			.toArray(UnoStrategicPlayer[]::new);
 

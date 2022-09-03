@@ -76,6 +76,15 @@ public abstract class UnoPlayer {
 	}
 
 	/**
+	 * A shortcut to {@link UnoHand#getSize()}.
+	 *
+	 * @return this {@link UnoPlayer}'s cards count
+	 */
+	public final int getHandSize() {
+		return getHand().getSize();
+	}
+
+	/**
 	 * Chooses a card to place on top of the discard pile. Just calling this shouldn't
 	 * actually change anything (it shouldn't add the card to the discard pile and/or
 	 * remove the card from the hand) but should only return a valid {@link UnoCard} that

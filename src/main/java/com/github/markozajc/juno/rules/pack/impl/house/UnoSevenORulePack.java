@@ -25,8 +25,22 @@ import com.github.markozajc.juno.rules.types.flow.*;
  * {@link UnoHouseRule#SEVENO}, which is makes it easy to install into
  * {@link UnoOfficialRules}.
  *
+ * @deprecated <b>UnoSevenORulePack currently contains several inaccuracies. This may
+ *             be fixed in a further release, or it may be removed. Proceed with
+ *             caution:</b><br>
+ *             <ul>
+ *             <li>If a player's last placed card is a zero or a seven, the swapped
+ *             player wins. This is inaccurate.
+ *             <li>This rule currently only supports games with two players. This is
+ *             because having the player make a decision during the rule phases is
+ *             currently unsupported (beyond choosing a colour for the wild card,
+ *             which is already implemented in a hacky way), but would be required
+ *             for the "Seven" part of the Seven-O rule.
+ *             </ul>
+ *
  * @author Marko Zajc
  */
+@Deprecated(since = "2.3", forRemoval = false)
 public class UnoSevenORulePack {
 
 	private UnoSevenORulePack() {}
@@ -55,7 +69,7 @@ public class UnoSevenORulePack {
 				foe.setHand(playerHand);
 				// Swap hands
 
-				game.onEvent("Players swap hands.", (Object[]) null);
+				game.onEvent("Players swap hands.");
 			}
 
 			return NOTHING;

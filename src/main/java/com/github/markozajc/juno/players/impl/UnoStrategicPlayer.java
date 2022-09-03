@@ -4,9 +4,11 @@ import static com.github.markozajc.juno.cards.UnoCardColor.WILD;
 import static com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule.*;
 import static com.github.markozajc.juno.utils.UnoRuleUtils.combinedPlacementAnalysis;
 import static com.github.markozajc.juno.utils.UnoUtils.*;
+import static java.lang.Math.max;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.annotation.*;
 
@@ -24,6 +26,20 @@ import com.github.markozajc.juno.utils.UnoUtils;
  */
 public class UnoStrategicPlayer extends UnoPlayer {
 
+	private static final int DRAW_CARD_THRESHOLD = 3;
+
+	private static final float DESPERATION_THRESHOLD = 2;
+	// desperation = (own hand size - min hand size) / threshold
+
+	private static final float FACTOR_SEVENO_STRATEGY = .8f;
+	private static final float FACTOR_PLACE_DRAW = .5f;
+	private static final float FACTOR_PLACE_ACTION_SLIDE = .8f;
+	private static final float FACTOR_PLACE_SKIP = .5f;
+	private static final float FACTOR_PLACE_REVERSE = .6f;
+	private static final float FACTOR_PLACE_NUMERIC = .8f;
+	private static final float FACTOR_PLACE_WILD = .7f;
+	private static final float FACTOR_PLACE_ANY = .9f;
+
 	/**
 	 * Creates a new {@link UnoStrategicPlayer}.
 	 *
@@ -34,7 +50,98 @@ public class UnoStrategicPlayer extends UnoPlayer {
 		super(name);
 	}
 
-	private static final int DRAW_CARD_THRESHOLD = 3;
+	@Override
+	@SuppressWarnings("null")
+	public UnoCard playCard(UnoGame game) {
+		var top = game.getDiscard().getTop();
+		var possible = combinedPlacementAnalysis(top, this.getCards(), game.getRules(), this.getHand());
+		var next = game.getNextPlayer();
+
+		if (possible.isEmpty())
+			return null;
+		// Draws a card if no other option is possible
+
+		var colorAnalysis = analyzeColors(getCards());
+		// Analyzes the colors
+		if (decideRandomly(game, FACTOR_SEVENO_STRATEGY) && game.getHouseRules().contains(SEVENO)) {
+			var sevenoCard = sevenoStrategy(possible, colorAnalysis, next);
+			if (sevenoCard != null)
+				return sevenoCard;
+		}
+		// Apply the Seven-O strategy if applicable
+
+		if (decideRandomly(game, FACTOR_PLACE_DRAW)) {
+			var drawCard = chooseDrawCard(possible, colorAnalysis, game, next);
+			if (drawCard != null)
+				return drawCard;
+		}
+		// Places a draw card if necessary
+
+		if (decideRandomly(game, FACTOR_PLACE_ACTION_SLIDE) && game.getPlayers().size() == 2) {
+			var skipCard = chooseCard(possible, colorAnalysis, UnoSkipCard.class);
+			if (skipCard != null)
+				return skipCard;
+
+			var reverseCard = chooseCard(possible, colorAnalysis, UnoReverseCard.class);
+			if (reverseCard != null)
+				return reverseCard;
+		}
+		// Places an action card (skip or reverse) if there are two players
+
+		if (decideRandomly(game, FACTOR_PLACE_SKIP) && next.getHandSize() < game.getNextPlayer(next).getHandSize()) {
+			var skipCard = chooseCard(possible, colorAnalysis, UnoSkipCard.class);
+			if (skipCard != null)
+				return skipCard;
+		}
+		// Places a skip card if the next player has less cards than the second-next player
+
+		if (decideRandomly(game, FACTOR_PLACE_REVERSE) && next.getHandSize() < game.getPreviousPlayer().getHandSize()) {
+			var skipCard = chooseCard(possible, colorAnalysis, UnoReverseCard.class);
+			if (skipCard != null)
+				return skipCard;
+		}
+		// Places a skip card if the next player has less cards than the previous player
+
+		List<UnoCard> possibleNumeric;
+		if (game.getHouseRules().contains(SEVENO) && this.getHand().getSize() - 1 >= next.getHand().getSize()) {
+			possibleNumeric = new ArrayList<>(possible);
+			possibleNumeric.removeAll(sevenoFilter(possible));
+		} else {
+			possibleNumeric = possible;
+		}
+		// Remove the sevens and zeros from the list of possible cards (numeric card chooser)
+		// if we do not want to place them
+
+		if (decideRandomly(game, FACTOR_PLACE_NUMERIC)) {
+			var numericCard = chooseCard(possibleNumeric, colorAnalysis, UnoNumericCard.class);
+			if (numericCard != null)
+				return numericCard;
+		}
+		// Places a numeric card if possible
+
+		if (decideRandomly(game, FACTOR_PLACE_WILD)) {
+			var wildCard = filterKind(UnoWildCard.class, possible).stream().findFirst().orElse(null);
+			if (wildCard != null)
+				return wildCard;
+		}
+		// places a Wild card if available
+
+		if (decideRandomly(game, FACTOR_PLACE_ANY))
+			return possible.get(0);
+		else
+			return null;
+		// Places the first possible card in case none of the above choosers manage to choose
+		// a viable card
+	}
+
+	private boolean decideRandomly(UnoGame game, float baseFactor) {
+		float roll = ThreadLocalRandom.current().nextFloat();
+		float desperation =
+			max(1F, (this.getHandSize() - game.getPlayers().stream().mapToInt(UnoPlayer::getHandSize).min().orElse(0))
+				/ DESPERATION_THRESHOLD);
+		float factor = baseFactor * desperation;
+		return factor >= roll;
+	}
 
 	@Nullable
 	private static List<UnoNumericCard> sevenoFilter(List<UnoCard> cards) {
@@ -43,11 +150,25 @@ public class UnoStrategicPlayer extends UnoPlayer {
 		return applicable;
 	}
 
+	/**
+	 * Figures out the best card to play in a Seven-O scenario. This currently only
+	 * accounts for a two-player game where both sevens and zeroes swap hands with the
+	 * only opponent.
+	 *
+	 * @param possiblePlacements
+	 *            The list of possible placements.
+	 * @param colorAnalysis
+	 *            The return of {@link UnoUtils#analyzeColors(Collection)}
+	 * @param opponent
+	 *            The other {@link UnoPlayer}
+	 *
+	 * @return The best {@link UnoCard} to play or {@null} to pass through.
+	 */
+	@Deprecated(since = "2.3", forRemoval = false)
 	@Nullable
-	private static UnoNumericCard sevenoStrategy(List<UnoCard> possiblePlacements,
-												 List<Entry<Long, UnoCardColor>> colorAnalysis, UnoPlayer us,
-												 UnoPlayer foe) {
-		if (us.getHand().getSize() - 1 <= foe.getHand().getSize())
+	private UnoNumericCard sevenoStrategy(List<UnoCard> possiblePlacements,
+										  List<Entry<Long, UnoCardColor>> colorAnalysis, UnoPlayer opponent) {
+		if (this.getHandSize() - 1 <= opponent.getHandSize())
 			return null;
 
 		return chooseBestColorCard(sevenoFilter(possiblePlacements), colorAnalysis);
@@ -74,13 +195,12 @@ public class UnoStrategicPlayer extends UnoPlayer {
 		if (!shouldPlay)
 			return null;
 
-		return simpleChooseCard(possiblePlacements, colorAnalysis, UnoDrawCard.class);
+		return chooseCard(possiblePlacements, colorAnalysis, UnoDrawCard.class);
 	}
 
 	@Nullable
-	private static <T extends UnoCard> T simpleChooseCard(List<UnoCard> possiblePlacements,
-														  List<Entry<Long, UnoCardColor>> colorAnalysis,
-														  Class<T> type) {
+	private static <T extends UnoCard> T chooseCard(List<UnoCard> possiblePlacements,
+													List<Entry<Long, UnoCardColor>> colorAnalysis, Class<T> type) {
 		return chooseBestColorCard(filterKind(type, possiblePlacements), colorAnalysis);
 	}
 
@@ -95,8 +215,7 @@ public class UnoStrategicPlayer extends UnoPlayer {
 	 *            all possible cards
 	 * @param colorAnalysis
 	 *            color analysis of the entire hand
-	 *            ({@link UnoUtils#analyzeColors(List)})
-	 * @param cardType
+	 *            ({@link UnoUtils#analyzeColors(Collection)})
 	 *
 	 * @return the best possible card or {@code null} if there are no cards of the
 	 *         requested kind
@@ -124,67 +243,8 @@ public class UnoStrategicPlayer extends UnoPlayer {
 		// Fallback method
 	}
 
-	@SuppressWarnings("null")
 	@Override
-	public UnoCard playCard(UnoGame game, UnoPlayer next) {
-		UnoCard top = game.getDiscard().getTop();
-		List<UnoCard> possible = combinedPlacementAnalysis(top, this.getCards(), game.getRules(), this.getHand());
-
-		if (possible.isEmpty())
-			return null;
-		// Draws a card if no other option is possible
-
-		var colorAnalysis = analyzeColors(getCards());
-		// Analyzes the colors
-		if (game.getHouseRules().contains(SEVENO)) {
-			UnoNumericCard sevenoCard = sevenoStrategy(possible, colorAnalysis, this, next);
-			if (sevenoCard != null)
-				return sevenoCard;
-		}
-
-		var drawCard = chooseDrawCard(possible, colorAnalysis, game, next);
-		if (drawCard != null)
-			return drawCard;
-		// Places a draw card if necessary
-
-		if (game.getPlayers().size() == 2) {
-			var skipCard = simpleChooseCard(possible, colorAnalysis, UnoSkipCard.class);
-			if (skipCard != null)
-				return skipCard;
-
-			var reverseCard = simpleChooseCard(possible, colorAnalysis, UnoReverseCard.class);
-			if (reverseCard != null)
-				return skipCard;
-		}
-		// Places an action card (skip or reverse) if there are two players
-
-		List<UnoCard> possibleNumeric;
-		if (game.getHouseRules().contains(SEVENO) && this.getHand().getSize() - 1 >= next.getHand().getSize()) {
-			possibleNumeric = new ArrayList<>(possible);
-			possibleNumeric.removeAll(sevenoFilter(possible));
-		} else {
-			possibleNumeric = possible;
-		}
-		// Remove the sevens and zeros from the list of possible cards (numeric card chooser)
-		// if we do not want to place them
-
-		var numericCard = simpleChooseCard(possibleNumeric, colorAnalysis, UnoNumericCard.class);
-		if (numericCard != null)
-			return numericCard;
-		// Places a numeric card if possible
-
-		var wildCard = filterKind(UnoWildCard.class, possible).stream().findFirst().orElse(null);
-		if (wildCard != null)
-			return wildCard;
-		// places a Wild card if available
-
-		return possible.get(0);
-		// Places the first possible card in case none of the above choosers manage to choose
-		// a viable card
-	}
-
 	@SuppressWarnings("null")
-	@Override
 	public UnoCardColor chooseColor(UnoGame game) {
 		return analyzeColors(this.getCards()).stream()
 			.filter(p -> p.getValue() != WILD)
@@ -195,7 +255,7 @@ public class UnoStrategicPlayer extends UnoPlayer {
 
 	@Override
 	public boolean shouldPlayDrawnCard(UnoGame game, UnoCard drawnCard, UnoPlayer next) {
-		return Objects.equals(playCard(game, next), drawnCard);
+		return Objects.equals(playCard(game), drawnCard);
 	}
 
 }

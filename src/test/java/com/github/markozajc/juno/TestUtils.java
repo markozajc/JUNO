@@ -58,7 +58,7 @@ public class TestUtils {
 		}
 
 		@Override
-		public UnoCard playCard(UnoGame game, UnoPlayer next) {
+		public UnoCard playCard(UnoGame game) {
 			throw new UnsupportedOperationException("DummyUnoHand can not play cards.");
 		}
 

@@ -59,7 +59,7 @@ public class UnoProgressiveRulePack {
 	 *
 	 * @return whether the card is still relevant or not
 	 *
-	 * @see #getConsecutiveDraw()
+	 * @see #getConsecutive(UnoDiscardPile)
 	 */
 	private static boolean isRelevant(UnoCard card, int drawMark) {
 		return card instanceof UnoDrawCard && ((UnoDrawCard) card).getAmount() == drawMark && card.isOpen();

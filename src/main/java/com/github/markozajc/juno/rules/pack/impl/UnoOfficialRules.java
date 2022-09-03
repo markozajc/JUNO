@@ -1,6 +1,9 @@
 package com.github.markozajc.juno.rules.pack.impl;
 
-import java.util.*;
+import static com.github.markozajc.juno.rules.pack.UnoRulePack.ofPacks;
+import static java.util.Arrays.asList;
+
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -35,7 +38,10 @@ public class UnoOfficialRules {
 		 * rule pack ({@link UnoSevenORulePack}) for more details.
 		 *
 		 * @see UnoSevenORulePack
+		 *
+		 * @deprecated see {@link UnoSevenORulePack}'s deprecation message
 		 */
+		@Deprecated(since = "2.3", forRemoval = false)
 		SEVENO(UnoSevenORulePack.getPack(), "SevenO"),
 
 		/**
@@ -47,7 +53,9 @@ public class UnoOfficialRules {
 
 		/**
 		 * Makes the opponent (the player that didn't request an end by calling
-		 * {@link UnoGame#endGame()}, by default this yields a draw) win.
+		 * {@link UnoGame#endGame()}, by default this yields a draw) win.<br>
+		 * <b>NOTE: this only works in games with two players. It will do nothing
+		 * otherwise.</b>
 		 */
 		FOE_WINS_ON_QUIT(UnoFoeWinsOnEndRequestPack.getPack(), "\"Foe wins on quit\"");
 
@@ -80,10 +88,10 @@ public class UnoOfficialRules {
 	private static UnoRulePack pack;
 
 	private static void createPack() {
-		pack = UnoRulePack.ofPacks(ActionPlacementRules.getPack(), ColorPlacementRules.getPack(),
-								   DrawPlacementRules.getPack(), NumericPlacementRules.getPack(),
-								   new UnoRulePack(new CardDrawingRule(), new CardPlacementRule(),
-												   new ColorChoosingRule(), new SkipCardRule(), new ReverseCardRule()));
+		pack = ofPacks(ActionPlacementRules.getPack(), ColorPlacementRules.getPack(), DrawPlacementRules.getPack(),
+					   NumericPlacementRules.getPack(),
+					   new UnoRulePack(new CardDrawingRule(), new CardPlacementRule(), new ColorChoosingRule(),
+									   new SkipCardRule(), new ReverseCardRule()));
 	}
 
 	/**
@@ -106,10 +114,10 @@ public class UnoOfficialRules {
 	 *
 	 * @return {@link UnoRulePack} of the official UNO rules with house rules
 	 */
-	@SuppressWarnings("null")
 	@Nonnull
+	@SuppressWarnings("null")
 	public static UnoRulePack getPack(@Nonnull UnoHouseRule... houseRules) {
-		return getPack(Arrays.asList(houseRules));
+		return getPack(asList(houseRules));
 	}
 
 	/**

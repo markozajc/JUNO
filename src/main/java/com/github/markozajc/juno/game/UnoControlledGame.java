@@ -34,11 +34,15 @@ public abstract class UnoControlledGame extends UnoGame {
 	 *            the amount of card each player gets initially
 	 * @param rules
 	 *            the {@link UnoRulePack} for this {@link UnoGame}
+	 *
+	 * @deprecated Use
+	 *             {@link UnoControlledGame#UnoControlledGame(UnoDeck, int, UnoRulePack, UnoPlayer...)}
+	 *             instead
 	 */
-	@Deprecated
+	@Deprecated(since = "2.3", forRemoval = true)
 	protected UnoControlledGame(@Nonnull UnoPlayer first, @Nonnull UnoPlayer second, @Nonnull UnoDeck unoDeck,
 								@Nonnegative int cardAmount, @Nonnull UnoRulePack rules) {
-		super(first, second, unoDeck, cardAmount, rules);
+		super(unoDeck, cardAmount, rules, first, second);
 	}
 
 	/**
@@ -51,10 +55,11 @@ public abstract class UnoControlledGame extends UnoGame {
 	 * @param rules
 	 *            the {@link UnoRulePack} for this {@link UnoGame}
 	 * @param players
-	 *            the {@link UnoPlayer}s for this {@link UnoGame}
+	 *            the {@link UnoPlayer}s for this {@link UnoGame}. Must have at least 2
+	 *            elements
 	 */
 	protected UnoControlledGame(@Nonnull UnoDeck unoDeck, @Nonnegative int cardAmount, @Nonnull UnoRulePack rules,
-								UnoPlayer... players) {
+								@Nonnull UnoPlayer... players) {
 		super(unoDeck, cardAmount, rules, players);
 	}
 
@@ -95,7 +100,7 @@ public abstract class UnoControlledGame extends UnoGame {
 		while (repeatDecision) {
 			repeatDecision = false;
 
-			UnoCard decision = player.playCard(game, game.getNextPlayer(player));
+			UnoCard decision = player.playCard(game);
 
 			if (game.isEndRequested())
 				return;

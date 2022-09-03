@@ -4,6 +4,12 @@ import javax.annotation.Nonnull;
 
 import com.github.markozajc.juno.cards.*;
 
+/**
+ * A card that reverses the flow of the game. In a two-player game, the player is
+ * given another turn instead.
+ *
+ * @author Marko Zajc
+ */
 public class UnoReverseCard extends UnoCard {
 
 	/**

@@ -8,7 +8,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 
 import com.github.markozajc.juno.cards.*;
-import com.github.markozajc.juno.cards.impl.*;
+import com.github.markozajc.juno.cards.impl.UnoNumericCard;
 
 /**
  * A class containing various utilities, mostly used to process lists of
@@ -53,23 +53,6 @@ public class UnoUtils {
 	 */
 	public static <T extends UnoCard> List<T> getColorCards(UnoCardColor color, Collection<T> cards) {
 		return cards.stream().filter(c -> c.getColor() == color).collect(toList());
-	}
-
-	/**
-	 * Gets all {@link UnoSkipCard} with a certain {@link UnoSkipCard} from a list of
-	 * {@link UnoCard}s.
-	 *
-	 * @param cards
-	 *            {@link Collection} of {@link UnoCard}s to search through
-	 *
-	 * @return {@link List} containing only cards of a certain color
-	 */
-	public static List<UnoSkipCard> getSkipCards(Collection<UnoCard> cards) {
-		return filterKind(UnoSkipCard.class, cards);
-	}
-
-	public static List<UnoReverseCard> getReverseCards(Collection<UnoCard> cards) {
-		return filterKind(UnoReverseCard.class, cards);
 	}
 
 	/**

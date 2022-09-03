@@ -78,20 +78,20 @@ public class UnoGameUtils {
 	 *
 	 * @param game
 	 *            the ongoing {@link UnoGame}
-	 * @param placer
+	 * @param player
 	 *            the {@link UnoPlayer} placing the card
-	 * @param toPlace
+	 * @param card
 	 *            the {@link UnoCard} to place
 	 *
 	 * @return whether the card was placed or not. Returns {@code false} in case
 	 *         {@link #canPlaceCard(UnoPlayer, UnoGame, UnoCard)} returns {@code false}
 	 */
-	public static final boolean placeCard(@Nonnull UnoGame game, @Nonnull UnoPlayer placer, @Nonnull UnoCard toPlace) {
-		if (!canPlaceCard(placer, game, toPlace))
+	public static final boolean placeCard(@Nonnull UnoGame game, @Nonnull UnoPlayer player, @Nonnull UnoCard card) {
+		if (!canPlaceCard(player, game, card))
 			return false;
 
-		placer.getHand().addToDiscard(game.getDiscard(), toPlace);
-		toPlace.setPlacer(placer);
+		player.getHand().addToDiscard(game.getDiscard(), card);
+		card.setPlacer(player);
 
 		return true;
 	}

@@ -2,6 +2,7 @@ package com.github.markozajc.juno.game.impl;
 
 import static java.lang.System.*;
 import static java.lang.Thread.*;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.util.*;
 
@@ -23,14 +24,15 @@ import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule;
  */
 public class UnoConsoleGame extends UnoControlledGame {
 
-	@SuppressWarnings({ "resource", "null" })
+	private static final Scanner IN = new Scanner(in, UTF_8);
+
 	@Nonnull
+	@SuppressWarnings("null")
 	private static UnoRulePack getRulePack() {
-		var rules = new ArrayList<UnoHouseRule>();
-		Scanner s = new Scanner(in);
+		var rules = new ArrayList<UnoHouseRule>(UnoHouseRule.values().length);
 		for (var rule : UnoHouseRule.values()) {
 			out.print("Activate the " + rule.getName() + " house rule? [y/n] ");
-			if ("y".equalsIgnoreCase(s.nextLine()))
+			if ("y".equalsIgnoreCase(IN.nextLine()))
 				rules.add(rule);
 		}
 
@@ -42,7 +44,7 @@ public class UnoConsoleGame extends UnoControlledGame {
 	 * and a {@link UnoStrategicPlayer} named "Billy the StrategicUnoHand".
 	 */
 	public UnoConsoleGame() {
-		super(UnoStandardDeck.getDeck(), 7, getRulePack(), new UnoConsolePlayer("You"),
+		super(UnoStandardDeck.getDeck(), 7, getRulePack(), new UnoConsolePlayer("Player"),
 			  new UnoStrategicPlayer("Billy the StrategicUnoHand"));
 	}
 

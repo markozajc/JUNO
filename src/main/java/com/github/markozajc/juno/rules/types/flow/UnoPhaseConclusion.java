@@ -46,6 +46,9 @@ public class UnoPhaseConclusion {
 		return this.shouldRepeat;
 	}
 
+	/**
+	 * @return whether to reverse the game flow
+	 */
 	public boolean shouldReverseDirection() {
 		return this.shouldReverseDirection;
 	}
