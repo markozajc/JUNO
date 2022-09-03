@@ -11,6 +11,8 @@ import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
 import com.github.markozajc.juno.rules.types.flow.*;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * The game flow rule responsible for drawing {@link UnoCard}s from the discard pile
  * and adding them to the {@link UnoHand}s when necessary or requested.
@@ -38,6 +40,7 @@ public class CardDrawingRule implements UnoGameFlowRule {
 	@SuppressWarnings("null")
 	@Override
 	public UnoPhaseConclusion decisionPhase(UnoPlayer player, UnoGame game, UnoCard decidedCard) {
+		AtomicBoolean shouldRepeat = new AtomicBoolean(false);
 		if (decidedCard == null) {
 			UnoCard drawn = player.getHand().draw(game, 1).get(0);
 			game.onEvent(DRAW_CARD, player.getName());
@@ -45,14 +48,18 @@ public class CardDrawingRule implements UnoGameFlowRule {
 			if (canPlaceCard(player, game, drawn)
 				&& player.shouldPlayDrawnCard(game, drawn, game.getNextPlayer(player))) {
 				filterRuleKind(game.getRules().getRules(), UnoGameFlowRule.class)
-					.forEach(gfr -> gfr.decisionPhase(player, game, drawn));
+					.forEach(gfr -> {
+						UnoPhaseConclusion conclusion = gfr.decisionPhase(player, game, drawn);
+						if (conclusion.shouldRepeat()) shouldRepeat.set(true);
+						if (conclusion.shouldReverseDirection()) game.reverseDirection();
+					});
 			}
 		}
 
 		if (decidedCard instanceof UnoDrawCard && !decidedCard.isOpen())
 			decidedCard.markOpen();
 
-		return UnoPhaseConclusion.NOTHING;
+		return new UnoPhaseConclusion(shouldRepeat.get(), false);
 	}
 
 }

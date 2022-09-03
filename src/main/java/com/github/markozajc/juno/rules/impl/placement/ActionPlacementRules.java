@@ -3,13 +3,14 @@ package com.github.markozajc.juno.rules.impl.placement;
 import static com.github.markozajc.juno.rules.types.UnoCardPlacementRule.PlacementClearance.*;
 
 import com.github.markozajc.juno.cards.UnoCard;
-import com.github.markozajc.juno.cards.impl.UnoActionCard;
+import com.github.markozajc.juno.cards.impl.UnoReverseCard;
+import com.github.markozajc.juno.cards.impl.UnoSkipCard;
 import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.types.UnoCardPlacementRule;
 
 /**
- * Placement rules for {@link UnoActionCard}.
+ * Placement rules for {@link UnoSkipCard}.
  *
  * @author Marko Zajc
  */
@@ -24,7 +25,7 @@ public class ActionPlacementRules {
 	}
 
 	/**
-	 * An action-based placement rule that allows {@link UnoActionCard}s of the same
+	 * An action-based placement rule that allows {@link UnoSkipCard}s and {@link UnoReverseCard}s of the same
 	 * color to be placed atop of each other and neutrals others.
 	 *
 	 * @author Marko Zajc
@@ -33,8 +34,9 @@ public class ActionPlacementRules {
 
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
-			if (target instanceof UnoActionCard && card instanceof UnoActionCard
-				&& ((UnoActionCard) target).getFlowAction() == ((UnoActionCard) card).getFlowAction())
+			if (target instanceof UnoSkipCard && card instanceof UnoSkipCard)
+				return ALLOWED;
+			if (target instanceof UnoReverseCard && card instanceof UnoReverseCard)
 				return ALLOWED;
 			// Checks whether target's action matches card's action
 

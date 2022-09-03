@@ -26,7 +26,7 @@ public class CardPlacementRule implements UnoGameFlowRule {
 		if (decidedCard != null) {
 			if (!placeCard(game, player, decidedCard)) {
 				game.onEvent(INVALID_CARD, player.getName());
-				return new UnoPhaseConclusion(true);
+				return new UnoPhaseConclusion(true, false);
 			}
 
 			game.onEvent(CARD_PLACED, decidedCard.getPlacer().getName(), decidedCard.toString());

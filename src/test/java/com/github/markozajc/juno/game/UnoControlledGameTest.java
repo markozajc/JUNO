@@ -1,12 +1,8 @@
 package com.github.markozajc.juno.game;
 
-import static java.lang.String.format;
-import static java.lang.System.out;
-
-import javax.annotation.*;
-
-import org.junit.jupiter.api.Test;
-
+import com.github.markozajc.juno.cards.UnoCardColor;
+import com.github.markozajc.juno.cards.impl.UnoNumericCard;
+import com.github.markozajc.juno.cards.impl.UnoReverseCard;
 import com.github.markozajc.juno.decks.UnoDeck;
 import com.github.markozajc.juno.decks.impl.UnoStandardDeck;
 import com.github.markozajc.juno.players.UnoPlayer;
@@ -14,7 +10,13 @@ import com.github.markozajc.juno.players.impl.UnoStrategicPlayer;
 import com.github.markozajc.juno.rules.pack.UnoRulePack;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules;
 import com.github.markozajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule;
+import org.junit.jupiter.api.Test;
 
+import javax.annotation.Nonnegative;
+import javax.annotation.Nonnull;
+
+import static java.lang.String.format;
+import static java.lang.System.out;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UnoControlledGameTest {
@@ -25,7 +27,7 @@ class UnoControlledGameTest {
 
 		public UnoStressTestGame(@Nonnull UnoPlayer first, @Nonnull UnoPlayer second, @Nonnull UnoDeck unoDeck,
 								 @Nonnegative int cardAmount, @Nonnull UnoRulePack rules) {
-			super(first, second, unoDeck, cardAmount, rules);
+			super(unoDeck, cardAmount, rules, first, second);
 		}
 
 		@Override
@@ -33,12 +35,18 @@ class UnoControlledGameTest {
 	}
 
 	private static final String DEBUG_FORMAT =
-		"\nDebug information: EXT:%s,EXM:%s,RDN:%s,H1C:%s,H2C:%s,DRC:%s,DIC:%s,TCR:%s";
+		"\nDebug information: EXT:%s,EXM:%s,RDN:%s,DRC:%s,DIC:%s,TCR:%s";
+	private static final String HAND_COUNT_FORMAT = ",H%sC:%s";
 
-	private static final String gatherDebugInfo(UnoGame game, int i, Exception e) {
-		return format(DEBUG_FORMAT, e.getClass().getSimpleName(), e.getMessage(), i,
-					  game.getFirstPlayer().getHand().getSize(), game.getSecondPlayer().getHand().getSize(),
-					  game.getDraw().getSize(), game.getDiscard().getSize(), game.getTopCard());
+	private static String gatherDebugInfo(UnoGame game, int i, Exception e) {
+		StringBuilder builder = new StringBuilder();
+		builder.append(format(DEBUG_FORMAT, e.getClass().getSimpleName(), e.getMessage(), i,
+				game.getDraw().getSize(), game.getDiscard().getSize(), game.getTopCard()));
+		for (int p = 0; p < game.getPlayers().size(); p++) {
+			UnoPlayer player = game.getPlayers().get(p);
+			builder.append(format(HAND_COUNT_FORMAT, p, player.getCards().size()));
+		}
+		return builder.toString();
 	}
 
 	@Test
@@ -54,7 +62,7 @@ class UnoControlledGameTest {
 				game.play();
 
 				assertEquals(game.getDiscard().getSize() + game.getDraw().getSize()
-					+ game.getFirstPlayer().getHand().getSize() + game.getSecondPlayer().getHand().getSize(),
+					+ game.getPlayers().stream().mapToInt(player -> player.getCards().size()).sum(),
 							 UnoStandardDeck.getExpectedSize());
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -63,5 +71,13 @@ class UnoControlledGameTest {
 		}
 
 		out.println("[==== STRESS TEST PLAYED " + ROUNDS + " ROUNDS ====]");
+	}
+
+	@Test
+	void testThreePlayer() {
+		UnoGame game = new UnoTestGame(new UnoStrategicPlayer("P1"), new UnoStrategicPlayer("P2"),
+				new UnoStrategicPlayer("P3"));
+		UnoWinner winner = game.play();
+		assertNotNull(winner);
 	}
 }

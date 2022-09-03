@@ -83,7 +83,8 @@ public class UnoOfficialRules {
 		pack = UnoRulePack.ofPacks(ActionPlacementRules.getPack(), ColorPlacementRules.getPack(),
 								   DrawPlacementRules.getPack(), NumericPlacementRules.getPack(),
 								   new UnoRulePack(new CardDrawingRule(), new CardPlacementRule(),
-												   new ColorChoosingRule(), new ActionCardRule()));
+												   new ColorChoosingRule(), new SkipCardRule(),
+										           new ReverseCardRule()));
 	}
 
 	/**

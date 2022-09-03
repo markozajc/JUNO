@@ -3,7 +3,7 @@ package com.github.markozajc.juno.game;
 import static com.github.markozajc.juno.game.UnoWinner.UnoEndReason.*;
 
 import java.io.PrintStream;
-import java.util.List;
+import java.util.*;
 
 import javax.annotation.*;
 
@@ -28,10 +28,7 @@ import com.github.markozajc.juno.utils.UnoRuleUtils;
  */
 public abstract class UnoGame {
 
-	@Nonnull
-	private final UnoPlayer first;
-	@Nonnull
-	private final UnoPlayer second;
+	private final List<UnoPlayer> players = new ArrayList<>();
 	@Nullable
 	private UnoPlayer last;
 	@Nonnegative
@@ -47,6 +44,28 @@ public abstract class UnoGame {
 	private UnoDrawPile draw;
 	private List<UnoHouseRule> houseRules;
 	private boolean endRequested;
+	private boolean reversedDirection;
+
+	/**
+	 * Creates a new UNO game.
+	 *
+	 * @param deck
+	 *            the {@link UnoDeck} to use
+	 * @param cardAmount
+	 *            the amount of card each player gets initially
+	 * @param rules
+	 *            the {@link UnoRulePack} for this {@link UnoGame}
+	 * @param players
+	 * 			  the {@link UnoPlayer}s for this {@link UnoGame}
+	 */
+	protected UnoGame(@Nonnull UnoDeck deck,
+					  @Nonnegative int cardAmount, @Nonnull UnoRulePack rules, UnoPlayer... players) {
+		if (players.length < 2) throw new IndexOutOfBoundsException("Need at least two players for a game of UNO!");
+		this.players.addAll(List.of(players));
+		this.deck = deck;
+		this.cardAmount = cardAmount;
+		this.rules = rules;
+	}
 
 	/**
 	 * Creates a new UNO game.
@@ -61,14 +80,12 @@ public abstract class UnoGame {
 	 *            the amount of card each player gets initially
 	 * @param rules
 	 *            the {@link UnoRulePack} for this {@link UnoGame}
+	 * @deprecated please use {@link UnoGame#UnoGame(UnoDeck, int, UnoRulePack, UnoPlayer...)}
 	 */
+	@Deprecated
 	protected UnoGame(@Nonnull UnoPlayer first, @Nonnull UnoPlayer second, @Nonnull UnoDeck deck,
 					  @Nonnegative int cardAmount, @Nonnull UnoRulePack rules) {
-		this.first = first;
-		this.second = second;
-		this.deck = deck;
-		this.cardAmount = cardAmount;
-		this.rules = rules;
+		this(deck, cardAmount, rules, first, second);
 	}
 
 	private void init() {
@@ -76,15 +93,13 @@ public abstract class UnoGame {
 		// Creates the draw pile
 
 		this.getDiscard().clear();
-		this.getFirstPlayer().getHand().clear();
-		this.getSecondPlayer().getHand().clear();
+		this.players.forEach(player -> player.getHand().clear());
 		// Clears every other pile
 
 		this.getDiscard().add(this.draw.drawInitalCard());
 		// Draws the initial card
 
-		this.getFirstPlayer().getHand().draw(this, this.cardAmount);
-		this.getSecondPlayer().getHand().draw(this, this.cardAmount);
+		this.players.forEach(player -> player.getHand().draw(this, this.cardAmount));
 		// Deals the cards
 	}
 
@@ -114,17 +129,13 @@ public abstract class UnoGame {
 	}
 
 	@Nullable
-	private final UnoPlayer fallbackVictory() {
-		if (this.getFirstPlayer().getHand().getSize() < this.getSecondPlayer().getHand().getSize()) {
-			return this.getFirstPlayer();
-			// P1 has less cards
-
-		} else if (this.getSecondPlayer().getHand().getSize() < this.getFirstPlayer().getHand().getSize()) {
-			return this.getSecondPlayer();
-			// P2 has less cards
-		} else {
+	private UnoPlayer fallbackVictory() {
+		Optional<UnoPlayer> winner = players.stream().min(Comparator.comparingInt(player -> player.getCards().size()));
+		if (winner.isPresent() && players.stream().filter(player -> player.getCards().size() == winner.get().getCards().size()).count() == 1) {
+			return winner.get();
+		}
+		else {
 			return null;
-			// P1 and P2 have the same amount of cards (tie)
 		}
 	}
 
@@ -140,17 +151,14 @@ public abstract class UnoGame {
 		// Initiates game
 
 		UnoPlayer winnerPlayer = null;
-		UnoPlayer[] players = new UnoPlayer[] { this.getFirstPlayer(), this.getSecondPlayer() };
+		UnoPlayer[] players = this.players.toArray(new UnoPlayer[0]);
 
 		boolean fallback = false;
 		for (UnoPlayer player = players[0]; winnerPlayer == null && !fallback && !this.endRequested; player =
 			getNextPlayer(player)) {
-			UnoPlayer nextPlayer = getNextPlayer(player);
-			// Gets the other player
-
 			this.last = player;
 
-			winnerPlayer = playAndCheckPlayers(player, nextPlayer);
+			winnerPlayer = playAndCheckPlayers(player, players);
 			// Gives the players a turn and checks both
 
 			if (this.getDiscard().getSize() <= 1 && this.getDraw().getSize() == 0) {
@@ -183,6 +191,26 @@ public abstract class UnoGame {
 		}
 	}
 
+	private UnoPlayer playAndCheckPlayers(@Nonnull UnoPlayer player, @Nonnull UnoPlayer[] players) {
+		updateTopCard();
+		// Updates the top card
+
+		turn(player);
+		// Plays player's hand
+
+		if (checkVictory(player, this.getDiscard()))
+			return player;
+		// Checks whether player has won
+
+		for (UnoPlayer otherPlayer : players) {
+			if (checkVictory(otherPlayer, this.getDiscard()))
+				return otherPlayer;
+		}
+		// Checks whether any player has won
+
+		return null;
+	}
+
 	private void checkWinnerObjections(@Nonnull UnoWinner winner) {
 		UnoPlayer newWinner = null;
 		boolean winnerObjected = false;
@@ -209,26 +237,6 @@ public abstract class UnoGame {
 		}
 	}
 
-	private UnoPlayer playAndCheckPlayers(@Nonnull UnoPlayer player, @Nonnull UnoPlayer foe) {
-		updateTopCard();
-		// Updates the top card
-
-		turn(player);
-		// Plays player's hand
-
-		if (checkVictory(player, this.getDiscard()))
-			return player;
-		// Checks whether whether player has won
-
-		if (checkVictory(foe, this.getDiscard()))
-			return foe;
-		// Checks whether whether the foe has won (only ran if the top card was a draw card
-		// and player
-		// didn't defend)
-
-		return null;
-	}
-
 	/**
 	 * @return the {@link UnoRulePack} in use by this {@link UnoGame}
 	 */
@@ -245,6 +253,7 @@ public abstract class UnoGame {
 	 *
 	 * @return the {@link UnoCard} that's on top of the discard pile
 	 */
+	@Nullable
 	public UnoCard getTopCard() {
 		return this.topCard;
 	}
@@ -308,14 +317,23 @@ public abstract class UnoGame {
 	 */
 	@Nonnull
 	public final UnoPlayer getNextPlayer(UnoPlayer player) {
-		if (player == this.getFirstPlayer()) {
-			return this.getSecondPlayer();
-
-		} else if (player == this.getSecondPlayer()) {
-			return this.getFirstPlayer();
-
-		} else {
+		int playerIndex = players.indexOf(player);
+		if (playerIndex < 0) {
 			throw new IllegalArgumentException("The provided UnoPlayer is not a part of this UnoGame.");
+		}
+		else if (!reversedDirection) {
+			if (playerIndex > players.size() - 2) {
+				return players.get(0);
+			} else {
+				return players.get(playerIndex + 1);
+			}
+		} else {
+			if (playerIndex < 1) {
+				return players.get(players.size() - 1);
+			}
+			else {
+				return players.get(playerIndex - 1);
+			}
 		}
 	}
 
@@ -330,23 +348,36 @@ public abstract class UnoGame {
 	}
 
 	/**
-	 * @return the first {@link UnoPlayer}. This is the player to get the turn first
+	 * @return the first {@link UnoPlayer}. This is the player to get the turn first.
 	 *
-	 * @see #getSecondPlayer()
+	 * @deprecated please use {@link UnoGame#getPlayers()}
 	 */
+	@Deprecated
 	@Nonnull
 	public UnoPlayer getFirstPlayer() {
-		return this.first;
+		return getPlayers().get(0);
 	}
 
 	/**
-	 * @return the second {@link UnoPlayer}
+	 * @return the second {@link UnoPlayer}. This is the player to get the turn second.
 	 *
-	 * @see #getFirstPlayer()
+	 * @deprecated if you are still using this method, you are probably making the (incorrect) assumption that a game
+	 * of UNO can only have two players!
 	 */
+	@Deprecated
 	@Nonnull
 	public UnoPlayer getSecondPlayer() {
-		return this.second;
+		return getPlayers().get(1);
+	}
+
+	/**
+	 * @return an unmodifiable view of this {@link UnoGame}s {@link UnoPlayer}s.
+	 *
+	 * Caution: trying to modify the returned list will result in an {@link UnsupportedOperationException}.
+	 */
+	@Nonnull
+	public List<UnoPlayer> getPlayers() {
+		return Collections.unmodifiableList(players);
 	}
 
 	/**
@@ -384,6 +415,16 @@ public abstract class UnoGame {
 	 */
 	public boolean isEndRequested() {
 		return this.endRequested;
+	}
+
+	/**
+	 * Reverses the direction of this game's current flow. Will cause {@link UnoGame#getNextPlayer(UnoPlayer)} to return
+	 * the previous player in the list instead of the next one.
+	 *
+	 * If only two players are in the game, this will have no effect.
+	 */
+	public void reverseDirection() {
+		reversedDirection = !reversedDirection;
 	}
 
 }

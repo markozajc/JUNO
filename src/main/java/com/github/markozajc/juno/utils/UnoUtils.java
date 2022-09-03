@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 
 import com.github.markozajc.juno.cards.*;
 import com.github.markozajc.juno.cards.impl.*;
-import com.github.markozajc.juno.cards.impl.UnoActionCard.UnoFlowAction;
 
 /**
  * A class containing various utilities, mostly used to process lists of
@@ -57,20 +56,20 @@ public class UnoUtils {
 	}
 
 	/**
-	 * Gets all {@link UnoActionCard} with a certain {@link UnoActionCard} from a list of
+	 * Gets all {@link UnoSkipCard} with a certain {@link UnoSkipCard} from a list of
 	 * {@link UnoCard}s.
 	 *
-	 * @param action
-	 *            {@link UnoCardColor} to search for
 	 * @param cards
 	 *            {@link Collection} of {@link UnoCard}s to search through
 	 *
 	 * @return {@link List} containing only cards of a certain color
 	 */
-	public static List<UnoActionCard> getActionCards(UnoFlowAction action, Collection<UnoCard> cards) {
-		return filterKind(UnoActionCard.class, cards).stream()
-			.filter(c -> c.getFlowAction() == action)
-			.collect(toList());
+	public static List<UnoSkipCard> getSkipCards(Collection<UnoCard> cards) {
+		return filterKind(UnoSkipCard.class, cards);
+	}
+
+	public static List<UnoReverseCard> getReverseCards(Collection<UnoCard> cards) {
+		return filterKind(UnoReverseCard.class, cards);
 	}
 
 	/**
