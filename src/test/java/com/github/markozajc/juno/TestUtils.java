@@ -96,7 +96,7 @@ public class TestUtils {
 
 	/**
 	 * Returns a dummy {@link UnoPlayer} containing a preferred {@link Collection} of
-	 * {@link UnoCard}s. Calling either {@link UnoPlayer#playCard(UnoGame, UnoPlayer)},
+	 * {@link UnoCard}s. Calling either {@link UnoPlayer#playCard(UnoGame)},
 	 * {@link UnoPlayer#chooseColor(UnoGame)} or
 	 * {@link UnoPlayer#shouldPlayDrawnCard(UnoGame, UnoCard, UnoPlayer)} will throw an
 	 * {@link UnsupportedOperationException}.

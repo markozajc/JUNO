@@ -36,13 +36,7 @@ public class UnoStandardDeck {
 
 			cards.addAll(asList(new UnoSkipCard(color), new UnoSkipCard(color), new UnoReverseCard(color),
 								new UnoReverseCard(color)));
-			// Adds two of each action cards
-		}
-		// Adds the action cards
-
-		for (var color : UnoCardColor.values()) {
-			if (color == WILD)
-				continue;
+			// Adds skip and reverse cards
 
 			for (int i = 0; i <= 9; i++) {
 				if (i != 0) {

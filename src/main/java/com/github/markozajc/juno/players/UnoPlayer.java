@@ -12,12 +12,12 @@ import com.github.markozajc.juno.players.impl.*;
 /**
  * A class representing a player in UNO. A UNO player owns {@link UnoHand}s and
  * contains the logic that determines what card is to be placed when it gets a turn
- * ({@link #playCard(UnoGame, UnoPlayer)}) whether or not it should place a
- * newly-drawn card ({@link #shouldPlayDrawnCard(UnoGame, UnoCard, UnoPlayer)}) and
- * what color to assign to wild cards ({@link #chooseColor(UnoGame)}). A
- * {@link UnoPlayer} can either be autonomous (an example of that would be
- * {@link UnoStrategicPlayer}) or controlled by a human being (for example
- * {@link UnoStreamPlayer} and {@link UnoConsolePlayer}).
+ * ({@link #playCard(UnoGame)}) whether or not it should place a newly-drawn card
+ * ({@link #shouldPlayDrawnCard(UnoGame, UnoCard, UnoPlayer)}) and what color to
+ * assign to wild cards ({@link #chooseColor(UnoGame)}). A {@link UnoPlayer} can
+ * either be autonomous (an example of that would be {@link UnoStrategicPlayer}) or
+ * controlled by a human being (for example {@link UnoStreamPlayer} and
+ * {@link UnoConsolePlayer}).
  *
  * @author Marko Zajc
  */

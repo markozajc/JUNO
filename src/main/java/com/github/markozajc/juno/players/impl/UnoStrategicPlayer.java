@@ -16,6 +16,7 @@ import com.github.markozajc.juno.cards.*;
 import com.github.markozajc.juno.cards.impl.*;
 import com.github.markozajc.juno.game.UnoGame;
 import com.github.markozajc.juno.players.UnoPlayer;
+import com.github.markozajc.juno.rules.pack.impl.house.UnoSevenORulePack;
 import com.github.markozajc.juno.utils.UnoUtils;
 
 /**
@@ -31,14 +32,14 @@ public class UnoStrategicPlayer extends UnoPlayer {
 	private static final float DESPERATION_THRESHOLD = 2;
 	// desperation = (own hand size - min hand size) / threshold
 
-	private static final float FACTOR_SEVENO_STRATEGY = .8f;
-	private static final float FACTOR_PLACE_DRAW = .5f;
-	private static final float FACTOR_PLACE_ACTION_SLIDE = .8f;
-	private static final float FACTOR_PLACE_SKIP = .5f;
-	private static final float FACTOR_PLACE_REVERSE = .6f;
-	private static final float FACTOR_PLACE_NUMERIC = .8f;
-	private static final float FACTOR_PLACE_WILD = .7f;
-	private static final float FACTOR_PLACE_ANY = .9f;
+	private static final float FACTOR_SEVENO_STRATEGY = .8F;
+	private static final float FACTOR_PLACE_DRAW = .5F;
+	private static final float FACTOR_PLACE_ACTION_SLIDE = .8F;
+	private static final float FACTOR_PLACE_SKIP = .5F;
+	private static final float FACTOR_PLACE_REVERSE = .6F;
+	private static final float FACTOR_PLACE_NUMERIC = .8F;
+	private static final float FACTOR_PLACE_WILD = .7F;
+	private static final float FACTOR_PLACE_ANY = .9F;
 
 	/**
 	 * Creates a new {@link UnoStrategicPlayer}.
@@ -163,6 +164,8 @@ public class UnoStrategicPlayer extends UnoPlayer {
 	 *            The other {@link UnoPlayer}
 	 *
 	 * @return The best {@link UnoCard} to play or {@null} to pass through.
+	 *
+	 * @deprecated Read {@link UnoSevenORulePack}'s documentation for the rationale.
 	 */
 	@Deprecated(since = "2.3", forRemoval = false)
 	@Nullable

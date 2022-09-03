@@ -21,7 +21,7 @@ class UnoDrawPileTest {
 		UnoDeck deck = UnoStandardDeck.getDeck();
 		// Defines the deck to use
 
-		UnoDrawPile pile = new UnoDrawPile(deck, new Random(0) /* determinism */);
+		UnoDrawPile pile = new UnoDrawPile(deck, new Random(0)); // NOSONAR determinism
 		// Creates a new draw pile from the standard deck
 
 		assertEquals(UnoStandardDeck.getExpectedSize(), pile.getSize(),
@@ -39,7 +39,7 @@ class UnoDrawPileTest {
 							   new UnoNumericCard(GREEN, 9)));
 		// Creates a new dummy deck
 
-		UnoDrawPile pile = new UnoDrawPile(deck, new Random(0) /* determinism */);
+		UnoDrawPile pile = new UnoDrawPile(deck, new Random(0)); // NOSONAR determinism
 		// Creates a new UnoDrawPile. Cards should be shuffled upon creation.
 
 		assertNotEquals(deck.getCards(), pile.getCards(), "The resulting deck is not shuffled.");
@@ -53,7 +53,7 @@ class UnoDrawPileTest {
 		UnoDeck deck = new UnoDeck(asList(new UnoWildCard(), new UnoNumericCard(RED, 0)));
 		// Defines the deck to use
 
-		UnoDrawPile pile = new UnoDrawPile(deck, new Random(0) /* determinism, and we get the wild card first */);
+		UnoDrawPile pile = new UnoDrawPile(deck, new Random(0)); // NOSONAR determinism
 		// Creates a new draw pile from the standard deck
 
 		UnoCard initial = pile.drawInitalCard();

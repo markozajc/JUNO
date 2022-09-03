@@ -331,7 +331,7 @@ public abstract class UnoGame {
 	public final UnoPlayer getNextPlayer(UnoPlayer player) {
 		int playerIndex = getPlayerIndex(player);
 
-		return this.players.get(floorMod(playerIndex + (this.reversedDirection ? -1 : 1), this.players.size() - 1));
+		return this.players.get(floorMod(playerIndex + (this.reversedDirection ? -1 : 1), this.players.size()));
 	}
 
 	/**
@@ -363,7 +363,7 @@ public abstract class UnoGame {
 	public final UnoPlayer getPreviousPlayer(UnoPlayer player) {
 		int playerIndex = getPlayerIndex(player);
 
-		return this.players.get(floorMod(playerIndex + (this.reversedDirection ? 1 : -1), this.players.size() - 1));
+		return this.players.get(floorMod(playerIndex + (this.reversedDirection ? 1 : -1), this.players.size()));
 	}
 
 	/**
