@@ -3,8 +3,6 @@ package com.github.markozajc.juno.rules.impl.flow;
 import static com.github.markozajc.juno.utils.UnoGameUtils.canPlaceCard;
 import static com.github.markozajc.juno.utils.UnoRuleUtils.filterRuleKind;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import com.github.markozajc.juno.cards.UnoCard;
 import com.github.markozajc.juno.cards.impl.UnoDrawCard;
 import com.github.markozajc.juno.game.UnoGame;
@@ -12,6 +10,7 @@ import com.github.markozajc.juno.hands.UnoHand;
 import com.github.markozajc.juno.players.UnoPlayer;
 import com.github.markozajc.juno.rules.types.UnoGameFlowRule;
 import com.github.markozajc.juno.rules.types.flow.*;
+import com.github.markozajc.juno.utils.MutableBoolean;
 
 /**
  * The game flow rule responsible for drawing {@link UnoCard}s from the discard pile
@@ -40,13 +39,12 @@ public class CardDrawingRule implements UnoGameFlowRule {
 	@SuppressWarnings("null")
 	@Override
 	public UnoPhaseConclusion decisionPhase(UnoPlayer player, UnoGame game, UnoCard decidedCard) {
-		AtomicBoolean shouldRepeat = new AtomicBoolean(false);
+		MutableBoolean shouldRepeat = new MutableBoolean();
 		if (decidedCard == null) {
 			UnoCard drawn = player.getHand().draw(game, 1).get(0);
 			game.onEvent(DRAW_CARD, player.getName());
 
-			if (canPlaceCard(player, game, drawn)
-				&& player.shouldPlayDrawnCard(game, drawn, game.getNextPlayer(player))) {
+			if (canPlaceCard(player, game, drawn) && player.shouldPlayDrawnCard(game, drawn)) {
 				filterRuleKind(game.getRules().getRules(), UnoGameFlowRule.class).forEach(gfr -> {
 					UnoPhaseConclusion conclusion = gfr.decisionPhase(player, game, drawn);
 					if (conclusion.shouldRepeat())
