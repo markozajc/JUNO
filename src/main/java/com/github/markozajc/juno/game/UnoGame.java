@@ -161,6 +161,7 @@ public abstract class UnoGame {
 	public UnoWinner play() {
 		init();
 		// Initiates game
+		onEvent("The game begins!");
 
 		UnoPlayer winnerPlayer = null;
 
@@ -210,6 +211,9 @@ public abstract class UnoGame {
 
 		turn(player);
 		// Plays player's hand
+
+		updateTopCard();
+		// Update top card to avoid last card not being cached
 
 		for (UnoPlayer otherPlayer : this.players) {
 			if (checkVictory(otherPlayer, this.getDiscard()))
