@@ -161,6 +161,7 @@ public abstract class UnoGame {
 	public UnoWinner play() {
 		init();
 		// Initiates game
+		onEvent("The game begins!");
 
 		UnoPlayer winnerPlayer = null;
 
