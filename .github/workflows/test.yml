@@ -1,0 +1,26 @@
+name: Build Tests
+
+on:
+  push:
+    branches:
+      - master
+      - development
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Build Tests
+    runs-on: ubuntu-latest
+    steps:
+    - name: Pull the repository
+      uses: actions/checkout@v3
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '11'
+        cache: maven
+
+    - name: Verify with Maven
+      run: mvn --batch-mode verify
