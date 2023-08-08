@@ -1,6 +1,14 @@
-[central]: https://img.shields.io/maven-central/v/com.github.markozajc/juno.svg?label=Maven%20Central
+[central]: https://img.shields.io/maven-central/v/org.eu.zajc/juno.svg?label=Maven%20Central
 [discord]: https://discord.com/api/guilds/323031870088675328/widget.png
 ![central]
+
+> **Warning**\
+> **Relocation notice for 2.3.3 and above:**\
+> JUNO's artifact has relocated from `com.github.markozajc:juno` to `org.eu.zajc:juno`. Additionally, the same change
+> has been made on the base package name. You will need to change JUNO's dependency's `groupId` in your pom.xml or
+> build.gradle (as shown in the installation section) and you will need to replace `com.github.markozajc.juno`
+> with `org.eu.zajc.juno` in your imports.
+
 # JUNO
 JUNO is a UNO library for Java with lots of extensibility and flow control that comes bundled with several implementation of cards, rules and more.
 
@@ -16,9 +24,9 @@ Add the following to your pom.xml's dependencies section:
 
 ```xml
 <dependency>
-	<groupId>com.github.markozajc</groupId>
+	<groupId>org.eu.zajc</groupId>
 	<artifactId>juno</artifactId>
-	<version>2.3</version>
+	<version>2.3.3</version>
 </dependency>
 ```
 
@@ -27,7 +35,7 @@ Merge the following into your build.gradle:
 
 ```gradle
 dependencies {
-	compile 'com.github.markozajc:juno:2.3'
+	compile 'org.eu.zajc:juno:2.3.3'
 }
 
 repositories {
