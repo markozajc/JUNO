@@ -2,7 +2,7 @@
 [discord]: https://discord.com/api/guilds/323031870088675328/widget.png
 ![central]
 
-> **Warning**\
+> [!WARNING]
 > **Relocation notice for 2.3.3 and above:**\
 > JUNO's artifact has relocated from `com.github.markozajc:juno` to `org.eu.zajc:juno`. Additionally, the same change
 > has been made on the base package name. You will need to change JUNO's dependency's `groupId` in your pom.xml or
