@@ -31,7 +31,7 @@ import org.eu.zajc.juno.rules.pack.impl.UnoOfficialRules;
 import org.eu.zajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class UnoRuleUtilsTest {
 
@@ -198,8 +198,11 @@ class UnoRuleUtilsTest {
 
 		UnoPlayer player = getDummyPlayer(asList(cards[0]));
 
-		assertTrue(listEqualsUnordered(getProhibitingRules(cards[0], cards[5], rules, player.getHand()),
-									   filterRuleKind(rules.getRules(), DrawFourHitchPlacementRule.class)));
+		assertEquals(getProhibitingRules(cards[0], cards[5], rules, player.getHand()),
+					 filterRuleKind(rules.getRules(), DrawFourHitchPlacementRule.class));
+
+		assertInstanceOf(DrawFourHitchPlacementRule.class,
+						 getProhibitingRule(cards[0], cards[5], rules, player.getHand()));
 	}
 
 }

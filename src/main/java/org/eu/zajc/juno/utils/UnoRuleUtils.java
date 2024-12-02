@@ -22,7 +22,7 @@ import static org.eu.zajc.juno.rules.types.UnoCardPlacementRule.PlacementClearan
 
 import java.util.*;
 
-import javax.annotation.Nonnull;
+import javax.annotation.*;
 
 import org.eu.zajc.juno.cards.UnoCard;
 import org.eu.zajc.juno.hands.UnoHand;
@@ -57,6 +57,7 @@ public class UnoRuleUtils {
 	 * @return a {@link List} of {@link UnoCard}s that can be placed on top of the
 	 *         {@code target} {@link UnoCard}
 	 *
+	 * @see #getProhibitingRule(UnoCard, UnoCard, UnoRulePack, UnoHand)
 	 * @see #getProhibitingRules(UnoCard, UnoCard, UnoRulePack, UnoHand)
 	 * @see #canPlaceCard(UnoCard, UnoCard, UnoRulePack, UnoHand)
 	 *
@@ -89,6 +90,7 @@ public class UnoRuleUtils {
 	 *         {@link PlacementClearance#ALLOWED} and none return
 	 *         {@link PlacementClearance#PROHIBITED}
 	 *
+	 * @see #getProhibitingRule(UnoCard, UnoCard, UnoRulePack, UnoHand)
 	 * @see #getProhibitingRules(UnoCard, UnoCard, UnoRulePack, UnoHand)
 	 * @see #getPlaceableCards(UnoCard, Collection, UnoRulePack, UnoHand)
 	 */
@@ -123,6 +125,7 @@ public class UnoRuleUtils {
 	 *         {@code target} {@link UnoCard}
 	 *
 	 * @see #getProhibitingRules(UnoCard, UnoCard, UnoRulePack, UnoHand)
+	 * @see #getProhibitingRule(UnoCard, UnoCard, UnoRulePack, UnoHand)
 	 * @see #canPlaceCard(UnoCard, UnoCard, UnoRulePack, UnoHand)
 	 */
 	@Nonnull
@@ -149,9 +152,9 @@ public class UnoRuleUtils {
 	 * @param hand
 	 *            the current {@link UnoHand}
 	 *
-	 * @return a {@link List} of {@link UnoCard}s that can be placed atop of the
-	 *         {@code target} {@link UnoCard}
+	 * @return a {@link List} of {@link UnoCardPlacementRule}s that prohibit placement
 	 *
+	 * @see #getProhibitingRule(UnoCard, UnoCard, UnoRulePack, UnoHand)
 	 * @see #getPlaceableCards(UnoCard, Collection, UnoRulePack, UnoHand)
 	 * @see #canPlaceCard(UnoCard, UnoCard, UnoRulePack, UnoHand)
 	 */
@@ -162,6 +165,40 @@ public class UnoRuleUtils {
 		return filterRuleKind(rules.getRules(), UnoCardPlacementRule.class).stream().filter(r -> {
 			return r.canBePlaced(target, card, hand) == PROHIBITED;
 		}).collect(toList());
+	}
+
+	/**
+	 * Finds any {@link UnoCardPlacementRule} that prohibits placement.<br>
+	 * <br>
+	 * <b>Note:</b> an empty list does not by itself mean that placement is allowed, only
+	 * that none of the rules prohibit it. This can be used as feedback to the player
+	 * when explaining why placement is not allowed for lesser-known rules, for example
+	 * {@link DrawFourHitchPlacementRule}.
+	 *
+	 * @param target
+	 *            the target (top of the discard) {@link UnoCard}
+	 * @param card
+	 *            the {@link UnoCard} to dry-run placement for
+	 * @param rules
+	 *            the {@link UnoRulePack} to use
+	 * @param hand
+	 *            the current {@link UnoHand}
+	 *
+	 * @return any {@link UnoCardPlacementRule} that prohibits placement or {@code null}
+	 *         if there are none
+	 *
+	 * @see #getProhibitingRule(UnoCard, UnoCard, UnoRulePack, UnoHand)
+	 * @see #getPlaceableCards(UnoCard, Collection, UnoRulePack, UnoHand)
+	 * @see #canPlaceCard(UnoCard, UnoCard, UnoRulePack, UnoHand)
+	 */
+	@Nullable
+	public static UnoCardPlacementRule getProhibitingRule(@Nonnull UnoCard target, @Nonnull UnoCard card,
+														  @Nonnull UnoRulePack rules, @Nonnull UnoHand hand) {
+		for (var rule : filterRuleKind(rules.getRules(), UnoCardPlacementRule.class)) {
+			if (rule.canBePlaced(target, card, hand) == PROHIBITED)
+				return rule;
+		}
+		return null;
 	}
 
 	/**
