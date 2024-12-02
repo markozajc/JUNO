@@ -24,7 +24,6 @@ import static org.eu.zajc.juno.utils.UnoRuleUtils.findHouseRules;
 
 import java.io.PrintStream;
 import java.util.*;
-import java.util.random.RandomGenerator;
 
 import javax.annotation.*;
 
@@ -57,7 +56,7 @@ public abstract class UnoGame {
 	@Nonnull private final UnoRulePack rules;
 	@Nonnull private final UnoDeck deck;
 	@Nullable private UnoCard topCard;
-	@Nullable private final RandomGenerator random;
+	@Nullable private final Random random;
 	private UnoDrawPile draw;
 	private boolean endRequested;
 	private boolean reversedDirection;
@@ -98,7 +97,7 @@ public abstract class UnoGame {
 	 */
 	@SuppressWarnings("null")
 	protected UnoGame(@Nonnull UnoDeck deck, @Nonnegative int cardAmount, @Nonnull UnoRulePack rules,
-					  @Nullable RandomGenerator random, @Nonnull UnoPlayer... players) {
+					  @Nullable Random random, @Nonnull UnoPlayer... players) {
 		if (players.length < 2)
 			throw new IndexOutOfBoundsException("Need at least two players for a game of UNO!");
 		this.deck = deck;

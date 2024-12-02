@@ -20,7 +20,6 @@ import static java.util.Collections.unmodifiableList;
 import static org.eu.zajc.juno.utils.UnoUtils.filterKind;
 
 import java.util.*;
-import java.util.random.RandomGenerator;
 
 import javax.annotation.*;
 
@@ -43,7 +42,7 @@ public class UnoDrawPile implements UnoPile {
 
 	@Nonnull private final Queue<UnoCard> cards;
 	private boolean initialDrawn;
-	@Nullable private RandomGenerator random;
+	@Nullable private Random random; // TODO can be changed to RandomGenerator in Java 21
 
 	/**
 	 * Creates a new {@link UnoDrawPile} from a {@link UnoDeck}.
@@ -64,7 +63,7 @@ public class UnoDrawPile implements UnoPile {
 	 *            the random number generator used to shuffle the deck on
 	 *            {@link #shuffle()}, or {@code null} to use Collections API's default
 	 */
-	public UnoDrawPile(@Nonnull UnoDeck deck, @Nullable RandomGenerator random) {
+	public UnoDrawPile(@Nonnull UnoDeck deck, @Nullable Random random) {
 		this(deck.getCards(), random, false);
 	}
 
@@ -96,7 +95,7 @@ public class UnoDrawPile implements UnoPile {
 	 *            {@link #shuffle()}, or {@code null} to use Collections API's default
 	 *
 	 */
-	UnoDrawPile(@Nonnull List<UnoCard> cards, @Nullable RandomGenerator random, boolean resetAll) {
+	UnoDrawPile(@Nonnull List<UnoCard> cards, @Nullable Random random, boolean resetAll) {
 		this.cards = new ArrayDeque<>(cards);
 		this.random = random;
 

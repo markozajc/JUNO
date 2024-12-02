@@ -18,8 +18,7 @@ package org.eu.zajc.juno.game;
 
 import static org.eu.zajc.juno.utils.UnoRuleUtils.filterRuleKind;
 
-import java.util.List;
-import java.util.random.RandomGenerator;
+import java.util.*;
 
 import javax.annotation.*;
 
@@ -73,7 +72,7 @@ public abstract class UnoControlledGame extends UnoGame {
 	 *            elements
 	 */
 	protected UnoControlledGame(@Nonnull UnoDeck unoDeck, @Nonnegative int cardAmount, @Nonnull UnoRulePack rules,
-								@Nullable RandomGenerator random, @Nonnull UnoPlayer... players) {
+								@Nullable Random random, @Nonnull UnoPlayer... players) {
 		super(unoDeck, cardAmount, rules, random, players);
 	}
 
