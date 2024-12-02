@@ -26,7 +26,7 @@ Add the following to your pom.xml's dependencies section:
 <dependency>
 	<groupId>org.eu.zajc</groupId>
 	<artifactId>juno</artifactId>
-	<version>2.3.3</version>
+	<version>2.4</version>
 </dependency>
 ```
 
@@ -35,7 +35,7 @@ Merge the following into your build.gradle:
 
 ```gradle
 dependencies {
-	compile 'org.eu.zajc:juno:2.3.3'
+	compile 'org.eu.zajc:juno:2.4'
 }
 
 repositories {
@@ -95,7 +95,7 @@ ControlledUnoGame is fairly easy to extend - the only method that you have to ex
 A UnoRule defines rules in the game. Rules also control the flow of the game itself in a UnoControlledGame. JUNO comes preloaded with the official set of UNO rules as well as the Progressive UNO and SevenO house rules (the latter of which is deprecated and currently only works for two-player game - read its documentation for more info), which can be optionally activated in UnoOfficialRules with `.getPack(UnoHouseRule...)` or `.getPack(Collection<UnoHouseRule>)`. UnoRule comes in two variants - the UnoCardPlacementRule and the UnoGameFlowRule. You do not need to extend the rules unless you want to add custom behavior that is not supported by the official UNO rules/home rules
 
 #### UnoCardPlacementRule
-A UnoCardPlacement rule defines what cards can be placed on top of what cards. It works in all UnoGame implementations that use `UnoRuleUtils.combinedPlacementAnalysis(UnoCard, Collection<UnoCard>, UnoRulePack, UnoHand)`. Implementing it is pretty simple - the only thing you need to override is `#canBePlaced(UnoCard, UnoCard, UnoHand)`. This method returns a PlacementClearance enum, which decides whether the second UnoCard (card) can be placed on top of the first one (target). PlacementClearance has 3 values - ALLOWED, NEUTRAL and PROHIBITED (look at their respective documentation for more information about them).
+A UnoCardPlacement rule defines what cards can be placed on top of what cards. It works in all UnoGame implementations that use `UnoRuleUtils.getPlaceableCards(UnoCard, Collection<UnoCard>, UnoRulePack, UnoHand)`. Implementing it is pretty simple - the only thing you need to override is `#canBePlaced(UnoCard, UnoCard, UnoHand)`. This method returns a PlacementClearance enum, which decides whether the second UnoCard (card) can be placed on top of the first one (target). PlacementClearance has 3 values - ALLOWED, NEUTRAL and PROHIBITED (look at their respective documentation for more information about them).
 
 #### UnoGameFlowRule
 A UnoGameFlowRule defines the flow of the game. It is a bit trickier to implement than UnoCardPlacementRule as it requires a more involved connection with the UnoPlayer. This rule type will only work in a UnoControlledGame and its implementations. Two methods represent a phase of a turn - `initializationPhase(UnoPlayer, UnoGame)` and `decisionPhase(UnoPlayer, UnoGame, UnoCard)`. Additionally, `finishPhase(UnoWinner, UnoGame)` is called when the game ends.
