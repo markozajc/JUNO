@@ -131,7 +131,13 @@ public class UnoProgressiveRulePack {
 		return consecutive;
 	}
 
-	static class PlacementRule extends OpenDrawCardPlacementRule {
+	/**
+	 * A modification of {@link OpenDrawCardPlacementRule} that allows draw cards to be
+	 * placed over open draw cards of the same amount.
+	 *
+	 * @author Marko Zajc
+	 */
+	public static class PlacementRule extends OpenDrawCardPlacementRule {
 
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
