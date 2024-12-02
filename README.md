@@ -26,7 +26,7 @@ Add the following to your pom.xml's dependencies section:
 <dependency>
 	<groupId>org.eu.zajc</groupId>
 	<artifactId>juno</artifactId>
-	<version>2.4</version>
+	<version>2.4.1</version>
 </dependency>
 ```
 
@@ -35,7 +35,7 @@ Merge the following into your build.gradle:
 
 ```gradle
 dependencies {
-	compile 'org.eu.zajc:juno:2.4'
+	compile 'org.eu.zajc:juno:2.4.1'
 }
 
 repositories {
