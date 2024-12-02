@@ -131,22 +131,18 @@ public class UnoStreamPlayer extends UnoPlayer {
 				continue;
 			}
 
-			if (choice == 0)
+			if (choice == 0) {
 				return null;
 
-			if (choice > this.getCards().size()) {
+			} else if (choice > this.getCards().size()) {
 				this.ps.println(INVALID_CHOICE_STRING);
-				continue;
-			}
 
-			UnoCard card = this.getCards().get(choice - 1);
-
-			if (!possible.contains(card)) {
+			} else if (!possible.contains(this.getCards().get(choice - 1))) {
 				this.ps.println(INVALID_CHOICE_STRING);
-				continue;
-			}
 
-			return card;
+			} else {
+				return this.getCards().get(choice - 1);
+			}
 		}
 	}
 

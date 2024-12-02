@@ -183,7 +183,7 @@ public class UnoDrawPile implements UnoPile {
 	/**
 	 * Shuffles the entire pile.
 	 */
-	public void shuffle() {
+	public final void shuffle() {
 		var cardsCopy = new ArrayList<>(getCards());
 		if (this.random == null)
 			Collections.shuffle(cardsCopy);

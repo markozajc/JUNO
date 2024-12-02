@@ -66,7 +66,9 @@ public class UnoRuleUtils {
 
 		for (var card : cards) {
 			// Iterates over all cards
-			var clearance = rules.stream().map(r -> r.canBePlaced(target, card, hand)).collect(toList());
+			var clearance = rules.stream().map(r -> {
+				return r.canBePlaced(target, card, hand);
+			}).collect(toList());
 			// Gets the PlacementClearance-s for this card
 
 			if (clearance.contains(ALLOWED) && !clearance.contains(PROHIBITED))

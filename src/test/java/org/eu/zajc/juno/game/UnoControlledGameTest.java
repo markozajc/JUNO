@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 /*
- * JUNO, the UNO library for Java 
+ * JUNO, the UNO library for Java
  * Copyright (C) 2019-2024 Marko Zajc
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -21,13 +21,13 @@ import static java.lang.System.out;
 import static org.eu.zajc.juno.decks.impl.UnoStandardDeck.getDeck;
 import static org.eu.zajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule.PROGRESSIVE;
 
+import java.util.Random;
 import java.util.stream.IntStream;
 
 import javax.annotation.*;
 
 import org.eu.zajc.juno.decks.UnoDeck;
 import org.eu.zajc.juno.decks.impl.UnoStandardDeck;
-import org.eu.zajc.juno.game.*;
 import org.eu.zajc.juno.players.UnoPlayer;
 import org.eu.zajc.juno.players.impl.UnoStrategicPlayer;
 import org.eu.zajc.juno.rules.pack.UnoRulePack;
@@ -44,7 +44,7 @@ class UnoControlledGameTest {
 
 		public UnoStressTestGame(@Nonnull UnoDeck unoDeck, @Nonnegative int cardAmount, @Nonnull UnoRulePack rules,
 								 @Nonnull UnoPlayer... players) {
-			super(unoDeck, cardAmount, rules, players);
+			super(unoDeck, cardAmount, rules, new Random(0) /* NOSONAR is deterministic */, players);
 		}
 
 		@Override
