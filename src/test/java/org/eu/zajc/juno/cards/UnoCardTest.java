@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 /*
- * JUNO, the UNO library for Java 
+ * JUNO, the UNO library for Java
  * Copyright (C) 2019-2024 Marko Zajc
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -20,7 +20,6 @@ import static java.util.Collections.emptyList;
 import static org.eu.zajc.juno.TestUtils.getDummyPlayer;
 import static org.eu.zajc.juno.cards.UnoCardColor.*;
 
-import org.eu.zajc.juno.cards.UnoCard;
 import org.eu.zajc.juno.cards.impl.*;
 import org.eu.zajc.juno.players.UnoPlayer;
 import org.junit.jupiter.api.Test;
@@ -98,7 +97,6 @@ class UnoCardTest {
 		assertEquals(WILD, card.getColor());
 		assertFalse(card.isOpen());
 		// Test the state
-
 	}
 
 }

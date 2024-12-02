@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 /*
- * JUNO, the UNO library for Java 
+ * JUNO, the UNO library for Java
  * Copyright (C) 2019-2024 Marko Zajc
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -49,7 +49,7 @@ class UnoGameUtilsTest {
 		@SuppressWarnings("null")
 		public FakeUnoGame(UnoDrawPile draw, UnoDiscardPile discard, CheckState checker) {
 			super(UnoStandardDeck.getDeck(), 0, UnoOfficialRules.getPack(),
-					TestUtils.getDummyPlayer(Collections.emptyList()), TestUtils.getDummyPlayer(Collections.emptyList()));
+				  TestUtils.getDummyPlayer(Collections.emptyList()), TestUtils.getDummyPlayer(Collections.emptyList()));
 
 			this.checker = checker;
 			this.draw = draw;

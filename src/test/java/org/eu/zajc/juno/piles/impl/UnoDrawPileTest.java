@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 /*
- * JUNO, the UNO library for Java 
+ * JUNO, the UNO library for Java
  * Copyright (C) 2019-2024 Marko Zajc
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -25,7 +25,6 @@ import org.eu.zajc.juno.cards.UnoCard;
 import org.eu.zajc.juno.cards.impl.*;
 import org.eu.zajc.juno.decks.UnoDeck;
 import org.eu.zajc.juno.decks.impl.UnoStandardDeck;
-import org.eu.zajc.juno.piles.impl.UnoDrawPile;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
