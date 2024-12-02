@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 /*
- * JUNO, the UNO library for Java 
+ * JUNO, the UNO library for Java
  * Copyright (C) 2019-2024 Marko Zajc
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -51,7 +51,7 @@ public class UnoUtils {
 		for (var color : UnoCardColor.values())
 			result.add(new SimpleEntry<>(cards.stream().filter(c -> c.getColor() == color).count(), color));
 
-		sort(result, (v1, v2) -> v2.getKey().compareTo(v1.getKey()));
+		sort(result, Comparator.comparing(Entry<Long, UnoCardColor>::getKey).reversed());
 		return result;
 	}
 

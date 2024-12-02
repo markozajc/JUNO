@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 /*
- * JUNO, the UNO library for Java 
+ * JUNO, the UNO library for Java
  * Copyright (C) 2019-2024 Marko Zajc
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -29,20 +29,18 @@ import org.eu.zajc.juno.players.impl.*;
  * A class representing a player in UNO. A UNO player owns {@link UnoHand}s and
  * contains the logic that determines what card is to be placed when it gets a turn
  * ({@link #playCard(UnoGame)}) whether or not it should place a newly-drawn card
- * ({@link #shouldPlayDrawnCard(UnoGame, UnoCard)}) and what color to
- * assign to wild cards ({@link #chooseColor(UnoGame)}). A {@link UnoPlayer} can
- * either be autonomous (an example of that would be {@link UnoStrategicPlayer}) or
- * controlled by a human being (for example {@link UnoStreamPlayer} and
+ * ({@link #shouldPlayDrawnCard(UnoGame, UnoCard)}) and what color to assign to wild
+ * cards ({@link #chooseColor(UnoGame)}). A {@link UnoPlayer} can either be
+ * autonomous (an example of that would be {@link UnoStrategicPlayer}) or controlled
+ * by a human being (for example {@link UnoStreamPlayer} and
  * {@link UnoConsolePlayer}).
  *
  * @author Marko Zajc
  */
 public abstract class UnoPlayer {
 
-	@Nonnull
-	private UnoHand hand;
-	@Nonnull
-	private final String name;
+	@Nonnull private UnoHand hand;
+	@Nonnull private final String name;
 
 	/**
 	 * Creates a new {@link UnoPlayer}.

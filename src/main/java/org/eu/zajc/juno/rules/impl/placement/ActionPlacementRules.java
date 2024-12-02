@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 /*
- * JUNO, the UNO library for Java 
+ * JUNO, the UNO library for Java
  * Copyright (C) 2019-2024 Marko Zajc
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -50,7 +50,8 @@ public class ActionPlacementRules {
 
 		@Override
 		public PlacementClearance canBePlaced(UnoCard target, UnoCard card, UnoHand hand) {
-			if ((target instanceof UnoSkipCard && card instanceof UnoSkipCard) || (target instanceof UnoReverseCard && card instanceof UnoReverseCard))
+			if (target instanceof UnoSkipCard && card instanceof UnoSkipCard
+				|| target instanceof UnoReverseCard && card instanceof UnoReverseCard)
 				return ALLOWED;
 			// Checks whether target's action matches card's action
 

@@ -50,22 +50,14 @@ import org.eu.zajc.juno.utils.UnoRuleUtils;
  */
 public abstract class UnoGame {
 
-	@Nonnull
-	private final List<UnoPlayer> players;
-	@Nullable
-	private UnoPlayer last;
-	@Nonnegative
-	private final int cardAmount;
-	@Nonnull
-	private final UnoDiscardPile discard = new UnoDiscardPile();
-	@Nonnull
-	private final UnoRulePack rules;
-	@Nonnull
-	private final UnoDeck deck;
-	@Nullable
-	private UnoCard topCard;
-	@Nullable
-	private final RandomGenerator random;
+	@Nonnull private final List<UnoPlayer> players;
+	@Nullable private UnoPlayer last;
+	@Nonnegative private final int cardAmount;
+	@Nonnull private final UnoDiscardPile discard = new UnoDiscardPile();
+	@Nonnull private final UnoRulePack rules;
+	@Nonnull private final UnoDeck deck;
+	@Nullable private UnoCard topCard;
+	@Nullable private final RandomGenerator random;
 	private UnoDrawPile draw;
 	private boolean endRequested;
 	private boolean reversedDirection;

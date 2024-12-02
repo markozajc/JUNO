@@ -41,11 +41,9 @@ import org.eu.zajc.juno.utils.UnoGameUtils;
  */
 public class UnoDrawPile implements UnoPile {
 
-	@Nonnull
-	private final Queue<UnoCard> cards;
+	@Nonnull private final Queue<UnoCard> cards;
 	private boolean initialDrawn;
-	@Nullable
-	private RandomGenerator random;
+	@Nullable private RandomGenerator random;
 
 	/**
 	 * Creates a new {@link UnoDrawPile} from a {@link UnoDeck}.

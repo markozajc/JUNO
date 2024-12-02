@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 /*
- * JUNO, the UNO library for Java 
+ * JUNO, the UNO library for Java
  * Copyright (C) 2019-2024 Marko Zajc
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -53,8 +53,7 @@ public class UnoDeck {
 		return result;
 	}
 
-	@Nonnull
-	private final List<UnoCard> cards;
+	@Nonnull private final List<UnoCard> cards;
 
 	/**
 	 * Creates a new {@link UnoDeck}.
