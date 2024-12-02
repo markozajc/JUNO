@@ -129,7 +129,7 @@ public class UnoRuleUtils {
 	@SuppressWarnings("null")
 	public static List<UnoCard> getPlaceableCards(@Nonnull UnoCard target, @Nonnull Collection<UnoCard> cards,
 												  @Nonnull UnoRulePack rules, @Nonnull UnoHand hand) {
-		return cards.stream().filter(c -> canPlaceCard(target, c, rules, hand)).toList();
+		return cards.stream().filter(c -> canPlaceCard(target, c, rules, hand)).collect(toList());
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class UnoRuleUtils {
 																 @Nonnull UnoRulePack rules, @Nonnull UnoHand hand) {
 		return filterRuleKind(rules.getRules(), UnoCardPlacementRule.class).stream().filter(r -> {
 			return r.canBePlaced(target, card, hand) == PROHIBITED;
-		}).toList();
+		}).collect(toList());
 	}
 
 	/**
