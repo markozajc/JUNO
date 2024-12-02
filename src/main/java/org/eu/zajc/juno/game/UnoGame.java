@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 /*
- * JUNO, the UNO library for Java 
+ * JUNO, the UNO library for Java
  * Copyright (C) 2019-2023 Marko Zajc
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -24,6 +24,7 @@ import static org.eu.zajc.juno.utils.UnoRuleUtils.findHouseRules;
 
 import java.io.PrintStream;
 import java.util.*;
+import java.util.random.RandomGenerator;
 
 import javax.annotation.*;
 
@@ -63,6 +64,8 @@ public abstract class UnoGame {
 	private final UnoDeck deck;
 	@Nullable
 	private UnoCard topCard;
+	@Nullable
+	private final RandomGenerator random;
 	private UnoDrawPile draw;
 	private boolean endRequested;
 	private boolean reversedDirection;
@@ -73,22 +76,44 @@ public abstract class UnoGame {
 	 * @param deck
 	 *            the {@link UnoDeck} to use
 	 * @param cardAmount
-	 *            the amount of card each player gets initially
+	 *            the amount of cards each player starts with
 	 * @param rules
 	 *            the {@link UnoRulePack} for this {@link UnoGame}
 	 * @param players
 	 *            the {@link UnoPlayer}s for this {@link UnoGame}. Must have at least 2
 	 *            elements
 	 */
-	@SuppressWarnings("null")
 	protected UnoGame(@Nonnull UnoDeck deck, @Nonnegative int cardAmount, @Nonnull UnoRulePack rules,
 					  @Nonnull UnoPlayer... players) {
+		this(deck, cardAmount, rules, null, players);
+	}
+
+	/**
+	 * Creates a new UNO game.
+	 *
+	 * @param deck
+	 *            the {@link UnoDeck} to use
+	 * @param cardAmount
+	 *            the amount of cards each player starts with
+	 * @param rules
+	 *            the {@link UnoRulePack} for this {@link UnoGame}
+	 * @param random
+	 *            the random number generator used throughout the game, or {@code null}
+	 *            to use the default
+	 * @param players
+	 *            the {@link UnoPlayer}s for this {@link UnoGame}. Must have at least 2
+	 *            elements
+	 */
+	@SuppressWarnings("null")
+	protected UnoGame(@Nonnull UnoDeck deck, @Nonnegative int cardAmount, @Nonnull UnoRulePack rules,
+					  @Nullable RandomGenerator random, @Nonnull UnoPlayer... players) {
 		if (players.length < 2)
 			throw new IndexOutOfBoundsException("Need at least two players for a game of UNO!");
-		this.players = unmodifiableList(asList(players.clone()));
 		this.deck = deck;
 		this.cardAmount = cardAmount;
 		this.rules = rules;
+		this.random = random;
+		this.players = unmodifiableList(asList(players.clone()));
 	}
 
 	/**
@@ -115,7 +140,7 @@ public abstract class UnoGame {
 	}
 
 	private void init() {
-		this.draw = new UnoDrawPile(this.deck);
+		this.draw = new UnoDrawPile(this.deck, this.random);
 		// Creates the draw pile
 
 		this.getDiscard().clear();

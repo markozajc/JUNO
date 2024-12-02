@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 /*
- * JUNO, the UNO library for Java 
+ * JUNO, the UNO library for Java
  * Copyright (C) 2019-2023 Marko Zajc
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -19,6 +19,7 @@ package org.eu.zajc.juno.game;
 import static org.eu.zajc.juno.utils.UnoRuleUtils.filterRuleKind;
 
 import java.util.List;
+import java.util.random.RandomGenerator;
 
 import javax.annotation.*;
 
@@ -40,34 +41,10 @@ public abstract class UnoControlledGame extends UnoGame {
 	/**
 	 * Creates a new {@link UnoControlledGame}.
 	 *
-	 * @param first
-	 *            the first {@link UnoPlayer}
-	 * @param second
-	 *            the second {@link UnoPlayer}
 	 * @param unoDeck
 	 *            the {@link UnoDeck} to use
 	 * @param cardAmount
-	 *            the amount of card each player gets initially
-	 * @param rules
-	 *            the {@link UnoRulePack} for this {@link UnoGame}
-	 *
-	 * @deprecated Use
-	 *             {@link UnoControlledGame#UnoControlledGame(UnoDeck, int, UnoRulePack, UnoPlayer...)}
-	 *             instead
-	 */
-	@Deprecated(since = "2.3", forRemoval = true)
-	protected UnoControlledGame(@Nonnull UnoPlayer first, @Nonnull UnoPlayer second, @Nonnull UnoDeck unoDeck,
-								@Nonnegative int cardAmount, @Nonnull UnoRulePack rules) {
-		super(unoDeck, cardAmount, rules, first, second);
-	}
-
-	/**
-	 * Creates a new {@link UnoControlledGame}.
-	 *
-	 * @param unoDeck
-	 *            the {@link UnoDeck} to use
-	 * @param cardAmount
-	 *            the amount of card each player gets initially
+	 *            the amount of cards each player starts with
 	 * @param rules
 	 *            the {@link UnoRulePack} for this {@link UnoGame}
 	 * @param players
@@ -77,6 +54,27 @@ public abstract class UnoControlledGame extends UnoGame {
 	protected UnoControlledGame(@Nonnull UnoDeck unoDeck, @Nonnegative int cardAmount, @Nonnull UnoRulePack rules,
 								@Nonnull UnoPlayer... players) {
 		super(unoDeck, cardAmount, rules, players);
+	}
+
+	/**
+	 * Creates a new {@link UnoControlledGame}.
+	 *
+	 * @param unoDeck
+	 *            the {@link UnoDeck} to use
+	 * @param cardAmount
+	 *            the amount of cards each player starts with
+	 * @param rules
+	 *            the {@link UnoRulePack} for this {@link UnoGame}
+	 * @param random
+	 *            the random number generator used throughout the game, or {@code null}
+	 *            to use the default
+	 * @param players
+	 *            the {@link UnoPlayer}s for this {@link UnoGame}. Must have at least 2
+	 *            elements
+	 */
+	protected UnoControlledGame(@Nonnull UnoDeck unoDeck, @Nonnegative int cardAmount, @Nonnull UnoRulePack rules,
+								@Nullable RandomGenerator random, @Nonnull UnoPlayer... players) {
+		super(unoDeck, cardAmount, rules, random, players);
 	}
 
 	@Override

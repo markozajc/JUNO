@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 /*
- * JUNO, the UNO library for Java 
+ * JUNO, the UNO library for Java
  * Copyright (C) 2019-2023 Marko Zajc
  *
  * This program is free software: you can redistribute it and/or modify it under the
@@ -20,6 +20,7 @@ import static java.util.Collections.unmodifiableList;
 import static org.eu.zajc.juno.utils.UnoUtils.filterKind;
 
 import java.util.*;
+import java.util.random.RandomGenerator;
 
 import javax.annotation.*;
 
@@ -43,8 +44,8 @@ public class UnoDrawPile implements UnoPile {
 	@Nonnull
 	private final Queue<UnoCard> cards;
 	private boolean initialDrawn;
-	@Nonnull
-	private Random random;
+	@Nullable
+	private RandomGenerator random;
 
 	/**
 	 * Creates a new {@link UnoDrawPile} from a {@link UnoDeck}.
@@ -53,7 +54,7 @@ public class UnoDrawPile implements UnoPile {
 	 *            the {@link UnoDeck} to create this pile from
 	 */
 	public UnoDrawPile(@Nonnull UnoDeck deck) {
-		this(deck.getCards(), new Random(), false);
+		this(deck.getCards(), null, false);
 	}
 
 	/**
@@ -63,9 +64,9 @@ public class UnoDrawPile implements UnoPile {
 	 *            the {@link UnoDeck} to create this pile from
 	 * @param random
 	 *            the random number generator used to shuffle the deck on
-	 *            {@link #shuffle()}
+	 *            {@link #shuffle()}, or {@code null} to use Collections API's default
 	 */
-	public UnoDrawPile(@Nonnull UnoDeck deck, @Nonnull Random random) {
+	public UnoDrawPile(@Nonnull UnoDeck deck, @Nullable RandomGenerator random) {
 		this(deck.getCards(), random, false);
 	}
 
@@ -80,7 +81,7 @@ public class UnoDrawPile implements UnoPile {
 	 *            have a state (for example cards are a fresh clone from a deck)
 	 */
 	UnoDrawPile(@Nonnull List<UnoCard> cards, boolean resetAll) {
-		this(cards, new Random(), resetAll);
+		this(cards, null, resetAll);
 	}
 
 	/**
@@ -94,10 +95,10 @@ public class UnoDrawPile implements UnoPile {
 	 *            have a state (for example cards are a fresh clone from a deck)
 	 * @param random
 	 *            the random number generator used to shuffle the deck on
-	 *            {@link #shuffle()}
+	 *            {@link #shuffle()}, or {@code null} to use Collections API's default
 	 *
 	 */
-	UnoDrawPile(@Nonnull List<UnoCard> cards, @Nonnull Random random, boolean resetAll) {
+	UnoDrawPile(@Nonnull List<UnoCard> cards, @Nullable RandomGenerator random, boolean resetAll) {
 		this.cards = new ArrayDeque<>(cards);
 		this.random = random;
 
@@ -186,7 +187,10 @@ public class UnoDrawPile implements UnoPile {
 	 */
 	public void shuffle() {
 		var cardsCopy = new ArrayList<>(getCards());
-		Collections.shuffle(cardsCopy, this.random);
+		if (this.random == null)
+			Collections.shuffle(cardsCopy);
+		else
+			Collections.shuffle(cardsCopy, this.random);
 		this.cards.clear();
 		this.cards.addAll(cardsCopy);
 	}
