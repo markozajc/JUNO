@@ -23,7 +23,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.stream.Collectors.joining;
 import static org.eu.zajc.juno.cards.UnoCardColor.*;
 import static org.eu.zajc.juno.rules.pack.impl.house.UnoProgressiveRulePack.getConsecutive;
-import static org.eu.zajc.juno.utils.UnoRuleUtils.combinedPlacementAnalysis;
+import static org.eu.zajc.juno.utils.UnoGameUtils.canPlaceCard;
 
 import java.io.*;
 import java.util.Scanner;
@@ -69,7 +69,6 @@ public class UnoStreamPlayer extends UnoPlayer {
 	@SuppressWarnings("null")
 	public UnoCard playCard(UnoGame game) {
 		UnoCard top = game.getDiscard().getTop();
-		var possible = combinedPlacementAnalysis(top, this.getHand().getCards(), game.getRules(), this.getHand());
 
 		var handSizes = game.getPlayers()
 			.stream()
@@ -91,10 +90,7 @@ public class UnoStreamPlayer extends UnoPlayer {
 
 		int i = 1;
 		for (var card : this.getHand().getCards()) {
-			if (possible.contains(card))
-				this.ps.printf("%d \u2022 %s%n", i, card);
-			else
-				this.ps.printf("%d - %s%n", i, card);
+			this.ps.printf("%d - %s%n", i, card);
 
 			try {
 				sleep(5);
@@ -134,10 +130,7 @@ public class UnoStreamPlayer extends UnoPlayer {
 			if (choice == 0) {
 				return null;
 
-			} else if (choice > this.getCards().size()) {
-				this.ps.println(INVALID_CHOICE_STRING);
-
-			} else if (!possible.contains(this.getCards().get(choice - 1))) {
+			} else if (choice > this.getCards().size() || !canPlaceCard(this, game, this.getCards().get(choice - 1))) {
 				this.ps.println(INVALID_CHOICE_STRING);
 
 			} else {

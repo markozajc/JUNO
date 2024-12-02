@@ -61,30 +61,30 @@ public class UnoRulePack {
 	 * Creates a new {@link UnoRulePack} from a {@link Collection} of
 	 * {@link UnoRulePack}s
 	 *
-	 * @param packs
+	 * @param rulePacks
 	 *            the {@link UnoRulePack}s
 	 *
 	 * @return the combined {@link UnoRulePack}
 	 */
 	@Nonnull
 	@SuppressWarnings("null")
-	public static UnoRulePack ofPacks(@Nonnull Collection<UnoRulePack> packs) {
-		return new UnoRulePack(packs.stream().flatMap(p -> p.getRules().stream()).collect(toList()));
+	public static UnoRulePack ofPacks(@Nonnull Collection<UnoRulePack> rulePacks) {
+		return new UnoRulePack(rulePacks.stream().flatMap(p -> p.getRules().stream()).collect(toList()));
 		// Lambda magic to flatten a list of UnoRulePack-s
 	}
 
 	/**
 	 * Creates a new {@link UnoRulePack} from {@link UnoRulePack}s
 	 *
-	 * @param packs
+	 * @param rulePacks
 	 *            the {@link UnoRulePack}s
 	 *
 	 * @return the combined {@link UnoRulePack}
 	 */
 	@SuppressWarnings("null")
 	@Nonnull
-	public static UnoRulePack ofPacks(@Nonnull UnoRulePack... packs) {
-		return ofPacks(asList(packs));
+	public static UnoRulePack ofPacks(@Nonnull UnoRulePack... rulePacks) {
+		return ofPacks(asList(rulePacks));
 	}
 
 	/**
@@ -99,17 +99,17 @@ public class UnoRulePack {
 	 * Creates a new {@link UnoRulePack} that includes this {@link UnoRulePack} and a
 	 * {@link Collection} of additional {@link UnoRulePack}.
 	 *
-	 * @param packs
+	 * @param rulePacks
 	 *            {@link Collection} of {@link UnoRulePack}s to include
 	 *
 	 * @return the combined {@link UnoRulePack}
 	 */
 	@CheckReturnValue
 	@Nonnull
-	public UnoRulePack addPacks(@Nonnull Collection<UnoRulePack> packs) {
-		List<UnoRulePack> newPack = new ArrayList<>(packs.size() + 1);
+	public UnoRulePack addPacks(@Nonnull Collection<UnoRulePack> rulePacks) {
+		List<UnoRulePack> newPack = new ArrayList<>(rulePacks.size() + 1);
 		newPack.add(this);
-		newPack.addAll(packs);
+		newPack.addAll(rulePacks);
 		return UnoRulePack.ofPacks(newPack);
 	}
 
@@ -117,7 +117,7 @@ public class UnoRulePack {
 	 * Creates a new {@link UnoRulePack} that includes this {@link UnoRulePack} and
 	 * additional {@link UnoRulePack}.
 	 *
-	 * @param packs
+	 * @param rulePacks
 	 *            {@link UnoRulePack}s to include
 	 *
 	 * @return the combined {@link UnoRulePack}
@@ -125,8 +125,8 @@ public class UnoRulePack {
 	@Nonnull
 	@CheckReturnValue
 	@SuppressWarnings("null")
-	public UnoRulePack addPacks(@Nonnull UnoRulePack... packs) {
-		return this.addPacks(asList(packs));
+	public UnoRulePack addPacks(@Nonnull UnoRulePack... rulePacks) {
+		return this.addPacks(asList(rulePacks));
 	}
 
 	/**

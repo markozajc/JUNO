@@ -16,9 +16,6 @@
  */
 package org.eu.zajc.juno.utils;
 
-import static java.util.Arrays.asList;
-import static org.eu.zajc.juno.utils.UnoRuleUtils.combinedPlacementAnalysis;
-
 import java.util.List;
 
 import javax.annotation.*;
@@ -54,7 +51,7 @@ public class UnoGameUtils {
 	 */
 	@SuppressWarnings("null")
 	public static boolean canPlaceCard(@Nonnull UnoPlayer placer, @Nonnull UnoGame game, @Nonnull UnoCard card) {
-		return !combinedPlacementAnalysis(game.getTopCard(), asList(card), game.getRules(), placer.getHand()).isEmpty();
+		return UnoRuleUtils.canPlaceCard(game.getTopCard(), card, game.getRules(), placer.getHand());
 	}
 
 	/**

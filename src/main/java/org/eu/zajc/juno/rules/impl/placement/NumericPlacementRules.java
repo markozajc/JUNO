@@ -33,10 +33,10 @@ public class NumericPlacementRules {
 
 	private NumericPlacementRules() {}
 
-	private static UnoRulePack pack;
+	private static UnoRulePack rules;
 
 	private static void createPack() {
-		pack = new UnoRulePack(new NumericPlacementRule());
+		rules = new UnoRulePack(new NumericPlacementRule());
 	}
 
 	/**
@@ -63,10 +63,10 @@ public class NumericPlacementRules {
 	 * @return {@link UnoRulePack} of the official number placement rules
 	 */
 	public static UnoRulePack getPack() {
-		if (pack == null)
+		if (rules == null)
 			createPack();
 
-		return pack;
+		return rules;
 	}
 
 }

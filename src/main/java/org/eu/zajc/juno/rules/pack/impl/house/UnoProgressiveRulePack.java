@@ -54,10 +54,10 @@ public class UnoProgressiveRulePack {
 
 	private UnoProgressiveRulePack() {}
 
-	private static UnoRulePack pack;
+	private static UnoRulePack rules;
 
 	private static void createPack() {
-		pack = new UnoRulePack(new PlacementRule(), new FlowRule());
+		rules = new UnoRulePack(new PlacementRule(), new FlowRule());
 	}
 
 	/**
@@ -232,10 +232,10 @@ public class UnoProgressiveRulePack {
 	@Nonnull
 	@SuppressWarnings("null")
 	public static UnoRulePack getPack() {
-		if (pack == null)
+		if (rules == null)
 			createPack();
 
-		return pack;
+		return rules;
 	}
 
 }

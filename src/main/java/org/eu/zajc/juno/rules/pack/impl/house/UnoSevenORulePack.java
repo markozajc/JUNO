@@ -61,10 +61,10 @@ public class UnoSevenORulePack {
 
 	private UnoSevenORulePack() {}
 
-	private static UnoRulePack pack;
+	private static UnoRulePack rules;
 
 	private static void createPack() {
-		pack = new UnoRulePack(new FlowRule());
+		rules = new UnoRulePack(new FlowRule());
 	}
 
 	static class FlowRule implements UnoGameFlowRule {
@@ -110,10 +110,10 @@ public class UnoSevenORulePack {
 	@Nonnull
 	@SuppressWarnings("null")
 	public static UnoRulePack getPack() {
-		if (pack == null)
+		if (rules == null)
 			createPack();
 
-		return pack;
+		return rules;
 	}
 
 }

@@ -27,9 +27,11 @@ import javax.annotation.Nonnull;
 import org.eu.zajc.juno.cards.UnoCard;
 import org.eu.zajc.juno.hands.UnoHand;
 import org.eu.zajc.juno.rules.UnoRule;
+import org.eu.zajc.juno.rules.impl.placement.DrawPlacementRules.DrawFourHitchPlacementRule;
 import org.eu.zajc.juno.rules.pack.UnoRulePack;
 import org.eu.zajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule;
 import org.eu.zajc.juno.rules.types.UnoCardPlacementRule;
+import org.eu.zajc.juno.rules.types.UnoCardPlacementRule.PlacementClearance;
 
 /**
  * {@link UnoRule}-specific utilities.
@@ -38,45 +40,128 @@ import org.eu.zajc.juno.rules.types.UnoCardPlacementRule;
  */
 public class UnoRuleUtils {
 
-	private UnoRuleUtils() {}
-
 	/**
-	 * Filters a {@link Collection} of {@link UnoCard}s to determine which can be placed
-	 * on the {@code target} {@link UnoCard}. The deciding factor here is the
+	 * Determines which {@link UnoCard} from a {@link Collection} can be placed on top of
+	 * the {@code target} {@link UnoCard}. The deciding factor here is the
 	 * {@link UnoRulePack}, specifically the {@link UnoCardPlacementRule}s in it.
 	 *
 	 * @param target
 	 *            the target (top of the discard) {@link UnoCard}
 	 * @param cards
-	 *            {@link Collection} of {@link UnoCard}s to filter through
-	 * @param pack
+	 *            {@link Collection} of {@link UnoCard}s to dry-run placement for
+	 * @param rules
+	 *            the {@link UnoRulePack} to use
+	 * @param hand
+	 *            the current {@link UnoHand}
+	 *
+	 * @return a {@link List} of {@link UnoCard}s that can be placed on top of the
+	 *         {@code target} {@link UnoCard}
+	 *
+	 * @see #getProhibitingRules(UnoCard, UnoCard, UnoRulePack, UnoHand)
+	 * @see #canPlaceCard(UnoCard, UnoCard, UnoRulePack, UnoHand)
+	 *
+	 * @deprecated This method has been renamed to
+	 *             {@link #getPlaceableCards(UnoCard, Collection, UnoRulePack, UnoHand)}
+	 */
+	@Deprecated(since = "2.4", forRemoval = true)
+	@Nonnull
+	public static List<UnoCard> combinedPlacementAnalysis(@Nonnull UnoCard target, @Nonnull Collection<UnoCard> cards,
+														  @Nonnull UnoRulePack rules, @Nonnull UnoHand hand) {
+		return getPlaceableCards(target, cards, rules, hand);
+	}
+
+	/**
+	 * Determines whether a {@link UnoCard} can be placed on top of the the
+	 * {@code target} {@link UnoCard}. The deciding factor here is the
+	 * {@link UnoRulePack}, specifically the {@link UnoCardPlacementRule}s in it.
+	 *
+	 * @param target
+	 *            the target (top of the discard) {@link UnoCard}
+	 * @param card
+	 *            the {@link UnoCard} to dry-run placement for
+	 * @param rules
+	 *            the {@link UnoRulePack} to use
+	 * @param hand
+	 *            the current {@link UnoHand}
+	 *
+	 * @return {@code true} if the card can be placed on top of the {@code target}
+	 *         {@link UnoCard}, meaning at least one rule returns
+	 *         {@link PlacementClearance#ALLOWED} and none return
+	 *         {@link PlacementClearance#PROHIBITED}
+	 *
+	 * @see #getProhibitingRules(UnoCard, UnoCard, UnoRulePack, UnoHand)
+	 * @see #getPlaceableCards(UnoCard, Collection, UnoRulePack, UnoHand)
+	 */
+	public static boolean canPlaceCard(@Nonnull UnoCard target, @Nonnull UnoCard card, @Nonnull UnoRulePack rules,
+									   @Nonnull UnoHand hand) {
+		boolean allowed = false;
+		for (var rule : filterRuleKind(rules.getRules(), UnoCardPlacementRule.class)) {
+			var clearance = rule.canBePlaced(target, card, hand);
+			if (clearance == PROHIBITED)
+				return false;
+			else if (clearance == ALLOWED)
+				allowed = true;
+		}
+		return allowed;
+	}
+
+	/**
+	 * Determines which {@link UnoCard} from a {@link Collection} can be placed on top of
+	 * the {@code target} {@link UnoCard}. The deciding factor here is the
+	 * {@link UnoRulePack}, specifically the {@link UnoCardPlacementRule}s in it.
+	 *
+	 * @param target
+	 *            the target (top of the discard) {@link UnoCard}
+	 * @param cards
+	 *            {@link Collection} of {@link UnoCard}s to dry-run placement for
+	 * @param rules
+	 *            the {@link UnoRulePack} to use
+	 * @param hand
+	 *            the current {@link UnoHand}
+	 *
+	 * @return a {@link List} of {@link UnoCard}s that can be placed on top of the
+	 *         {@code target} {@link UnoCard}
+	 *
+	 * @see #getProhibitingRules(UnoCard, UnoCard, UnoRulePack, UnoHand)
+	 * @see #canPlaceCard(UnoCard, UnoCard, UnoRulePack, UnoHand)
+	 */
+	@Nonnull
+	@SuppressWarnings("null")
+	public static List<UnoCard> getPlaceableCards(@Nonnull UnoCard target, @Nonnull Collection<UnoCard> cards,
+												  @Nonnull UnoRulePack rules, @Nonnull UnoHand hand) {
+		return cards.stream().filter(c -> canPlaceCard(target, c, rules, hand)).toList();
+	}
+
+	/**
+	 * Finds a list of {@link UnoCardPlacementRule}s that prohibit placement.<br>
+	 * <br>
+	 * <b>Note:</b> an empty list does not by itself mean that placement is allowed, only
+	 * that none of the rules prohibit it. This can be used as feedback to the player
+	 * when explaining why placement is not allowed for lesser-known rules, for example
+	 * {@link DrawFourHitchPlacementRule}.
+	 *
+	 * @param target
+	 *            the target (top of the discard) {@link UnoCard}
+	 * @param card
+	 *            the {@link UnoCard} to dry-run placement for
+	 * @param rules
 	 *            the {@link UnoRulePack} to use
 	 * @param hand
 	 *            the current {@link UnoHand}
 	 *
 	 * @return a {@link List} of {@link UnoCard}s that can be placed atop of the
 	 *         {@code target} {@link UnoCard}
+	 *
+	 * @see #getPlaceableCards(UnoCard, Collection, UnoRulePack, UnoHand)
+	 * @see #canPlaceCard(UnoCard, UnoCard, UnoRulePack, UnoHand)
 	 */
 	@Nonnull
 	@SuppressWarnings("null")
-	public static List<UnoCard> combinedPlacementAnalysis(@Nonnull UnoCard target, @Nonnull Collection<UnoCard> cards,
-														  @Nonnull UnoRulePack pack, @Nonnull UnoHand hand) {
-		var rules = filterRuleKind(pack.getRules(), UnoCardPlacementRule.class);
-		var result = new ArrayList<UnoCard>(cards.size());
-
-		for (var card : cards) {
-			// Iterates over all cards
-			var clearance = rules.stream().map(r -> {
-				return r.canBePlaced(target, card, hand);
-			}).collect(toList());
-			// Gets the PlacementClearance-s for this card
-
-			if (clearance.contains(ALLOWED) && !clearance.contains(PROHIBITED))
-				result.add(card);
-			// Adds the card if allowed
-		}
-
-		return result;
+	public static List<UnoCardPlacementRule> getProhibitingRules(@Nonnull UnoCard target, @Nonnull UnoCard card,
+																 @Nonnull UnoRulePack rules, @Nonnull UnoHand hand) {
+		return filterRuleKind(rules.getRules(), UnoCardPlacementRule.class).stream().filter(r -> {
+			return r.canBePlaced(target, card, hand) == PROHIBITED;
+		}).toList();
 	}
 
 	/**
@@ -104,7 +189,7 @@ public class UnoRuleUtils {
 	 * {@link UnoRule}s of that pack and return all {@link UnoHouseRule} of which
 	 * {@link UnoRulePack} share all {@link UnoRule}s.
 	 *
-	 * @param pack
+	 * @param rules
 	 *            the {@link UnoRulePack} to scan
 	 *
 	 * @return all complete {@link UnoHouseRule}s included in this pack
@@ -113,8 +198,8 @@ public class UnoRuleUtils {
 	 */
 	@Deprecated(since = "2.3", forRemoval = true)
 	@Nonnull
-	public static List<UnoHouseRule> getHouseRules(UnoRulePack pack) {
-		return findHouseRules(pack);
+	public static List<UnoHouseRule> getHouseRules(UnoRulePack rules) {
+		return findHouseRules(rules);
 	}
 
 	/**
@@ -122,17 +207,19 @@ public class UnoRuleUtils {
 	 * {@link UnoRule}s of that pack and return all {@link UnoHouseRule} of which
 	 * {@link UnoRulePack} share all {@link UnoRule}s.
 	 *
-	 * @param pack
+	 * @param rules
 	 *            the {@link UnoRulePack} to scan
 	 *
 	 * @return all complete {@link UnoHouseRule}s included in this pack
 	 */
 	@Nonnull
 	@SuppressWarnings("null")
-	public static List<UnoHouseRule> findHouseRules(UnoRulePack pack) {
+	public static List<UnoHouseRule> findHouseRules(UnoRulePack rules) {
 		return asList(UnoHouseRule.values()).stream()
-			.filter(hr -> pack.getRules().containsAll(hr.getPack().getRules()))
+			.filter(hr -> rules.getRules().containsAll(hr.getPack().getRules()))
 			.collect(toList());
 	}
+
+	private UnoRuleUtils() {}
 
 }

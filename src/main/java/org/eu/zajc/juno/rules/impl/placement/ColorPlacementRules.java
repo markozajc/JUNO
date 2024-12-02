@@ -33,10 +33,10 @@ public class ColorPlacementRules {
 
 	private ColorPlacementRules() {}
 
-	private static UnoRulePack pack;
+	private static UnoRulePack rules;
 
 	private static void createPack() {
-		pack = new UnoRulePack(new ColorPlacementRule(), new WildColorPlacementRule());
+		rules = new UnoRulePack(new ColorPlacementRule(), new WildColorPlacementRule());
 	}
 
 	/**
@@ -79,10 +79,10 @@ public class ColorPlacementRules {
 	 * @return {@link UnoRulePack} of the official color placement rules.
 	 */
 	public static UnoRulePack getPack() {
-		if (pack == null)
+		if (rules == null)
 			createPack();
 
-		return pack;
+		return rules;
 	}
 
 }

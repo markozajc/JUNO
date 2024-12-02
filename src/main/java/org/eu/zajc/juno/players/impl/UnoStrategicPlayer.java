@@ -19,7 +19,7 @@ package org.eu.zajc.juno.players.impl;
 import static java.lang.Math.max;
 import static org.eu.zajc.juno.cards.UnoCardColor.WILD;
 import static org.eu.zajc.juno.rules.pack.impl.UnoOfficialRules.UnoHouseRule.*;
-import static org.eu.zajc.juno.utils.UnoRuleUtils.combinedPlacementAnalysis;
+import static org.eu.zajc.juno.utils.UnoRuleUtils.getPlaceableCards;
 import static org.eu.zajc.juno.utils.UnoUtils.*;
 
 import java.util.*;
@@ -71,7 +71,7 @@ public class UnoStrategicPlayer extends UnoPlayer {
 	@SuppressWarnings("null")
 	public UnoCard playCard(UnoGame game) {
 		var top = game.getDiscard().getTop();
-		var possible = combinedPlacementAnalysis(top, this.getCards(), game.getRules(), this.getHand());
+		var possible = getPlaceableCards(top, this.getCards(), game.getRules(), this.getHand());
 		var next = game.getNextPlayer();
 
 		if (possible.isEmpty())

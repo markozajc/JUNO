@@ -33,10 +33,10 @@ public class ActionPlacementRules {
 
 	private ActionPlacementRules() {}
 
-	private static UnoRulePack pack;
+	private static UnoRulePack rules;
 
 	private static void createPack() {
-		pack = new UnoRulePack(new ActionPlacementRule());
+		rules = new UnoRulePack(new ActionPlacementRule());
 	}
 
 	/**
@@ -64,10 +64,10 @@ public class ActionPlacementRules {
 	 * @return {@link UnoRulePack} of the official action placement rules
 	 */
 	public static UnoRulePack getPack() {
-		if (pack == null)
+		if (rules == null)
 			createPack();
 
-		return pack;
+		return rules;
 	}
 
 }

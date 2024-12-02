@@ -75,11 +75,11 @@ public class UnoOfficialRules {
 		 */
 		FOE_WINS_ON_QUIT(UnoFoeWinsOnEndRequestPack.getPack(), "\"Foe wins on quit\"");
 
-		private final UnoRulePack pack;
+		private final UnoRulePack rules;
 		private final String name;
 
-		UnoHouseRule(UnoRulePack pack, String name) {
-			this.pack = pack;
+		UnoHouseRule(UnoRulePack rules, String name) {
+			this.rules = rules;
 			this.name = name;
 		}
 
@@ -87,7 +87,7 @@ public class UnoOfficialRules {
 		 * @return the {@link UnoRulePack} for this house rule
 		 */
 		public UnoRulePack getPack() {
-			return this.pack;
+			return this.rules;
 		}
 
 		/**
@@ -101,13 +101,13 @@ public class UnoOfficialRules {
 
 	private UnoOfficialRules() {}
 
-	private static UnoRulePack pack;
+	private static UnoRulePack rules;
 
 	private static void createPack() {
-		pack = ofPacks(ActionPlacementRules.getPack(), ColorPlacementRules.getPack(), DrawPlacementRules.getPack(),
-					   NumericPlacementRules.getPack(),
-					   new UnoRulePack(new CardDrawingRule(), new CardPlacementRule(), new ColorChoosingRule(),
-									   new SkipCardRule(), new ReverseCardRule()));
+		rules = ofPacks(ActionPlacementRules.getPack(), ColorPlacementRules.getPack(), DrawPlacementRules.getPack(),
+						NumericPlacementRules.getPack(),
+						new UnoRulePack(new CardDrawingRule(), new CardPlacementRule(), new ColorChoosingRule(),
+										new SkipCardRule(), new ReverseCardRule()));
 	}
 
 	/**
@@ -116,10 +116,10 @@ public class UnoOfficialRules {
 	@Nonnull
 	@SuppressWarnings("null")
 	public static UnoRulePack getPack() {
-		if (pack == null)
+		if (rules == null)
 			createPack();
 
-		return pack;
+		return rules;
 	}
 
 	/**

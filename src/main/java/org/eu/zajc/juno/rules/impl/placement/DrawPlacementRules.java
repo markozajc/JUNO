@@ -35,11 +35,11 @@ public class DrawPlacementRules {
 
 	private DrawPlacementRules() {}
 
-	private static UnoRulePack pack;
+	private static UnoRulePack rules;
 
 	private static void createPack() {
-		pack = new UnoRulePack(new DrawAmountPlacementRule(), new DrawFourHitchPlacementRule(),
-							   new OpenDrawCardPlacementRule());
+		rules = new UnoRulePack(new DrawAmountPlacementRule(), new DrawFourHitchPlacementRule(),
+								new OpenDrawCardPlacementRule());
 	}
 
 	/**
@@ -105,10 +105,10 @@ public class DrawPlacementRules {
 	 * @return {@link UnoRulePack} of the official draw placement rules
 	 */
 	public static UnoRulePack getPack() {
-		if (pack == null)
+		if (rules == null)
 			createPack();
 
-		return pack;
+		return rules;
 	}
 
 }
